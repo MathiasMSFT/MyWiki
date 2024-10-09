@@ -11,7 +11,7 @@ Your Managed Identity needs Mail.Send permission, that means it will be able to 
 
 You can deploy the ARM templates to your Azure Subscription using the link below:
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMathiasMSFT%2FScripts%2FLogic%20Apps%2FNotifications%2Fazuredeploy-notifications.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMathiasMSFT%2FMyWiki%2FLogic%20App%2FNotifications%2Fazuredeploy-notifications.json" target="_blank">
   <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
