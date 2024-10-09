@@ -9,15 +9,12 @@ Your Managed Identity needs Mail.Send permission, that means it will be able to 
 
 ## Create a Logic App Consumption
 
-1. Select your Resource Group and define a name 
-<p align="center" width="100%">
-    <img width="70%" src="./images/Create-LogicApp-1.png">
-</p>
+You can deploy the ARM templates to your Azure Subscription using the link below:
 
-2. Define tags
-<p align="center" width="100%">
-    <img width="70%" src="./images/Create-LogicApp-2.png">
-</p>
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMathiasMSFT%2FScripts%2FLogic%20Apps%2FNotifications%2Fazuredeploy-notifications.json" target="_blank">
+  <img src="https://aka.ms/deploytoazurebutton"/>
+</a>
+
 
 
 ## Create a Managed Identity
@@ -94,13 +91,7 @@ New-ApplicationAccessPolicy `
     -Description "Restrict IGA-Notifications managed identity"
 ```
 
-7. Import template ARM
 
-You can deploy the ARM templates to your Azure Subscription using the link below:
-
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMathiasMSFT%2FScripts%2FLogic%20Apps%2FNotifications%2Fazuredeploy-notifications.json" target="_blank">
-  <img src="https://aka.ms/deploytoazurebutton"/>
-</a>
 
 
 ## Call this Logic App
