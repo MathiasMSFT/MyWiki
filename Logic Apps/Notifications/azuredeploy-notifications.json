@@ -1,0 +1,116 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_IGA_Notifications_name": {
+            "defaultValue": "IGA-Notifications",
+            "type": "String"
+        },
+        "GlobalEmail": {
+            "type": "string",
+            "defaultValue": "noreply@contoso.com"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_IGA_Notifications_name')]",
+            "location": "eastus2",
+            "tags": {},
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "SendTo": {
+                            "defaultValue": "[parameters('GlobalEmail')]",
+                            "type": "String"
+                        },
+                        "Body": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        },
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "When_a_HTTP_request_is_received": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "MailFrom": {
+                                            "type": "string"
+                                        },
+                                        "SendTo": {
+                                            "type": "string"
+                                        },
+                                        "Subject": {
+                                            "type": "string"
+                                        },
+                                        "Body": {
+                                            "type": "string"
+                                        },
+                                        "saveToSentItems": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "HTTP": {
+                            "runAfter": {},
+                            "type": "Http",
+                            "inputs": {
+                                "uri": "https://graph.microsoft.com/v1.0/users/@{triggerBody()?['MailFrom']}/sendMail",
+                                "method": "POST",
+                                "headers": {
+                                    "Content-type": "application/json"
+                                },
+                                "body": {
+                                    "message": {
+                                        "body": {
+                                            "Content": "@{triggerBody()?['Body']}",
+                                            "ContentType": "Text"
+                                        },
+                                        "subject": "@{triggerBody()?['Subject']}",
+                                        "toRecipients": [
+                                            {
+                                                "emailaddress": {
+                                                    "address": "@{triggerBody()?['SendTo']}"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "saveToSendItems": "@{triggerBody()?['saveToSentItems']}"
+                                },
+                                "authentication": {
+                                    "type": "ManagedServiceIdentity",
+                                    "audience": "https://graph.microsoft.com/"
+                                }
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {}
+                    }
+                }
+            }
+        }
+    ]
+}
