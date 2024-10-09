@@ -15,27 +15,19 @@ You can deploy the ARM templates to your Azure Subscription using the link below
   <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
-https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/MathiasMSFT/MyWiki/refs/heads/main/Logic-App/Notifications/azuredeploy-notifications.json
 
-## Create a Managed Identity
+## Managed Identity
 
-1. 
-<p align="center" width="100%">
-    <img width="70%" src="./images/Create-ManagedIdentity-1.png">
-</p>
-
-2. 
-<p align="center" width="100%">
-    <img width="70%" src="./images/Create-ManagedIdentity-2.png">
-</p>
+A system Managed Identity will be created.
+Grab the name and the appid (not objectid).
 
 
-3. Assign permissions
+## Assign permissions to your Managed Identity
 
 ```
-$TenantID = "ee942b75-82c7-42bc-9585-ccc5628492d9"
+$TenantID = "<your tenantid>"
 $GraphAppId = "00000003-0000-0000-c000-000000000000"
-$DisplayNameMI = "IGA-Notifications"
+$DisplayNameMI = "<name of Logic App>"
 $GraphPermission = "Mail.Send"
 
 Connect-MgGraph -Scopes Application.Read.All,AppRoleAssignment.ReadWrite.All
@@ -65,9 +57,7 @@ Get-MgServicePrincipalAppRoleAssignment -ServicePrincipalId $IdMI.Id
 ```
 
 
-4. Create an email account and add it in your group
-
-5. Create a mail-enabled security group
+## Mail-Enabled Security Group
 
 Email: iga-notifications@mydomain.ca
 <p align="center" width="100%">
@@ -75,7 +65,12 @@ Email: iga-notifications@mydomain.ca
 </p>
 
 
-6. Create an Application Access Policy in Exchange Online
+## Email account
+
+You need to create an email account and add it in your group
+
+## Application Access Policy
+Create an Application Access Policy in Exchange Online
 
 - AppId: Application Id of your Mnanaged Identity
 - PolicyScopeGroupId: email of your mail-enabled security group
