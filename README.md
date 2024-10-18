@@ -14,6 +14,6 @@ Welcome to my wiki repository dedicated to identity and security.
     - [Entra Connect](./Entra%20ID/Entra%20Connect/README.md)
 - [Azure AD B2C](./Azure%20AD%20B2C/README.md)
 - [Entra External ID](./Entra%20External%20ID/README.md)
-- [Logic App](./Logic%20App/README.md)
+- [Logic App](./Logic-App/README.md)
 
 
