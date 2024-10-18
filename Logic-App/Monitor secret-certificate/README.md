@@ -4,7 +4,7 @@
 
 ### Logic App for notification
 This Logic App need to call another Logic App. Nothing is configure to send an email.
-To create this Logic App, go here 👉 <a href="">Notifications</a>
+To create this Logic App, go here 👉 <a href="">../Notifications/README.md</a>
 
 ### Custom Security Attributes
 Custom Security Attributes are not simple attribute. By default, Global Admin members don't have amy permissions. Creating sets and attributes require roles that you have to manage by PIM.
