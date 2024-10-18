@@ -7,11 +7,11 @@ This Logic App need to call another Logic App. Nothing is configure to send an e
 To create this Logic App, go here 👉 <a href="">../Notifications/README.md</a>
 
 ### Custom Security Attributes
-Custom Security Attributes are not simple attribute. By default, Global Admin members don't have amy permissions. Creating sets and attributes require roles that you have to manage by PIM.
+Custom Security Attributes are not simple attribute. By default, Global Admin members don't have any permissions. Creating "sets" and "attributes" (CSA) require roles that you have to manage by PIM (Privilege Identity Management)
 - Attribute Definition Administrator or Reader
 - Attribute Assignemnt Administrator or Reader
 
-In this case, I have created a set named "OwnerManagement". In this set, I have created an attribute "AppOwner" which will store all owners of my applications.
+In this case, I have created a set named "OwnerManagement". In this set, I have created an attribute named "AppOwner" which will store all owners of my applications.
 
 <p align="center" width="100%">
     <img width="70%" src="./images/Set-OwnerManagement.png">
@@ -29,7 +29,7 @@ In this case, I have created a set named "OwnerManagement". In this set, I have 
 
 📍 If you would like to use your own Set and Custom Security Attribute, here is what you need to update in the template below:
 
-Here are the line you need to change:
+Here are the lines you need to change:
 - Line 279: OwnerManagement
 - Line 284: AppOwner
 - Line 290: AppOwner
@@ -61,7 +61,7 @@ https://learn.microsoft.com/en-us/azure/connectors/connectors-native-recurrence?
 
 You can deploy the ARM templates to your Azure Subscription using the link below:
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMathiasMSFT%2FScripts%2FLogic%20Apps%2FMonitor%20secret-certificate%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMathiasMSFT%2FMyWiki%2FLogic%20App%2FMonitor%20secret-certificate%2Fazuredeploy.json" target="_blank">
   <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
