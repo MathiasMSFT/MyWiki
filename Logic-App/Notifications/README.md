@@ -77,11 +77,11 @@ Create an Application Access Policy in Exchange Online
 
 ```
 # Install-Module ExchangeOnlineManagement
-Connect-ExchangeOnline -UserPrincipalName mathias.dumont@identityms.onmicrosoft.com
+Connect-ExchangeOnline -UserPrincipalName <UserPrincipalName>
 
 New-ApplicationAccessPolicy `
-    -AppId 46e8da3e-6eb9-4881-ab9c-bb010fd85f3f `
-    -PolicyScopeGroupId iga-notifications@identityms.onmicrosoft.com `
+    -AppId <AppId Of MI> `
+    -PolicyScopeGroupId <emailaddress of mail-enabled security group> `
     -AccessRight RestrictAccess `
     -Description "Restrict IGA-Notifications managed identity"
 ```
