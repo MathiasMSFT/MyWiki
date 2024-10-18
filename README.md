@@ -7,7 +7,6 @@
 Welcome to my wiki repository dedicated to identity and security.
 
 ## 📖 Table of Contents
-- [Active Directory](./AD/README.md)
 - Entra ID
     - [B2B](./Entra%20ID/B2B/README.md)
     - [ID Protection](./Entra%20ID/ID%20Protection/README.md)
