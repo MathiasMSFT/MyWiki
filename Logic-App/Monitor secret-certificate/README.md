@@ -66,7 +66,6 @@ You can deploy the ARM templates to your Azure Subscription using the link below
 </a>
 
 You should see a failed run and that's normal because your Managed Identity doesn't have any permissions.
-Follow next step 👇
 
 
 ## After deployment
@@ -120,5 +119,18 @@ Get-MgServicePrincipalAppRoleAssignment -ServicePrincipalId $IdMI.Id
 
 Run your Logic App and validate in "Run History" blade that your Logic App works.
 
+Admins or IGA team will receive one email containing all applications with secret(s) or certificate(s) which are expired (including all details):
+- Application Id
+- Name of the application
+- Key Id (secret id or certificate id)
+- How many days since the secret/certificate is expired
+- Email of owners
 
+
+Owners of applications will receive an email for each app containing:
+- Name of the application
+- How many days the secret/certificate will expire
+- Key Id (secret id or certificate id)
+- Expiration time
+- Application Id
 
