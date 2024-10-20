@@ -3,13 +3,13 @@
 ## Prerequisites
 
 ### Logic App for notification
-This Logic App need to call another Logic App. Nothing is configure to send an email.
-To create this Logic App, go here 👉 <a href="">../Notifications/README.md</a>
+This Logic App is designed to call another Logic App, currently without email notification functionality.
+To create this Logic App, follow the instructions here 👉 [README file](../Notifications/README.md).
 
 ### Custom Security Attributes
-Custom Security Attributes are not simple attribute. By default, Global Admin members don't have any permissions. Creating "sets" and "attributes" (CSA) require roles that you have to manage by PIM (Privilege Identity Management)
+Custom Security Attributes (CSA) are not simple attributes. By default, Global Admin members don't have any permissions to manage them. Creating "sets" and "attributes" (CSA) require roles that you have to manage by PIM (Privileged Identity Management):
 - Attribute Definition Administrator or Reader
-- Attribute Assignemnt Administrator or Reader
+- Attribute Assignment Administrator or Reader
 
 In this case, I have created a set named "OwnerManagement". In this set, I have created an attribute named "AppOwner" which will store all owners of my applications.
 
@@ -25,7 +25,7 @@ In this case, I have created a set named "OwnerManagement". In this set, I have 
     <img width="70%" src="./images/Attribute-AppOwner-2.png">
 </p>
 
-⚠️ Keep in mind that you can not delete Custom Security Attribute, just disable them.
+**Important:** Once created, you cannot delete a CSA, only disable it.
 
 📍 If you would like to use your own Set and Custom Security Attribute, here is what you need to update in the template below:
 
@@ -117,7 +117,7 @@ Get-MgServicePrincipalAppRoleAssignment -ServicePrincipalId $IdMI.Id
 
 ## Run the logic app
 
-Run your Logic App and validate in "Run History" blade that your Logic App works.
+Run your Logic App and validate in "Run History" blade that it works coorectly.
 
 Admins or IGA team will receive one email containing all applications with secret(s) or certificate(s) which are expired (including all details):
 - Application Id

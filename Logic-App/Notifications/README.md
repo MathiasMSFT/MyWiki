@@ -1,28 +1,25 @@
 # How to manage notification with Logic App
 
-You probably have some Logic App to monitor or analyze some workload with notification. In each your Logic App, you implement an action to send an email.
-Do you know that you can call an nested Logic App ?
-For example, you have a Logic App analysing secret or certificate of your application, and if a secret is expiring or has expired, you send an email to someone.
-The goal is to call this Logic App everytime you need to send an email without implementing this in each Logic App.
+You may have Logic Apps to monitor or analyze workloads and send notifications. Currently, you implement an action to send an email in each Logic App. However, did you know you can call a nested Logic App?
+
+For instance, if a secret or certificate of your application is expiring or has expired, a Logic App can notify the relevant party. The goal is to call this Logic App whenever you need to send an email, eliminating the need to implement this in each Logic App.
 
 Your Managed Identity needs Mail.Send permission, that means it will be able to send an email from anyone. To secure this part, you will use an Application Access Policy in Exchange Online to allow only this MI to send an email from only one mailbox.
 
-## Create a Logic App Consumption
+## Setup
+Create a Logic App Consumption
 
-You can deploy the ARM templates to your Azure Subscription using the link below:
+1. **Create a Consumption Logic App**: Deploy the ARM templates to your Azure Subscription using the provided link below:
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMathiasMSFT%2FMyWiki%2Frefs%2Fheads%2Fmain%2FLogic-App%2FNotifications%2Fazuredeploy-notifications.json" target="_blank">
   <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
 
-## Managed Identity
-
-A system Managed Identity will be created.
-Grab the name and the appid (not objectid).
+2. **Managed Identity**: A system-assigned Managed Identity will be created. Note down the name and the appID (not the objectID). Assign necessary permissions to your Managed Identity.
 
 
-## Assign permissions to your Managed Identity
+3. **Assign permissions to your Managed Identity**: Use this script.
 
 ```
 $TenantID = "<your tenantid>"
@@ -57,19 +54,13 @@ Get-MgServicePrincipalAppRoleAssignment -ServicePrincipalId $IdMI.Id
 ```
 
 
-## Mail-Enabled Security Group
-
-Email: iga-notifications@mydomain.ca
+4. **Mail-Enabled Security Group and Email Account**: Create an email account and add it to your group
 <p align="center" width="100%">
     <img width="70%" src="./images/Create-Mail-EnabledSG.png">
 </p>
 
 
-## Email account
-
-You need to create an email account and add it in your group
-
-## Application Access Policy
+5. **Application Access Policy**:
 Create an Application Access Policy in Exchange Online
 
 - AppId: Application Id of your Mnanaged Identity
@@ -86,13 +77,7 @@ New-ApplicationAccessPolicy `
     -Description "Restrict IGA-Notifications managed identity"
 ```
 
-
-
-
-## Call this Logic App
-
-In your main Logic App, use Logic App to call it.
-
+6. **Call the Logic App**: In your main Logic App, use the Logic App to call one you have created.
 
 <p align="center" width="100%">
     <img width="70%" src="./images/Call-LogicApp-1.png">
@@ -102,15 +87,11 @@ In your main Logic App, use Logic App to call it.
     <img width="70%" src="./images/Call-LogicApp-2.png">
 </p>
 
-
 <p align="center" width="100%">
     <img width="70%" src="./images/Call-LogicApp-3.png">
 </p>
 
-
 https://learn.microsoft.com/en-us/azure/logic-apps/logic-apps-http-endpoint?tabs=consumption
-
-
 
 
 ## Troubleshooting
@@ -129,6 +110,3 @@ https://learn.microsoft.com/en-us/graph/auth-limit-mailbox-access#handling-api-e
 https://learn.microsoft.com/en-us/powershell/module/exchange/set-organizationconfig?view=exchange-ps#-EwsApplicationAccessPolicy
 
 https://learn.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-control-access-to-ews-in-exchange#examples-controlling-access-to-ews
-
-
-
