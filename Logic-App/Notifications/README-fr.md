@@ -1,5 +1,4 @@
 # How to manage notification with Logic App
-[![fr](https://img.shields.io/badge/lang-en-red.svg)](README-fr.md)
 
 You may have Logic Apps to monitor or analyze workloads and send notifications. Currently, you implement an action to send an email in each Logic App. However, did you know you can call a nested Logic App?
 
