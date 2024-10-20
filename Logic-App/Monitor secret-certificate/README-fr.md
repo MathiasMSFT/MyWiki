@@ -1,18 +1,17 @@
-# Déploiement
+# Monitorer vos secrets et certificats de vos applications
 [![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
 
 ## Prérequis
 
 ### Logic App for notification
-This Logic App is designed to call another Logic App, currently without email notification functionality.
-To create this Logic App, follow the instructions here 👉 [README file](../Notifications/README.md).
+Cette Logic App est conçue pour appeler un autre Logic App, sans fonctionnalité de notification par e-mail pour le moment. Pour créer ce Logic App, suivez les instructions ici 👉 [README file](../Notifications/README.md).
 
 ### Custom Security Attributes
-Custom Security Attributes (CSA) are not simple attributes. By default, Global Admin members don't have any permissions to manage them. Creating "sets" and "attributes" (CSA) require roles that you have to manage by PIM (Privileged Identity Management):
+Custom Security Attributes (CSA) ne sont pas de smples attributs. Par défaut, les membres de Global Admin ne disposent d'aucune autorisation pour les gérer.  La création de "set" et d' "attributes" (CSA) nécessite des rôles que vous devez gérer via PIM (Privileged Identity Management):
 - Attribute Definition Administrator or Reader
 - Attribute Assignment Administrator or Reader
 
-In this case, I have created a set named "OwnerManagement". In this set, I have created an attribute named "AppOwner" which will store all owners of my applications.
+Dans ce cas, j'ai créé un set nommé "OwnerManagement". Dans ce set, j'ai créé un attribut nommé "AppOwner" qui stockera tous les propriétaires de mes applications.
 
 <p align="center" width="100%">
     <img width="70%" src="./images/Set-OwnerManagement.png">
@@ -26,9 +25,9 @@ In this case, I have created a set named "OwnerManagement". In this set, I have 
     <img width="70%" src="./images/Attribute-AppOwner-2.png">
 </p>
 
-**Important:** Once created, you cannot delete a CSA, only disable it.
+**Important:** Une fois créés, vous ne pouvez pas supprimer un CSA, vous ne pouvez que le désactiver.
 
-📍 If you would like to use your own Set and Custom Security Attribute, here is what you need to update in the template below:
+📍 Si vous souhaitez utiliser votre propre set et attributes, voici ce que vous devez mettre à jour dans le template :
 
 Here are the lines you need to change:
 - Line 279: OwnerManagement
@@ -43,10 +42,10 @@ Here are the lines you need to change:
 
 
 
-## Deployment
-Deploy through 2 steps:
+## Déploiement
+Déploier en 2 étapes:
 
-1. Deploy the ARM template in your subscription and fill all the fields
+1. Déployer le template ARM dans votre souscription et renseigner les champs:
 - Resource Group
 - Region
 - Logic App Name
@@ -55,33 +54,33 @@ Deploy through 2 steps:
 https://learn.microsoft.com/en-us/azure/connectors/connectors-native-recurrence?tabs=consumption
 - Mail from
 - Mai Report
-2. Assign permissions
+2. Assigner les permissions
 
 
-### Deployment template
+### Déploiement du template
 
-You can deploy the ARM templates to your Azure Subscription using the link below:
+Vous pouvez déployer le template via le lien ci-dessous:
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMathiasMSFT%2FMyWiki%2FLogic%20App%2FMonitor%20secret-certificate%2Fazuredeploy.json" target="_blank">
   <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
-You should see a failed run and that's normal because your Managed Identity doesn't have any permissions.
+Vous devriez voir que l'éxecution a échouée et c'est normal car votre Managed Identity n'a pas de permissions.
 
 
-## After deployment
+## Après le déploiement
 
-### Permissions on Managed Identity
-Then, you need to give permissions to your Managed Identity:
-- read applications
-- read Custom Security Attributes
+### Permissions sur votre Managed Identity
+Ensuite, vous avez besoin d'attribuer les permissions à votre Managed Identity:
+- lire applications
+- lire Custom Security Attributes
 
-1. Find objectid of MI
+1. Trouver l'objectid de votre MI
 <p align="center" width="100%">
     <img width="70%" src="./images/ManagedIdentity-ObjectID.png">
 </p>
 
-2. Use the script below. Replace values by your own
+2. Utiliser le script ci-dessous et remplacer les valeurs par les vôtres
 ```
 $TenantID = "<tenantid>"
 $GraphAppId = "00000003-0000-0000-c000-000000000000"
@@ -116,22 +115,22 @@ ForEach ($GraphPermission in $GraphPermissions) {
 Get-MgServicePrincipalAppRoleAssignment -ServicePrincipalId $IdMI.Id
 ```
 
-## Run the logic app
+## Exécuter la logic app
 
-Run your Logic App and validate in "Run History" blade that it works coorectly.
+Exécuter votre Logic App et vérifier dans la section "Historique des exécutions" qu'il fonctionne correctement.
 
-Admins or IGA team will receive one email containing all applications with secret(s) or certificate(s) which are expired (including all details):
+Les administrateurs ou l'équipe IGA recevront un e-mail contenant toutes les applications avecdes secrets ou des certificats qui sont expirés (incluant les détails):
 - Application Id
-- Name of the application
+- Nom de l'application
 - Key Id (secret id or certificate id)
-- How many days since the secret/certificate is expired
-- Email of owners
+- Depuis combien de jours le secret/certificat est expiré
+- Email des propriétaires
 
 
-Owners of applications will receive an email for each app containing:
-- Name of the application
-- How many days the secret/certificate will expire
+Les propriétaires des applications recevront un e-mail pour chaque application contenant:
+- Non de l'application
+- Dans combien de jours le secret/certificat est expiré
 - Key Id (secret id or certificate id)
-- Expiration time
+- Date d'expiration
 - Application Id
 

@@ -28,7 +28,7 @@ In this case, I have created a set named "OwnerManagement". In this set, I have 
 
 **Important:** Once created, you cannot delete a CSA, only disable it.
 
-📍 If you would like to use your own Set and Custom Security Attribute, here is what you need to update in the template below:
+📍 If you would like to use your own Set and Custom Security Attribute, here is what you need to update in the template:
 
 Here are the lines you need to change:
 - Line 279: OwnerManagement
@@ -130,7 +130,7 @@ Admins or IGA team will receive one email containing all applications with secre
 
 Owners of applications will receive an email for each app containing:
 - Name of the application
-- How many days the secret/certificate will expire
+- In how many days the secret/certificate will expire
 - Key Id (secret id or certificate id)
 - Expiration time
 - Application Id
