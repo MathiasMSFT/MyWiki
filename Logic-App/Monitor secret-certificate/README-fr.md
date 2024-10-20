@@ -1,7 +1,7 @@
-# Deployment
-[![fr](https://img.shields.io/badge/lang-fr-blue.svg)](README-fr.md)
+# Déploiement
+[![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
 
-## Prerequisites
+## Prérequis
 
 ### Logic App for notification
 This Logic App is designed to call another Logic App, currently without email notification functionality.
