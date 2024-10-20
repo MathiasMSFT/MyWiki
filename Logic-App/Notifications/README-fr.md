@@ -1,25 +1,27 @@
-# How to manage notification with Logic App
+# Gestion des notifications avec une Logic App
+[![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
 
-You may have Logic Apps to monitor or analyze workloads and send notifications. Currently, you implement an action to send an email in each Logic App. However, did you know you can call a nested Logic App?
+Vous pouvez avoir des Logic App pour surveiller ou analyser des charges de travail et envoyer des notifications. Actuellement, vous implémentez une action pour envoyer un e-mail dans chaque Logic App. Saviez-vous que vous pouvez appeler une Logic App imbriquée ?
 
-For instance, if a secret or certificate of your application is expiring or has expired, a Logic App can notify the relevant party. The goal is to call this Logic App whenever you need to send an email, eliminating the need to implement this in each Logic App.
+Par exemple, si un secret ou un certificat de votre application est sur le point d'expirer ou a expiré, une Logic App peut notifier la partie prenante. L'objectif est d'appeler cette Logic App chaque fois que vous devez envoyer un e-mail, éliminant ainsi la nécessité de l'implémenter dans chaque Logic App.
 
-Your Managed Identity needs Mail.Send permission, that means it will be able to send an email from anyone. To secure this part, you will use an Application Access Policy in Exchange Online to allow only this MI to send an email from only one mailbox.
+Votre Managed Identity a besoin de la permission Mail.Send, ce qui signifie qu'elle sera capable d'envoyer un courriel de n'importe qui. Pour sécuriser cela, vous allez utiliser une politique d'accès application dans Exchange Online pour autoriser uniquement cette MI d'envoyer un courriel seulement depuis une boite.
+
 
 ## Setup
-Create a Logic App Consumption
+Créer une Logic App de type Comsumption
 
-1. **Create a Consumption Logic App**: Deploy the ARM templates to your Azure Subscription using the provided link below:
+1. **Créer une Consumption Logic App**: Déployer le template ARM dans votre souscription en utilisant le lien fourni ci-dessous:
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMathiasMSFT%2FMyWiki%2Frefs%2Fheads%2Fmain%2FLogic-App%2FNotifications%2Fazuredeploy-notifications.json" target="_blank">
   <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
 
-2. **Managed Identity**: A system-assigned Managed Identity will be created. Note down the name and the appID (not the objectID). Assign necessary permissions to your Managed Identity.
+2. **Managed Identity**: Une Managed Identité de type system sera créé. Garder le nom et l'app id (pas l'objectID).
 
 
-3. **Assign permissions to your Managed Identity**: Use this script.
+3. **Assigner les permissions à votre Managed Identity**: Utiliser le script ci-dessous:
 
 ```
 $TenantID = "<your tenantid>"
@@ -54,17 +56,17 @@ Get-MgServicePrincipalAppRoleAssignment -ServicePrincipalId $IdMI.Id
 ```
 
 
-4. **Mail-Enabled Security Group and Email Account**: Create an email account and add it to your group
+4. **Mail-Enabled Security Group and Email Account**: Créer un compte mail et ajouter le dans le groupe
 <p align="center" width="100%">
     <img width="70%" src="./images/Create-Mail-EnabledSG.png">
 </p>
 
 
 5. **Application Access Policy**:
-Create an Application Access Policy in Exchange Online
+Créer une politique d'accès application dans Excahnge Online
 
-- AppId: Application Id of your Mnanaged Identity
-- PolicyScopeGroupId: email of your mail-enabled security group
+- AppId: Application Id de votre Mnanaged Identity
+- PolicyScopeGroupId: Email de votre groupe de sécurité
 
 ```
 # Install-Module ExchangeOnlineManagement
@@ -77,7 +79,7 @@ New-ApplicationAccessPolicy `
     -Description "Restrict IGA-Notifications managed identity"
 ```
 
-6. **Call the Logic App**: In your main Logic App, use the Logic App to call one you have created.
+6. **Appeler la Logic App**: Dans votre Logic App principale, utiliser Logic App pour appeler celle que vous venez de créer.
 
 <p align="center" width="100%">
     <img width="70%" src="./images/Call-LogicApp-1.png">
@@ -94,19 +96,3 @@ New-ApplicationAccessPolicy `
 https://learn.microsoft.com/en-us/azure/logic-apps/logic-apps-http-endpoint?tabs=consumption
 
 
-## Troubleshooting
-
-### Access to OData is disabled
-
-Check your policy
-<p align="center" width="100%">
-    <img width="70%" src="./images/Org-Config-EWS.png">
-</p>
-
-https://learn.microsoft.com/en-us/graph/resolve-auth-errors#403-forbidden-access-to-odata-is-disabled
-
-https://learn.microsoft.com/en-us/graph/auth-limit-mailbox-access#handling-api-errors
-
-https://learn.microsoft.com/en-us/powershell/module/exchange/set-organizationconfig?view=exchange-ps#-EwsApplicationAccessPolicy
-
-https://learn.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-control-access-to-ews-in-exchange#examples-controlling-access-to-ews

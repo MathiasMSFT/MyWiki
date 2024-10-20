@@ -1,5 +1,5 @@
 # How to manage notification with Logic App
-[![fr](https://img.shields.io/badge/lang-en-red.svg)](README-fr.md)
+[![fr](https://img.shields.io/badge/lang-fr-blue.svg)](README-fr.md)
 
 You may have Logic Apps to monitor or analyze workloads and send notifications. Currently, you implement an action to send an email in each Logic App. However, did you know you can call a nested Logic App?
 
@@ -17,7 +17,7 @@ Create a Logic App Consumption
 </a>
 
 
-2. **Managed Identity**: A system-assigned Managed Identity will be created. Note down the name and the appID (not the objectID). Assign necessary permissions to your Managed Identity.
+2. **Managed Identity**: A system-assigned Managed Identity will be created. Note down the name and the appID (not the objectID).
 
 
 3. **Assign permissions to your Managed Identity**: Use this script.
@@ -94,20 +94,3 @@ New-ApplicationAccessPolicy `
 
 https://learn.microsoft.com/en-us/azure/logic-apps/logic-apps-http-endpoint?tabs=consumption
 
-
-## Troubleshooting
-
-### Access to OData is disabled
-
-Check your policy
-<p align="center" width="100%">
-    <img width="70%" src="./images/Org-Config-EWS.png">
-</p>
-
-https://learn.microsoft.com/en-us/graph/resolve-auth-errors#403-forbidden-access-to-odata-is-disabled
-
-https://learn.microsoft.com/en-us/graph/auth-limit-mailbox-access#handling-api-errors
-
-https://learn.microsoft.com/en-us/powershell/module/exchange/set-organizationconfig?view=exchange-ps#-EwsApplicationAccessPolicy
-
-https://learn.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-control-access-to-ews-in-exchange#examples-controlling-access-to-ews
