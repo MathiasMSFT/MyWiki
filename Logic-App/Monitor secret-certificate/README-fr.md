@@ -4,10 +4,10 @@
 ## Prérequis
 
 ### Logic App for notification
-Cette Logic App est conçue pour appeler un autre Logic App, sans fonctionnalité de notification par e-mail pour le moment. Pour créer ce Logic App, suivez les instructions ici 👉 [README file](../Notifications/README.md).
+Cette Logic App est conçue pour appeler une autre Logic App, sans fonctionnalité de notification par e-mail pour le moment. Pour créer ce Logic App, suivez les instructions ici 👉 [README file](../Notifications/README.md).
 
 ### Custom Security Attributes
-Custom Security Attributes (CSA) ne sont pas de smples attributs. Par défaut, les membres de Global Admin ne disposent d'aucune autorisation pour les gérer.  La création de "set" et d' "attributes" (CSA) nécessite des rôles que vous devez gérer via PIM (Privileged Identity Management):
+Custom Security Attributes (CSA) ne sont pas de simples attributs. Par défaut, les membres de Global Admin ne disposent d'aucune autorisation pour les gérer.  La création de "set" et d' "attributes" (CSA) nécessite des rôles que vous devez gérer via PIM (Privileged Identity Management):
 - Attribute Definition Administrator or Reader
 - Attribute Assignment Administrator or Reader
 
@@ -27,7 +27,7 @@ Dans ce cas, j'ai créé un set nommé "OwnerManagement". Dans ce set, j'ai cré
 
 **Important:** Une fois créés, vous ne pouvez pas supprimer un CSA, vous ne pouvez que le désactiver.
 
-📍 Si vous souhaitez utiliser votre propre set et attributes, voici ce que vous devez mettre à jour dans le template :
+📍 Si vous souhaitez utiliser votre propre set et attributs, voici ce que vous devez mettre à jour dans le template :
 
 Here are the lines you need to change:
 - Line 279: OwnerManagement
@@ -43,7 +43,7 @@ Here are the lines you need to change:
 
 
 ## Déploiement
-Déploier en 2 étapes:
+Déployer en 2 étapes:
 
 1. Déployer le template ARM dans votre souscription et renseigner les champs:
 - Resource Group
@@ -65,15 +65,15 @@ Vous pouvez déployer le template via le lien ci-dessous:
   <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
-Vous devriez voir que l'éxecution a échouée et c'est normal car votre Managed Identity n'a pas de permissions.
+Vous devriez voir que l'éxecution a échoué et c'est normal car votre Managed Identity n'a pas de permissions.
 
 
 ## Après le déploiement
 
 ### Permissions sur votre Managed Identity
 Ensuite, vous avez besoin d'attribuer les permissions à votre Managed Identity:
-- lire applications
-- lire Custom Security Attributes
+- lire les applications
+- lire les Custom Security Attributes
 
 1. Trouver l'objectid de votre MI
 <p align="center" width="100%">
@@ -117,9 +117,9 @@ Get-MgServicePrincipalAppRoleAssignment -ServicePrincipalId $IdMI.Id
 
 ## Exécuter la logic app
 
-Exécuter votre Logic App et vérifier dans la section "Historique des exécutions" qu'il fonctionne correctement.
+Exécuter votre Logic App et vérifier dans la section "Historique des exécutions" qu'elle fonctionne correctement.
 
-Les administrateurs ou l'équipe IGA recevront un e-mail contenant toutes les applications avecdes secrets ou des certificats qui sont expirés (incluant les détails):
+Les administrateurs ou l'équipe IGA recevront un e-mail contenant toutes les applications avec des secrets ou des certificats qui sont expirés (incluant les détails):
 - Application Id
 - Nom de l'application
 - Key Id (secret id or certificate id)
