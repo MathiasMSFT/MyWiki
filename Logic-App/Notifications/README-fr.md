@@ -79,7 +79,8 @@ New-ApplicationAccessPolicy `
     -Description "Restrict IGA-Notifications managed identity"
 ```
 
-6. **Appeler la Logic App**: Dans votre Logic App principale, utiliser Logic App pour appeler celle que vous venez de créer.
+## Appeler la Logic App
+Dans votre Logic App principale, utiliser Logic App pour appeler celle que vous venez de créer.
 
 <p align="center" width="100%">
     <img width="70%" src="./images/Call-LogicApp-1.png">

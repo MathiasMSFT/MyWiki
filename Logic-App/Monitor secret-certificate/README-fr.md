@@ -53,7 +53,7 @@ Déployer en 2 étapes:
 - Frequency / Interval (See the documentation below)
 https://learn.microsoft.com/en-us/azure/connectors/connectors-native-recurrence?tabs=consumption
 - Mail from
-- Mai Report
+- Mail Report
 2. Assigner les permissions
 
 

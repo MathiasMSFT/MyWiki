@@ -2,13 +2,19 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "workflows_IGA_Notifications_name": {
+        "LogicAppName": {
             "defaultValue": "IGA-Notifications",
-            "type": "String"
+            "type": "String",
+            "metadata": {
+                "description": "Name of your Logic App"
+            }
         },
-        "GlobalEmail": {
+        "MailReport": {
             "type": "string",
-            "defaultValue": "noreply@contoso.com"
+            "defaultValue": "noreply@contoso.com",
+            "metadata": {
+                "description": "Email of administrators to receive the report for all applications."
+            }
         }
     },
     "variables": {},
@@ -16,8 +22,7 @@
         {
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
-            "name": "[parameters('workflows_IGA_Notifications_name')]",
-            "location": "eastus2",
+            "name": "[parameters('LogicAppName')]",
             "tags": {},
             "identity": {
                 "type": "SystemAssigned"
@@ -29,7 +34,7 @@
                     "contentVersion": "1.0.0.0",
                     "parameters": {
                         "SendTo": {
-                            "defaultValue": "[parameters('GlobalEmail')]",
+                            "defaultValue": "[parameters('MailReport')]",
                             "type": "String"
                         },
                         "Body": {

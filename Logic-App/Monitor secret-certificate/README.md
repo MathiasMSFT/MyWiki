@@ -1,4 +1,4 @@
-# Deployment
+# How to monitor secrets & certificates with notifications
 [![fr](https://img.shields.io/badge/lang-fr-blue.svg)](README-fr.md)
 
 ## Prerequisites
@@ -54,7 +54,7 @@ Deploy through 2 steps:
 - Frequency / Interval (See the documentation below)
 https://learn.microsoft.com/en-us/azure/connectors/connectors-native-recurrence?tabs=consumption
 - Mail from
-- Mai Report
+- Mail Report
 2. Assign permissions
 
 
