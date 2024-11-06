@@ -28,7 +28,7 @@ $GraphAppId = "00000003-0000-0000-c000-000000000000"
 $DisplayNameMI = "<name of Logic App>"
 $GraphPermission = "Mail.Send"
 
-Connect-MgGraph -Scopes Application.Read.All,AppRoleAssignment.ReadWrite.All
+Connect-MgGraph -Scopes Application.Read.All,AppRoleAssignment.ReadWrite.All -TenantId $TenantID
 
 $IdMI = Get-MgServicePrincipal -Filter "DisplayName eq '$DisplayNameMI'"
 
