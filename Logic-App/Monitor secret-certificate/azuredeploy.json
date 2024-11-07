@@ -225,7 +225,7 @@
                                     {
                                         "name": "html",
                                         "type": "string",
-                                        "value": "<table  @{variables('styles').tableStyle}><thead><th  @{variables('styles').headerStyle}>Application ID</th><th  @{variables('styles').headerStyle}>Display Name</th><th @{variables('styles').headerStyle}> Key Id</th><th  @{variables('styles').headerStyle}>Days until Expiration</th><th  @{variables('styles').headerStyle}>Type</th><th  @{variables('styles').headerStyle}>Expiration Date</th><th @{variables('styles').headerStyle}>Owner</th></thead><tbody>"
+                                        "value": "<table  @{variables('styles').tableStyle}><thead><th  @{variables('styles').headerStyle}>Application ID</th><th  @{variables('styles').headerStyle}>Display Name</th><th @{variables('styles').headerStyle}> Key Id</th><th  @{variables('styles').headerStyle}>Days since Expiration</th><th  @{variables('styles').headerStyle}>Type</th><th  @{variables('styles').headerStyle}>Expiration Date</th><th @{variables('styles').headerStyle}>Owner</th></thead><tbody>"
                                     }
                                 ]
                             }
