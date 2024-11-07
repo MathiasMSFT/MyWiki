@@ -11,7 +11,7 @@
         },
         "MailReport": {
             "type": "string",
-            "defaultValue": "noreply@contoso.com",
+            "defaultValue": "mathias.dumont@contoso.com",
             "metadata": {
                 "description": "Email of administrators to receive the report for all applications."
             }

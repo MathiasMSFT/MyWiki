@@ -31,14 +31,14 @@
             }
         },
         "MailFrom": {
-            "defaultValue": "igateamnotification@identityms.onmicrosoft.com",
+            "defaultValue": "igateamnotification@contoso.com",
             "type": "String",
             "metadata": {
                 "description": "Email used to send reports"
             }
         },
         "MailReport": {
-            "defaultValue": "mathias.dumont@identityms.onmicrosoft.com",
+            "defaultValue": "mathias.dumont@contoso.com",
             "type": "String",
             "metadata": {
                 "description": "Email which receive a global report (admin, IGA team, ...)"
