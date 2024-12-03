@@ -24,15 +24,15 @@ To modify this value, you need to get the id of this authenticationEventsFlow
 With the id, you will be able to PATCH the configuration
 
 Add headers
-![alt text](image-16.png)
+![alt text](./Images/Modify-Flow-1.png)
 
 Request body
-![alt text](image-17.png)
+![alt text](./Images/Modify-Flow-2.png)
 
-![alt text](image-18.png)
+![alt text](./Images/Modify-Flow-3.png)
 
 
 Now, validate your configuration through a GET
-![alt text](image-19.png)
+![alt text](./Images/Modify-Flow-4.png)
 
 
