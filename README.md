@@ -8,6 +8,7 @@ Welcome to my dedicated wiki repository, where we focus on empowering your journ
     - [ID Protection](./Entra%20ID/ID%20Protection/README.md)
     - [Conditional Access](./Entra%20ID/CAP/README.md)
     - [Entra Connect](./Entra%20ID/Entra%20Connect/README.md)
+    - [Monitoring](./Entra%20ID/Monitoring/README.md)
 - [Azure AD B2C](./Azure%20AD%20B2C/README.md)
 - [Entra External ID](./Entra%20External%20ID/README.md)
 - [Logic App](./Logic-App/README.md)
