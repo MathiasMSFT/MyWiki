@@ -11,14 +11,14 @@ https://learn.microsoft.com/en-us/graph/api/resources/authenticationeventsflow?v
 ## List your authenticationEventsFlow
 
 The first step consists to list all flows
-![alt text](image-13.png)
+![alt text](./Images/List-All-Flows-1.png)
 
- For each flow, you can see the id, displayName, priority, idp, ...
+For each flow, you can see the id, displayName, priority, idp, ...
 As you can see, the SignUp process is true
-![alt text](image-14.png)
+![alt text](./Images/List-All-Flows-2.png)
 
 To modify this value, you need to get the id of this authenticationEventsFlow
-![alt text](image-15.png)
+![alt text](./Images/List-All-Flows-3.png)
 
 ## Disable the SignUp
 With the id, you will be able to PATCH the configuration
