@@ -1,0 +1,413 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "LogicAppName": {
+            "defaultValue": "List-Empty-Groups",
+            "type": "String",
+            "metadata": {
+                "description": "Name of your Logic App"
+            }
+        },
+        "Location": {
+            "defaultValue": "",
+            "type": "String",
+            "metadata": {
+                "description": "eastus2, canadacentral, etc. To list all regions (az account list-locations -o table)"
+            }
+        },
+        "LogicAppNotifications": {
+            "defaultValue": "/subscriptions/<subid>/resourceGroups/<rg name>/providers/Microsoft.Logic/workflows/<logicapp name>",
+            "type": "String",
+            "metadata": {
+                "description": "Path of the Logic App you created previously for notifications (/subscriptions/<subscription id>/resourceGroups/<resource group name>/providers/Microsoft.Logic/workflows/<logicapp notification name)"
+            }
+        },
+        "Frequency": {
+            "defaultValue": "Month",
+            "type": "String",
+            "metadata": {
+                "description": "Define the frequency: Month, Week, Day, Hour, Minute, Second"
+            }
+        },
+        "Interval": {
+            "defaultValue": "1",
+            "type": "String",
+            "metadata": {
+                "description": "Define how many times you want to run this Logic App in your frequency"
+            }
+        },
+        "MailFrom": {
+            "defaultValue": "igateamnotification@contoso.com",
+            "type": "String",
+            "metadata": {
+                "description": "Email used to send reports"
+            }
+        },
+        "MailReport": {
+            "defaultValue": "mathias.dumont@contoso.com",
+            "type": "String",
+            "metadata": {
+                "description": "Email which receive a global report (admin, IGA team, ...)"
+            }
+        },
+        "Threshold": {
+            "defaultValue": "6000",
+            "type": "String",
+            "metadata": {
+                "description": "Define the threshold of http request"
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('LogicAppName')]",
+            "location": "[parameters('Location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "[parameters('Frequency')]",
+                                "interval": "[parameters('Interval')]"
+                            },
+                            "evaluatedRecurrence": {
+                                "frequency": "[parameters('Frequency')]",
+                                "interval": "[parameters('Interval')]"
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "HTTP_-_Get_groups": {
+                            "runAfter": {
+                                "Init_AllGroups": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Http",
+                            "inputs": {
+                                "uri": "https://graph.microsoft.com/v1.0/groups?$select=id,displayName,mailEnabled,securityEnabled,groupTypes,onPremisesSyncEnabled,mail,isAssignableToRole,writebackConfiguration,isManagementRestricted,resourceProvisioningOptions,expirationDateTime,createdDateTime,membershipRuleProcessingState",
+                                "method": "GET",
+                                "authentication": {
+                                    "type": "ManagedServiceIdentity",
+                                    "audience": "https://graph.microsoft.com"
+                                }
+                            },
+                            "runtimeConfiguration": {
+                                "paginationPolicy": {
+                                    "minimumItemCount": "[parameters('Threshold')]"
+                                },
+                                "contentTransfer": {
+                                    "transferMode": "Chunked"
+                                }
+                            }
+                        },
+                        "Parse_JSON": {
+                            "runAfter": {
+                                "HTTP_-_Get_groups": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ParseJson",
+                            "inputs": {
+                                "content": "@body('HTTP_-_Get_groups')",
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "@@odata.context": {
+                                            "type": "string"
+                                        },
+                                        "@@odata.nextLink": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string"
+                                                    },
+                                                    "displayName": {
+                                                        "type": "string"
+                                                    },
+                                                    "mailEnabled": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "securityEnabled": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "groupTypes": {
+                                                        "type": "array"
+                                                    },
+                                                    "onPremisesSyncEnabled": {},
+                                                    "mail": {},
+                                                    "isAssignableToRole": {},
+                                                    "isManagementRestricted": {},
+                                                    "resourceProvisioningOptions": {
+                                                        "type": "array"
+                                                    },
+                                                    "expirationDateTime": {},
+                                                    "createdDateTime": {
+                                                        "type": "string"
+                                                    },
+                                                    "membershipRuleProcessingState": {}
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "displayName",
+                                                    "mailEnabled",
+                                                    "securityEnabled",
+                                                    "groupTypes",
+                                                    "onPremisesSyncEnabled",
+                                                    "mail",
+                                                    "isAssignableToRole",
+                                                    "isManagementRestricted",
+                                                    "resourceProvisioningOptions",
+                                                    "expirationDateTime",
+                                                    "createdDateTime",
+                                                    "membershipRuleProcessingState"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "For_each_Groups": {
+                            "foreach": "@body('Parse_JSON')?['value']",
+                            "actions": {
+                                "DisplayName": {
+                                    "runAfter": {
+                                        "ObjectId": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Compose",
+                                    "inputs": "@item()?['displayName']"
+                                },
+                                "CreatedDateTime": {
+                                    "runAfter": {
+                                        "DisplayName": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Compose",
+                                    "inputs": "@item()?['createdDateTime']"
+                                },
+                                "Add_180_days": {
+                                    "runAfter": {
+                                        "Current_time": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Compose",
+                                    "inputs": "@addDays(outputs('CreatedDateTime'),180)"
+                                },
+                                "If_exist_less_than_180d_and_has_member": {
+                                    "actions": {},
+                                    "runAfter": {
+                                        "Convert_to_integer": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "else": {
+                                        "actions": {
+                                            "Append_HTML": {
+                                                "type": "AppendToStringVariable",
+                                                "inputs": {
+                                                    "name": "html",
+                                                    "value": "<tr><td @{variables('htmlstyle').cellStyle}>@{outputs('ObjectId')}</td><td @{variables('htmlstyle').cellStyle}>@{outputs('DisplayName')}</td><td @{variables('htmlstyle').cellStyle}>@{outputs('CreatedDateTime')}</td></tr>"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "expression": {
+                                        "and": [
+                                            {
+                                                "less": [
+                                                    "@outputs('Add_180_days')",
+                                                    "@body('Current_time')"
+                                                ]
+                                            },
+                                            {
+                                                "greater": [
+                                                    "@outputs('Convert_to_integer')",
+                                                    0
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "type": "If"
+                                },
+                                "Current_time": {
+                                    "runAfter": {
+                                        "CreatedDateTime": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Expression",
+                                    "kind": "CurrentTime",
+                                    "inputs": {}
+                                },
+                                "HTTP_Count_members": {
+                                    "runAfter": {
+                                        "Add_180_days": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Http",
+                                    "inputs": {
+                                        "uri": "https://graph.microsoft.com/v1.0/groups/@{outputs('ObjectId')}/members/$count",
+                                        "method": "GET",
+                                        "headers": {
+                                            "ConsistencyLevel": "eventual"
+                                        },
+                                        "authentication": {
+                                            "type": "ManagedServiceIdentity",
+                                            "audience": "https://graph.microsoft.com"
+                                        }
+                                    },
+                                    "runtimeConfiguration": {
+                                        "contentTransfer": {
+                                            "transferMode": "Chunked"
+                                        }
+                                    }
+                                },
+                                "ObjectId": {
+                                    "type": "Compose",
+                                    "inputs": "@item()?['id']"
+                                },
+                                "Convert_to_integer": {
+                                    "runAfter": {
+                                        "HTTP_Count_members": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Compose",
+                                    "inputs": "@int(body('HTTP_Count_members'))"
+                                }
+                            },
+                            "runAfter": {
+                                "Parse_JSON": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach"
+                        },
+                        "Init_AllGroups": {
+                            "runAfter": {
+                                "Init_HTML": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "AllGroups",
+                                        "type": "array"
+                                    }
+                                ]
+                            }
+                        },
+                        "Init_HTML": {
+                            "runAfter": {
+                                "Init_HTML_style": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "html",
+                                        "type": "string",
+                                        "value": "<table  @{variables('htmlstyle').tableStyle}><thead><th  @{variables('htmlstyle').headerStyle}>ObjectId</th><th  @{variables('htmlstyle').headerStyle}>Display Name</th><th @{variables('htmlstyle').headerStyle}> Creation Date Time</th></thead><tbody>"
+                                    }
+                                ]
+                            }
+                        },
+                        "Init_HTML_style": {
+                            "runAfter": {},
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "htmlstyle",
+                                        "type": "object",
+                                        "value": {
+                                            "cellStyle": "style=\"font-family: Calibri; padding: 5px; border: 1px solid black;\"",
+                                            "headerStyle": "style=\"font-family: Helvetica; padding: 5px; border: 1px solid black;\"",
+                                            "redStyle": "style=\"background-color:red; font-family: Calibri; padding: 5px; border: 1px solid black;\"",
+                                            "tableStyle": "style=\"border-collapse: collapse;\"",
+                                            "yellowStyle": "style=\"background-color:yellow; font-family: Calibri; padding: 5px; border: 1px solid black;\""
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "Append_HTML_-_Close": {
+                            "runAfter": {
+                                "For_each_Groups": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "AppendToStringVariable",
+                            "inputs": {
+                                "name": "html",
+                                "value": "<tbody></table>"
+                            }
+                        },
+                        "IGA-Notifications": {
+                            "runAfter": {
+                                "Append_HTML_-_Close": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Workflow",
+                            "inputs": {
+                                "host": {
+                                    "workflow": {
+                                        "id": "[parameters('LogicAppNotifications')]"
+                                    },
+                                    "triggerName": "When_a_HTTP_request_is_received"
+                                },
+                                "body": {
+                                    "MailFrom": "[parameters('MailFrom')]",
+                                    "SendTo": "[parameters('MailReport')]",
+                                    "Subject": "Empty groups in Entra ID",
+                                    "Body": "@variables('html')",
+                                    "saveToSentItems": false
+                                }
+                            },
+                            "operationOptions": "DisableAsyncPattern"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {}
+                    }
+                }
+            }
+        }
+    ]
+}

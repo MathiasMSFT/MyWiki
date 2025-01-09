@@ -44,9 +44,8 @@ Here are the lines you need to change:
 
 
 ## Deployment
-Deploy through 2 steps:
 
-1. Deploy the ARM template in your subscription and fill all the fields
+Deploy the ARM template in your subscription and fill all the fields
 - Resource Group
 - Region
 - Logic App Name
@@ -55,7 +54,7 @@ Deploy through 2 steps:
 https://learn.microsoft.com/en-us/azure/connectors/connectors-native-recurrence?tabs=consumption
 - Mail from
 - Mail Report
-2. Assign permissions
+- Threshold
 
 
 ### Deployment template

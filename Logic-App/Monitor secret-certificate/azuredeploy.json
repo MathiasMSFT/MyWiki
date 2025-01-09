@@ -50,6 +50,13 @@
             "metadata": {
                 "description": "eastus2, canadacentral, etc. To list all regions (az account list-locations -o table)"
             }
+        },
+        "Threshold": {
+            "defaultValue": "6000",
+            "type": "String",
+            "metadata": {
+                "description": "Define the threshold of http request"
+            }
         }
     },
     "variables": {},
@@ -902,6 +909,11 @@
                                 "authentication": {
                                     "audience": "https://graph.microsoft.com",
                                     "type": "ManagedServiceIdentity"
+                                }
+                            },
+                            "runtimeConfiguration": {
+                                "paginationPolicy": {
+                                    "minimumItemCount": "[parameters('Threshold')]"
                                 }
                             }
                         },
