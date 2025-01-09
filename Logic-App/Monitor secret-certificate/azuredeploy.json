@@ -883,6 +883,11 @@
                             }
                         },
                         "HTTP_-_Get_AzureAD_Applications": {
+                            "runAfter": {
+                                "Initialize_CSA-Owner-Check": [
+                                    "Succeeded"
+                                ]
+                            },
                             "type": "Http",
                             "inputs": {
                                 "uri": "https://graph.microsoft.com/v1.0/applications?$select=id,appId,displayName,passwordCredentials,keyCredentials",
