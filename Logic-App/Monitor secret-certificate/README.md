@@ -116,7 +116,7 @@ Get-MgServicePrincipalAppRoleAssignment -ServicePrincipalId $IdMI.Id
 
 ## Run the logic app
 
-Run your Logic App and validate in "Run History" blade that it works coorectly.
+Run your Logic App and validate in "Run History" blade that it works correctly.
 
 Admins or IGA team will receive one email containing all applications with secret(s) or certificate(s) which are expired (including all details):
 - Application Id

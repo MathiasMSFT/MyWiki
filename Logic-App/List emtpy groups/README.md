@@ -81,7 +81,7 @@ Get-MgServicePrincipalAppRoleAssignment -ServicePrincipalId $IdMI.Id
 
 ## Run the logic app
 
-Run your Logic App and validate in "Run History" blade that it works coorectly.
+Run your Logic App and validate in "Run History" blade that it works correctly.
 
 <p align="center" width="100%">
     <img width="70%" src="./images/example.png">
