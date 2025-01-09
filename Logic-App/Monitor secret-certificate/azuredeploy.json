@@ -885,7 +885,7 @@
                         "HTTP_-_Get_AzureAD_Applications": {
                             "type": "Http",
                             "inputs": {
-                                "uri": "@variables('NextLink')",
+                                "uri": "https://graph.microsoft.com/v1.0/applications?$select=id,appId,displayName,passwordCredentials,keyCredentials",
                                 "method": "GET",
                                 "authentication": {
                                     "audience": "https://graph.microsoft.com",
