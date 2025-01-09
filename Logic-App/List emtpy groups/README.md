@@ -14,9 +14,8 @@ This Logic App is designed to call another Logic App, currently without email no
 To create this Logic App, follow the instructions here 👉 [README file](../Notifications/README.md).
 
 ## Deployment
-Deploy through 2 steps:
 
-1. Deploy the ARM template in your subscription and fill all the fields
+Deploy the ARM template in your subscription and fill all the fields
 - Resource Group
 - Location
 - Logic App Name
@@ -26,7 +25,6 @@ https://learn.microsoft.com/en-us/azure/connectors/connectors-native-recurrence?
 - Mail from
 - Mail Report
 - Threshold
-2. Assign permissions
 
 
 ### Deployment template
