@@ -117,23 +117,6 @@
                             },
                             "operationOptions": "DisableAsyncPattern"
                         },
-                        "Initialize_-_NextLink": {
-                            "runAfter": {
-                                "Initialize_CSA-Owner-Check": [
-                                    "Succeeded"
-                                ]
-                            },
-                            "type": "InitializeVariable",
-                            "inputs": {
-                                "variables": [
-                                    {
-                                        "name": "NextLink",
-                                        "type": "string",
-                                        "value": "https://graph.microsoft.com/v1.0/applications?$select=id,appId,displayName,passwordCredentials,keyCredentials&$top=999"
-                                    }
-                                ]
-                            }
-                        },
                         "Initialize_-_keyCredential": {
                             "runAfter": {
                                 "Initialize_passwordCredential": [
@@ -269,55 +252,50 @@
                                 ]
                             }
                         },
-                        "Until": {
+                        "Foreach_-_apps": {
+                            "foreach": "@body('Parse_JSON_-_Get_Apps')?['value']",
                             "actions": {
-                                "Foreach_-_apps": {
-                                    "foreach": "@body('Parse_JSON_-_Get_Apps')?['value']",
+                                "Condition_-_If_CSA_is_null": {
                                     "actions": {
-                                        "Condition_-_If_CSA_is_null": {
-                                            "actions": {
-                                                "Set_variable_-_CSA-Owner-Check-null": {
-                                                    "type": "SetVariable",
-                                                    "inputs": {
-                                                        "name": "CSA-Owner Check",
-                                                        "value": false
-                                                    }
-                                                }
-                                            },
-                                            "runAfter": {
-                                                "Parse_light_-_Owner": [
-                                                    "Succeeded"
-                                                ]
-                                            },
-                                            "else": {
-                                                "actions": {
-                                                    "Parse_-_CSA-Owner": {
-                                                        "type": "ParseJson",
-                                                        "inputs": {
-                                                            "content": "@body('HTTP_-_Get_CSA-Owner')",
-                                                            "schema": {
+                                        "Set_variable_-_CSA-Owner-Check-null": {
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "CSA-Owner Check",
+                                                "value": false
+                                            }
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Parse_light_-_Owner": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "else": {
+                                        "actions": {
+                                            "Parse_-_CSA-Owner": {
+                                                "type": "ParseJson",
+                                                "inputs": {
+                                                    "content": "@body('HTTP_-_Get_CSA-Owner')",
+                                                    "schema": {
+                                                        "properties": {
+                                                            "@@odata.context": {
+                                                                "type": "string"
+                                                            },
+                                                            "customSecurityAttributes": {
                                                                 "properties": {
-                                                                    "@@odata.context": {
-                                                                        "type": "string"
-                                                                    },
-                                                                    "customSecurityAttributes": {
+                                                                    "OwnerManagement": {
                                                                         "properties": {
-                                                                            "OwnerManagement": {
-                                                                                "properties": {
-                                                                                    "@@odata.type": {
-                                                                                        "type": "string"
-                                                                                    },
-                                                                                    "AppOwner": {
-                                                                                        "items": {
-                                                                                            "type": "string"
-                                                                                        },
-                                                                                        "type": "array"
-                                                                                    },
-                                                                                    "AppOwner@odata.type": {
-                                                                                        "type": "string"
-                                                                                    }
+                                                                            "@@odata.type": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "AppOwner": {
+                                                                                "items": {
+                                                                                    "type": "string"
                                                                                 },
-                                                                                "type": "object"
+                                                                                "type": "array"
+                                                                            },
+                                                                            "AppOwner@odata.type": {
+                                                                                "type": "string"
                                                                             }
                                                                         },
                                                                         "type": "object"
@@ -325,39 +303,203 @@
                                                                 },
                                                                 "type": "object"
                                                             }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "Condition": {
+                                                "actions": {
+                                                    "Set_variable_-_CSA-Owner-Check-true": {
+                                                        "type": "SetVariable",
+                                                        "inputs": {
+                                                            "name": "CSA-Owner Check",
+                                                            "value": true
+                                                        }
+                                                    }
+                                                },
+                                                "runAfter": {
+                                                    "Parse_-_CSA-Owner": [
+                                                        "Succeeded"
+                                                    ]
+                                                },
+                                                "else": {
+                                                    "actions": {
+                                                        "Set_variable_-_CSA-Owner-Check-false": {
+                                                            "type": "SetVariable",
+                                                            "inputs": {
+                                                                "name": "CSA-Owner Check",
+                                                                "value": false
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "expression": {
+                                                    "and": [
+                                                        {
+                                                            "equals": [
+                                                                "@contains(body('Parse_-_CSA-Owner')?['customSecurityAttributes'], 'OwnerManagement')",
+                                                                "@true"
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                "type": "If"
+                                            }
+                                        }
+                                    },
+                                    "expression": {
+                                        "and": [
+                                            {
+                                                "equals": [
+                                                    "@empty(body('Parse_light_-_Owner')?['customSecurityAttributes'])",
+                                                    "@true"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "type": "If"
+                                },
+                                "For_each_-_PasswordCred": {
+                                    "foreach": "@items('Foreach_-_apps')?['passwordCredentials']",
+                                    "actions": {
+                                        "Condition_-_if_already_expired_passCred": {
+                                            "actions": {
+                                                "Condition_-_If_owner": {
+                                                    "actions": {
+                                                        "Append_Secret_to_HTML_with_owner": {
+                                                            "type": "AppendToStringVariable",
+                                                            "inputs": {
+                                                                "name": "html",
+                                                                "value": "<tr><td @{variables('styles').cellStyle}><a href=\"https://ms.portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{variables('appId')}/isMSAApp/\">@{variables('appId')}</a></td><td @{variables('styles').cellStyle}>@{variables('displayName')}</td><td @{variables('styles').cellStyle}>@{items('For_each_-_PasswordCred')?['keyId']}</td><td @{if(less(variables('daystilexpiration'),100),variables('styles').redStyle,if(less(variables('daystilexpiration'),150),variables('styles').yellowStyle,variables('styles').cellStyle))}>@{variables('daystilexpiration')} </td><td @{variables('styles').cellStyle}>Secret</td><td @{variables('styles').cellStyle}>@{formatDateTime(item()?['endDateTime'],'g')}</td><td @{variables('styles').cellStyle}>@{join(body('Parse_-_CSA-Owner')?['customSecurityAttributes']?['OwnerManagement']?['AppOwner'],',')}</td></tr>"
+                                                            }
+                                                        },
+                                                        "For_each_-_Owner": {
+                                                            "foreach": "@body('Parse_-_CSA-Owner')?['customSecurityAttributes']?['OwnerManagement']?['AppOwner']",
+                                                            "actions": {
+                                                                "IGA-Notifications_-_passCred": {
+                                                                    "runAfter": {
+                                                                        "Prepare_HTML_for_secret_-_owner": [
+                                                                            "Succeeded"
+                                                                        ]
+                                                                    },
+                                                                    "type": "Workflow",
+                                                                    "inputs": {
+                                                                        "host": {
+                                                                            "workflow": {
+                                                                                "id": "[parameters('LogicAppNotifications')]"
+                                                                            },
+                                                                            "triggerName": "When_a_HTTP_request_is_received"
+                                                                        },
+                                                                        "body": {
+                                                                            "MailFrom": "[parameters('MailFrom')]",
+                                                                            "SendTo": "@{items('For_each_-_Owner')}",
+                                                                            "Subject": "Your secret is expired",
+                                                                            "Body": "@outputs('Prepare_HTML_for_secret_-_owner')"
+                                                                        }
+                                                                    },
+                                                                    "operationOptions": "DisableAsyncPattern"
+                                                                },
+                                                                "Prepare_HTML_for_secret_-_owner": {
+                                                                    "type": "Compose",
+                                                                    "inputs": "Hello,<br/>\nYou are owner of the application <strong>@{items('Foreach_-_apps')?['displayName']}</strong>.<br/>\n\nOne of the secrets of this application is expired since @{variables('daysTilExpiration')} days.<br/>\n\nPlease take action to resolve any authentication issues related to the expiration of the secret.<br/><br/>\n\nHere are the details of the secret :<br/>\n<strong>Secret Id :</strong> @{items('For_each_-_PasswordCred')?['keyId']}<br/>\n<strong>Expiration time :</strong> @{formatDateTime(items('For_each_-_PasswordCred')?['endDateTime'],'g')}<br/>\n<strong>App Id :</strong> <a href=\"https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{items('Foreach_-_apps')?['appId']}/isMSAApp/\" >@{items('Foreach_-_apps')?['appId']}</a><br/><br/>\n\n\nThank you"
+                                                                }
+                                                            },
+                                                            "runAfter": {
+                                                                "Append_Secret_to_HTML_with_owner": [
+                                                                    "Succeeded"
+                                                                ]
+                                                            },
+                                                            "type": "Foreach"
                                                         }
                                                     },
-                                                    "Condition": {
+                                                    "else": {
                                                         "actions": {
-                                                            "Set_variable_-_CSA-Owner-Check-true": {
-                                                                "type": "SetVariable",
+                                                            "Append_Secret_to_HTML_without_owner": {
+                                                                "type": "AppendToStringVariable",
                                                                 "inputs": {
-                                                                    "name": "CSA-Owner Check",
-                                                                    "value": true
+                                                                    "name": "html",
+                                                                    "value": "<tr><td @{variables('styles').cellStyle}><a href=\"https://ms.portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{variables('appId')}/isMSAApp/\">@{variables('appId')}</a></td><td @{variables('styles').cellStyle}>@{variables('displayName')}</td><td @{variables('styles').cellStyle}>@{items('For_each_-_PasswordCred')?['keyId']}</td><td @{if(less(variables('daystilexpiration'),100),variables('styles').redStyle,if(less(variables('daystilexpiration'),150),variables('styles').yellowStyle,variables('styles').cellStyle))}>@{variables('daystilexpiration')} </td><td @{variables('styles').cellStyle}>Secret</td><td @{variables('styles').cellStyle}>@{formatDateTime(item()?['endDateTime'],'g')}</td><td @{variables('styles').cellStyle}></td></tr>"
                                                                 }
                                                             }
-                                                        },
-                                                        "runAfter": {
-                                                            "Parse_-_CSA-Owner": [
-                                                                "Succeeded"
-                                                            ]
+                                                        }
+                                                    },
+                                                    "expression": {
+                                                        "and": [
+                                                            {
+                                                                "equals": [
+                                                                    "@variables('CSA-Owner Check')",
+                                                                    "@true"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "type": "If"
+                                                }
+                                            },
+                                            "runAfter": {
+                                                "Set_variable_-_daysTilsExpiration": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "else": {
+                                                "actions": {
+                                                    "Condition_-_less_than_30_days_-_passCred": {
+                                                        "actions": {
+                                                            "For_each_-_Owner_-_30d": {
+                                                                "foreach": "@body('Parse_-_CSA-Owner')?['customSecurityAttributes']?['OwnerManagement']?['AppOwner']",
+                                                                "actions": {
+                                                                    "IGA-Notifications_-_passCred_-_30d": {
+                                                                        "runAfter": {
+                                                                            "Prepare_HTML_for_secret_-_owner_-_30d": [
+                                                                                "Succeeded"
+                                                                            ]
+                                                                        },
+                                                                        "type": "Workflow",
+                                                                        "inputs": {
+                                                                            "host": {
+                                                                                "workflow": {
+                                                                                    "id": "[parameters('LogicAppNotifications')]"
+                                                                                },
+                                                                                "triggerName": "When_a_HTTP_request_is_received"
+                                                                            },
+                                                                            "body": {
+                                                                                "MailFrom": "[parameters('MailFrom')]",
+                                                                                "SendTo": "@items('For_each_-_Owner_-_30d')",
+                                                                                "Subject": "Your secret is going to expire",
+                                                                                "Body": "@outputs('Prepare_HTML_for_secret_-_owner_-_30d')"
+                                                                            }
+                                                                        },
+                                                                        "operationOptions": "DisableAsyncPattern"
+                                                                    },
+                                                                    "Prepare_HTML_for_secret_-_owner_-_30d": {
+                                                                        "type": "Compose",
+                                                                        "inputs": "Hello,<br/>\nYou are owner of the application <strong>@{items('Foreach_-_apps')?['displayName']}</strong>.<br/>\n\nOne of the secrets of this application is going to expire in @{variables('daysTilExpiration')} days.<br/>\n\nPlease take action to avoid any authentication issues related to the expiration of the secret.<br/><br/>\n\nHere are the details of the secret :<br/>\n<strong>Secret Id :</strong> @{items('For_each_-_PasswordCred')?['keyId']}<br/>\n<strong>Expiration time :</strong> @{formatDateTime(items('For_each_-_PasswordCred')?['endDateTime'],'g')}<br/>\n<strong>App Id :</strong> <a href=\"https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{items('Foreach_-_apps')?['appId']}/isMSAApp/\" >@{items('Foreach_-_apps')?['appId']}</a><br/><br/>\n\n\nThank you"
+                                                                    }
+                                                                },
+                                                                "type": "Foreach"
+                                                            }
                                                         },
                                                         "else": {
-                                                            "actions": {
-                                                                "Set_variable_-_CSA-Owner-Check-false": {
-                                                                    "type": "SetVariable",
-                                                                    "inputs": {
-                                                                        "name": "CSA-Owner Check",
-                                                                        "value": false
-                                                                    }
-                                                                }
-                                                            }
+                                                            "actions": {}
                                                         },
                                                         "expression": {
                                                             "and": [
                                                                 {
+                                                                    "greater": [
+                                                                        "@variables('daysTilExpiration')",
+                                                                        0
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "less": [
+                                                                        "@variables('daysTilExpiration')",
+                                                                        30
+                                                                    ]
+                                                                },
+                                                                {
                                                                     "equals": [
-                                                                        "@contains(body('Parse_-_CSA-Owner')?['customSecurityAttributes'], 'OwnerManagement')",
+                                                                        "@variables('CSA-Owner Check')",
                                                                         "@true"
                                                                     ]
                                                                 }
@@ -370,35 +512,79 @@
                                             "expression": {
                                                 "and": [
                                                     {
-                                                        "equals": [
-                                                            "@empty(body('Parse_light_-_Owner')?['customSecurityAttributes'])",
-                                                            "@true"
+                                                        "less": [
+                                                            "@variables('daysTilExpiration')",
+                                                            0
                                                         ]
                                                     }
                                                 ]
                                             },
                                             "type": "If"
                                         },
-                                        "For_each_-_PasswordCred": {
-                                            "foreach": "@items('Foreach_-_apps')?['passwordCredentials']",
+                                        "DifferentAsDays": {
+                                            "runAfter": {
+                                                "StartTimeTickValue": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Compose",
+                                            "inputs": "@div(div(div(mul(sub(outputs('EndTimeTickValue'),outputs('StartTimeTickValue')),100),1000000000) , 3600), 24)"
+                                        },
+                                        "EndTimeTickValue": {
+                                            "type": "Compose",
+                                            "inputs": "@ticks(item()?['endDateTime'])"
+                                        },
+                                        "Set_variable_-_daysTilsExpiration": {
+                                            "runAfter": {
+                                                "DifferentAsDays": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "SetVariable",
+                                            "inputs": {
+                                                "name": "daysTilExpiration",
+                                                "value": "@outputs('DifferentAsDays')"
+                                            }
+                                        },
+                                        "StartTimeTickValue": {
+                                            "runAfter": {
+                                                "EndTimeTickValue": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Compose",
+                                            "inputs": "@ticks(utcnow())"
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Condition_-_If_CSA_is_null": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Foreach"
+                                },
+                                "For_each_KeyCred": {
+                                    "foreach": "@items('Foreach_-_apps')?['keyCredentials']",
+                                    "actions": {
+                                        "Condition_-_If_already_expired_-_keyCred": {
                                             "actions": {
-                                                "Condition_-_if_already_expired_passCred": {
+                                                "Condition_-_If_certificate_owner": {
                                                     "actions": {
-                                                        "Condition_-_If_owner": {
+                                                        "Append_Certificate_to_HTML_with_owner": {
+                                                            "type": "AppendToStringVariable",
+                                                            "inputs": {
+                                                                "name": "html",
+                                                                "value": "<tr><td @{variables('styles').cellStyle}><a href=\"https://ms.portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{variables('appId')}/isMSAApp/\">@{variables('appId')}</a></td><td @{variables('styles').cellStyle}>@{variables('displayName')}</td><td @{variables('styles').cellStyle}>@{items('For_each_KeyCred')?['keyId']}</td><td @{if(less(variables('daystilexpiration'), 15), variables('styles').redStyle, if(less(variables('daystilexpiration'), 30), variables('styles').yellowStyle, variables('styles').cellStyle))}>@{variables('daystilexpiration')} </td><td @{variables('styles').cellStyle}>Certificate</td><td @{variables('styles').cellStyle}>@{formatDateTime(item()?['endDateTime'], 'g')}</td><td @{variables('styles').cellStyle}>@{join(body('Parse_-_CSA-Owner')?['customSecurityAttributes']?['OwnerManagement']?['AppOwner'],',')}</td></tr>"
+                                                            }
+                                                        },
+                                                        "Condition_4": {
                                                             "actions": {
-                                                                "Append_Secret_to_HTML_with_owner": {
-                                                                    "type": "AppendToStringVariable",
-                                                                    "inputs": {
-                                                                        "name": "html",
-                                                                        "value": "<tr><td @{variables('styles').cellStyle}><a href=\"https://ms.portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{variables('appId')}/isMSAApp/\">@{variables('appId')}</a></td><td @{variables('styles').cellStyle}>@{variables('displayName')}</td><td @{variables('styles').cellStyle}>@{items('For_each_-_PasswordCred')?['keyId']}</td><td @{if(less(variables('daystilexpiration'),100),variables('styles').redStyle,if(less(variables('daystilexpiration'),150),variables('styles').yellowStyle,variables('styles').cellStyle))}>@{variables('daystilexpiration')} </td><td @{variables('styles').cellStyle}>Secret</td><td @{variables('styles').cellStyle}>@{formatDateTime(item()?['endDateTime'],'g')}</td><td @{variables('styles').cellStyle}>@{join(body('Parse_-_CSA-Owner')?['customSecurityAttributes']?['OwnerManagement']?['AppOwner'],',')}</td></tr>"
-                                                                    }
-                                                                },
-                                                                "For_each_-_Owner": {
+                                                                "For_each_Owner_-_Certificate": {
                                                                     "foreach": "@body('Parse_-_CSA-Owner')?['customSecurityAttributes']?['OwnerManagement']?['AppOwner']",
                                                                     "actions": {
-                                                                        "IGA-Notifications_-_passCred": {
+                                                                        "IGA-Notifications_-_Certificate": {
                                                                             "runAfter": {
-                                                                                "Prepare_HTML_for_secret_-_owner": [
+                                                                                "Prepare_HTML_for_owner_-_Certificate": [
                                                                                     "Succeeded"
                                                                                 ]
                                                                             },
@@ -412,43 +598,35 @@
                                                                                 },
                                                                                 "body": {
                                                                                     "MailFrom": "[parameters('MailFrom')]",
-                                                                                    "SendTo": "@{items('For_each_-_Owner')}",
-                                                                                    "Subject": "Your secret is expired",
-                                                                                    "Body": "@outputs('Prepare_HTML_for_secret_-_owner')"
+                                                                                    "SendTo": "@{items('For_each_Owner_-_Certificate')}",
+                                                                                    "Subject": "Your certificate is expired",
+                                                                                    "Body": "@outputs('Prepare_HTML_for_owner_-_Certificate')"
                                                                                 }
                                                                             },
                                                                             "operationOptions": "DisableAsyncPattern"
                                                                         },
-                                                                        "Prepare_HTML_for_secret_-_owner": {
+                                                                        "Prepare_HTML_for_owner_-_Certificate": {
                                                                             "type": "Compose",
-                                                                            "inputs": "Hello,<br/>\nYou are owner of the application <strong>@{items('Foreach_-_apps')?['displayName']}</strong>.<br/>\n\nOne of the secrets of this application is expired since @{variables('daysTilExpiration')} days.<br/>\n\nPlease take action to resolve any authentication issues related to the expiration of the secret.<br/><br/>\n\nHere are the details of the secret :<br/>\n<strong>Secret Id :</strong> @{items('For_each_-_PasswordCred')?['keyId']}<br/>\n<strong>Expiration time :</strong> @{formatDateTime(items('For_each_-_PasswordCred')?['endDateTime'],'g')}<br/>\n<strong>App Id :</strong> <a href=\"https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{items('Foreach_-_apps')?['appId']}/isMSAApp/\" >@{items('Foreach_-_apps')?['appId']}</a><br/><br/>\n\n\nThank you"
+                                                                            "inputs": "Hello,<br/>\nWe want to update you that, you are owner of the application <strong>@{items('Foreach_-_apps')?['displayName']}</strong><br/>\n\nOne of the secrets of this applicatin is going to expire in @{variables('daysTilExpiration')} days.<br/>\n\nPlease take an action to avoid any authentication issues related to this secret.\n<br/><br/>\nHere are the details of the Certificate :<br/>\n<strong>Certificate Id :</strong> @{items('For_each_KeyCred')?['keyId']}<br/>\n<strong>Expiration time :</strong> @{formatDateTime(items('For_each_KeyCred')?['endDateTime'], 'g')}<br/>\n<strong>App Id :</strong> <a href=\"https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{items('Foreach_-_apps')?['appId']}/isMSAApp/>@{items('Foreach_-_apps')?['appId']}</a><br/><br/>\n\n\nThank you"
                                                                         }
-                                                                    },
-                                                                    "runAfter": {
-                                                                        "Append_Secret_to_HTML_with_owner": [
-                                                                            "Succeeded"
-                                                                        ]
                                                                     },
                                                                     "type": "Foreach"
                                                                 }
                                                             },
+                                                            "runAfter": {
+                                                                "Append_Certificate_to_HTML_with_owner": [
+                                                                    "Succeeded"
+                                                                ]
+                                                            },
                                                             "else": {
-                                                                "actions": {
-                                                                    "Append_Secret_to_HTML_without_owner": {
-                                                                        "type": "AppendToStringVariable",
-                                                                        "inputs": {
-                                                                            "name": "html",
-                                                                            "value": "<tr><td @{variables('styles').cellStyle}><a href=\"https://ms.portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{variables('appId')}/isMSAApp/\">@{variables('appId')}</a></td><td @{variables('styles').cellStyle}>@{variables('displayName')}</td><td @{variables('styles').cellStyle}>@{items('For_each_-_PasswordCred')?['keyId']}</td><td @{if(less(variables('daystilexpiration'),100),variables('styles').redStyle,if(less(variables('daystilexpiration'),150),variables('styles').yellowStyle,variables('styles').cellStyle))}>@{variables('daystilexpiration')} </td><td @{variables('styles').cellStyle}>Secret</td><td @{variables('styles').cellStyle}>@{formatDateTime(item()?['endDateTime'],'g')}</td><td @{variables('styles').cellStyle}></td></tr>"
-                                                                        }
-                                                                    }
-                                                                }
+                                                                "actions": {}
                                                             },
                                                             "expression": {
                                                                 "and": [
                                                                     {
-                                                                        "equals": [
-                                                                            "@variables('CSA-Owner Check')",
-                                                                            "@true"
+                                                                        "less": [
+                                                                            "@variables('daysTilExpiration')",
+                                                                            "@float('15')"
                                                                         ]
                                                                     }
                                                                 ]
@@ -456,652 +634,430 @@
                                                             "type": "If"
                                                         }
                                                     },
-                                                    "runAfter": {
-                                                        "Set_variable_-_daysTilsExpiration": [
-                                                            "Succeeded"
-                                                        ]
-                                                    },
                                                     "else": {
                                                         "actions": {
-                                                            "Condition_-_less_than_30_days_-_passCred": {
-                                                                "actions": {
-                                                                    "For_each_-_Owner_-_30d": {
-                                                                        "foreach": "@body('Parse_-_CSA-Owner')?['customSecurityAttributes']?['OwnerManagement']?['AppOwner']",
-                                                                        "actions": {
-                                                                            "IGA-Notifications_-_passCred_-_30d": {
-                                                                                "runAfter": {
-                                                                                    "Prepare_HTML_for_secret_-_owner_-_30d": [
-                                                                                        "Succeeded"
-                                                                                    ]
-                                                                                },
-                                                                                "type": "Workflow",
-                                                                                "inputs": {
-                                                                                    "host": {
-                                                                                        "workflow": {
-                                                                                            "id": "[parameters('LogicAppNotifications')]"
-                                                                                        },
-                                                                                        "triggerName": "When_a_HTTP_request_is_received"
-                                                                                    },
-                                                                                    "body": {
-                                                                                        "MailFrom": "[parameters('MailFrom')]",
-                                                                                        "SendTo": "@items('For_each_-_Owner_-_30d')",
-                                                                                        "Subject": "Your secret is going to expire",
-                                                                                        "Body": "@outputs('Prepare_HTML_for_secret_-_owner_-_30d')"
-                                                                                    }
-                                                                                },
-                                                                                "operationOptions": "DisableAsyncPattern"
-                                                                            },
-                                                                            "Prepare_HTML_for_secret_-_owner_-_30d": {
-                                                                                "type": "Compose",
-                                                                                "inputs": "Hello,<br/>\nYou are owner of the application <strong>@{items('Foreach_-_apps')?['displayName']}</strong>.<br/>\n\nOne of the secrets of this application is going to expire in @{variables('daysTilExpiration')} days.<br/>\n\nPlease take action to avoid any authentication issues related to the expiration of the secret.<br/><br/>\n\nHere are the details of the secret :<br/>\n<strong>Secret Id :</strong> @{items('For_each_-_PasswordCred')?['keyId']}<br/>\n<strong>Expiration time :</strong> @{formatDateTime(items('For_each_-_PasswordCred')?['endDateTime'],'g')}<br/>\n<strong>App Id :</strong> <a href=\"https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{items('Foreach_-_apps')?['appId']}/isMSAApp/\" >@{items('Foreach_-_apps')?['appId']}</a><br/><br/>\n\n\nThank you"
-                                                                            }
-                                                                        },
-                                                                        "type": "Foreach"
-                                                                    }
-                                                                },
-                                                                "else": {
-                                                                    "actions": {}
-                                                                },
-                                                                "expression": {
-                                                                    "and": [
-                                                                        {
-                                                                            "greater": [
-                                                                                "@variables('daysTilExpiration')",
-                                                                                0
-                                                                            ]
-                                                                        },
-                                                                        {
-                                                                            "less": [
-                                                                                "@variables('daysTilExpiration')",
-                                                                                30
-                                                                            ]
-                                                                        },
-                                                                        {
-                                                                            "equals": [
-                                                                                "@variables('CSA-Owner Check')",
-                                                                                "@true"
-                                                                            ]
-                                                                        }
-                                                                    ]
-                                                                },
-                                                                "type": "If"
+                                                            "Append_Certificate_to_HTML_without_owner": {
+                                                                "type": "AppendToStringVariable",
+                                                                "inputs": {
+                                                                    "name": "html",
+                                                                    "value": "<tr><td @{variables('styles').cellStyle}><a href=\"https://ms.portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{variables('appId')}/isMSAApp/\">@{variables('appId')}</a></td><td @{variables('styles').cellStyle}>@{variables('displayName')}</td><td @{variables('styles').cellStyle}>@{items('For_each_KeyCred')?['keyId']}</td><td @{if(less(variables('daystilexpiration'), 15), variables('styles').redStyle, if(less(variables('daystilexpiration'), 30), variables('styles').yellowStyle, variables('styles').cellStyle))}>@{variables('daystilexpiration')} </td><td @{variables('styles').cellStyle}>Certificate</td><td @{variables('styles').cellStyle}>@{formatDateTime(item()?['endDateTime'], 'g')}</td><td @{variables('styles').cellStyle}></td></tr>"
+                                                                }
                                                             }
                                                         }
                                                     },
                                                     "expression": {
                                                         "and": [
                                                             {
-                                                                "less": [
-                                                                    "@variables('daysTilExpiration')",
-                                                                    0
+                                                                "equals": [
+                                                                    "@variables('CSA-Owner Check')",
+                                                                    "@true"
                                                                 ]
                                                             }
                                                         ]
                                                     },
                                                     "type": "If"
-                                                },
-                                                "DifferentAsDays": {
-                                                    "runAfter": {
-                                                        "StartTimeTickValue": [
-                                                            "Succeeded"
-                                                        ]
-                                                    },
-                                                    "type": "Compose",
-                                                    "inputs": "@div(div(div(mul(sub(outputs('EndTimeTickValue'),outputs('StartTimeTickValue')),100),1000000000) , 3600), 24)"
-                                                },
-                                                "EndTimeTickValue": {
-                                                    "type": "Compose",
-                                                    "inputs": "@ticks(item()?['endDateTime'])"
-                                                },
-                                                "Set_variable_-_daysTilsExpiration": {
-                                                    "runAfter": {
-                                                        "DifferentAsDays": [
-                                                            "Succeeded"
-                                                        ]
-                                                    },
-                                                    "type": "SetVariable",
-                                                    "inputs": {
-                                                        "name": "daysTilExpiration",
-                                                        "value": "@outputs('DifferentAsDays')"
-                                                    }
-                                                },
-                                                "StartTimeTickValue": {
-                                                    "runAfter": {
-                                                        "EndTimeTickValue": [
-                                                            "Succeeded"
-                                                        ]
-                                                    },
-                                                    "type": "Compose",
-                                                    "inputs": "@ticks(utcnow())"
                                                 }
                                             },
                                             "runAfter": {
-                                                "Condition_-_If_CSA_is_null": [
+                                                "Store_Days_till_expiration": [
                                                     "Succeeded"
                                                 ]
                                             },
-                                            "type": "Foreach"
-                                        },
-                                        "For_each_KeyCred": {
-                                            "foreach": "@items('Foreach_-_apps')?['keyCredentials']",
-                                            "actions": {
-                                                "Condition_-_If_already_expired_-_keyCred": {
-                                                    "actions": {
-                                                        "Condition_-_If_certificate_owner": {
-                                                            "actions": {
-                                                                "Append_Certificate_to_HTML_with_owner": {
-                                                                    "type": "AppendToStringVariable",
-                                                                    "inputs": {
-                                                                        "name": "html",
-                                                                        "value": "<tr><td @{variables('styles').cellStyle}><a href=\"https://ms.portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{variables('appId')}/isMSAApp/\">@{variables('appId')}</a></td><td @{variables('styles').cellStyle}>@{variables('displayName')}</td><td @{variables('styles').cellStyle}>@{items('For_each_KeyCred')?['keyId']}</td><td @{if(less(variables('daystilexpiration'), 15), variables('styles').redStyle, if(less(variables('daystilexpiration'), 30), variables('styles').yellowStyle, variables('styles').cellStyle))}>@{variables('daystilexpiration')} </td><td @{variables('styles').cellStyle}>Certificate</td><td @{variables('styles').cellStyle}>@{formatDateTime(item()?['endDateTime'], 'g')}</td><td @{variables('styles').cellStyle}>@{join(body('Parse_-_CSA-Owner')?['customSecurityAttributes']?['OwnerManagement']?['AppOwner'],',')}</td></tr>"
-                                                                    }
-                                                                },
-                                                                "Condition_4": {
-                                                                    "actions": {
-                                                                        "For_each_Owner_-_Certificate": {
-                                                                            "foreach": "@body('Parse_-_CSA-Owner')?['customSecurityAttributes']?['OwnerManagement']?['AppOwner']",
-                                                                            "actions": {
-                                                                                "IGA-Notifications_-_Certificate": {
-                                                                                    "runAfter": {
-                                                                                        "Prepare_HTML_for_owner_-_Certificate": [
-                                                                                            "Succeeded"
-                                                                                        ]
-                                                                                    },
-                                                                                    "type": "Workflow",
-                                                                                    "inputs": {
-                                                                                        "host": {
-                                                                                            "workflow": {
-                                                                                                "id": "[parameters('LogicAppNotifications')]"
-                                                                                            },
-                                                                                            "triggerName": "When_a_HTTP_request_is_received"
-                                                                                        },
-                                                                                        "body": {
-                                                                                            "MailFrom": "[parameters('MailFrom')]",
-                                                                                            "SendTo": "@{items('For_each_Owner_-_Certificate')}",
-                                                                                            "Subject": "Your certificate is expired",
-                                                                                            "Body": "@outputs('Prepare_HTML_for_owner_-_Certificate')"
-                                                                                        }
-                                                                                    },
-                                                                                    "operationOptions": "DisableAsyncPattern"
-                                                                                },
-                                                                                "Prepare_HTML_for_owner_-_Certificate": {
-                                                                                    "type": "Compose",
-                                                                                    "inputs": "Hello,<br/>\nWe want to update you that, you are owner of the application <strong>@{items('Foreach_-_apps')?['displayName']}</strong><br/>\n\nOne of the secrets of this applicatin is going to expire in @{variables('daysTilExpiration')} days.<br/>\n\nPlease take an action to avoid any authentication issues related to this secret.\n<br/><br/>\nHere are the details of the Certificate :<br/>\n<strong>Certificate Id :</strong> @{items('For_each_KeyCred')?['keyId']}<br/>\n<strong>Expiration time :</strong> @{formatDateTime(items('For_each_KeyCred')?['endDateTime'], 'g')}<br/>\n<strong>App Id :</strong> <a href=\"https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{items('Foreach_-_apps')?['appId']}/isMSAApp/>@{items('Foreach_-_apps')?['appId']}</a><br/><br/>\n\n\nThank you"
-                                                                                }
-                                                                            },
-                                                                            "type": "Foreach"
-                                                                        }
-                                                                    },
-                                                                    "runAfter": {
-                                                                        "Append_Certificate_to_HTML_with_owner": [
-                                                                            "Succeeded"
-                                                                        ]
-                                                                    },
-                                                                    "else": {
-                                                                        "actions": {}
-                                                                    },
-                                                                    "expression": {
-                                                                        "and": [
-                                                                            {
-                                                                                "less": [
-                                                                                    "@variables('daysTilExpiration')",
-                                                                                    "@float('15')"
-                                                                                ]
-                                                                            }
-                                                                        ]
-                                                                    },
-                                                                    "type": "If"
-                                                                }
-                                                            },
-                                                            "else": {
+                                            "else": {
+                                                "actions": {
+                                                    "Condition_-_If_less_than_30_days_-_keyCred": {
+                                                        "actions": {
+                                                            "For_each_Owner_-_Certificate_-_30d": {
+                                                                "foreach": "@body('Parse_-_CSA-Owner')?['customSecurityAttributes']?['OwnerManagement']?['AppOwner']",
                                                                 "actions": {
-                                                                    "Append_Certificate_to_HTML_without_owner": {
-                                                                        "type": "AppendToStringVariable",
+                                                                    "IGA-Notifications_-_Certificate_-_30d": {
+                                                                        "runAfter": {
+                                                                            "Prepare_HTML_for_owner_-_Certificate_-_30d": [
+                                                                                "Succeeded"
+                                                                            ]
+                                                                        },
+                                                                        "type": "Workflow",
                                                                         "inputs": {
-                                                                            "name": "html",
-                                                                            "value": "<tr><td @{variables('styles').cellStyle}><a href=\"https://ms.portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{variables('appId')}/isMSAApp/\">@{variables('appId')}</a></td><td @{variables('styles').cellStyle}>@{variables('displayName')}</td><td @{variables('styles').cellStyle}>@{items('For_each_KeyCred')?['keyId']}</td><td @{if(less(variables('daystilexpiration'), 15), variables('styles').redStyle, if(less(variables('daystilexpiration'), 30), variables('styles').yellowStyle, variables('styles').cellStyle))}>@{variables('daystilexpiration')} </td><td @{variables('styles').cellStyle}>Certificate</td><td @{variables('styles').cellStyle}>@{formatDateTime(item()?['endDateTime'], 'g')}</td><td @{variables('styles').cellStyle}></td></tr>"
-                                                                        }
-                                                                    }
-                                                                }
-                                                            },
-                                                            "expression": {
-                                                                "and": [
-                                                                    {
-                                                                        "equals": [
-                                                                            "@variables('CSA-Owner Check')",
-                                                                            "@true"
-                                                                        ]
-                                                                    }
-                                                                ]
-                                                            },
-                                                            "type": "If"
-                                                        }
-                                                    },
-                                                    "runAfter": {
-                                                        "Store_Days_till_expiration": [
-                                                            "Succeeded"
-                                                        ]
-                                                    },
-                                                    "else": {
-                                                        "actions": {
-                                                            "Condition_-_If_less_than_30_days_-_keyCred": {
-                                                                "actions": {
-                                                                    "For_each_Owner_-_Certificate_-_30d": {
-                                                                        "foreach": "@body('Parse_-_CSA-Owner')?['customSecurityAttributes']?['OwnerManagement']?['AppOwner']",
-                                                                        "actions": {
-                                                                            "IGA-Notifications_-_Certificate_-_30d": {
-                                                                                "runAfter": {
-                                                                                    "Prepare_HTML_for_owner_-_Certificate_-_30d": [
-                                                                                        "Succeeded"
-                                                                                    ]
+                                                                            "host": {
+                                                                                "workflow": {
+                                                                                    "id": "[parameters('LogicAppNotifications')]"
                                                                                 },
-                                                                                "type": "Workflow",
-                                                                                "inputs": {
-                                                                                    "host": {
-                                                                                        "workflow": {
-                                                                                            "id": "[parameters('LogicAppNotifications')]"
-                                                                                        },
-                                                                                        "triggerName": "When_a_HTTP_request_is_received"
-                                                                                    },
-                                                                                    "body": {
-                                                                                        "MailFrom": "[parameters('MailFrom')]",
-                                                                                        "SendTo": "@items('For_each_Owner_-_Certificate_-_30d')",
-                                                                                        "Subject": "Your certificate is expired",
-                                                                                        "Body": "@outputs('Prepare_HTML_for_owner_-_Certificate_-_30d')"
-                                                                                    }
-                                                                                },
-                                                                                "operationOptions": "DisableAsyncPattern"
+                                                                                "triggerName": "When_a_HTTP_request_is_received"
                                                                             },
-                                                                            "Prepare_HTML_for_owner_-_Certificate_-_30d": {
-                                                                                "type": "Compose",
-                                                                                "inputs": "Hello,<br/>\nWe want to update you that, you are owner of the application <strong>@{items('Foreach_-_apps')?['displayName']}</strong><br/>\n\nOne of the secrets of this applicatin is going to expire in @{variables('daysTilExpiration')} days.<br/>\n\nPlease take an action to avoid any authentication issues related to this secret.\n<br/><br/>\nHere are the details of the Certificate :<br/>\n<strong>Certificate Id :</strong> @{items('For_each_KeyCred')?['keyId']}<br/>\n<strong>Expiration time :</strong> @{formatDateTime(items('For_each_KeyCred')?['endDateTime'], 'g')}<br/>\n<strong>App Id :</strong> <a href=\"https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{items('Foreach_-_apps')?['appId']}/isMSAApp/>@{items('Foreach_-_apps')?['appId']}</a><br/><br/>\n\n\nThank you"
+                                                                            "body": {
+                                                                                "MailFrom": "[parameters('MailFrom')]",
+                                                                                "SendTo": "@items('For_each_Owner_-_Certificate_-_30d')",
+                                                                                "Subject": "Your certificate is expired",
+                                                                                "Body": "@outputs('Prepare_HTML_for_owner_-_Certificate_-_30d')"
                                                                             }
                                                                         },
-                                                                        "type": "Foreach"
+                                                                        "operationOptions": "DisableAsyncPattern"
+                                                                    },
+                                                                    "Prepare_HTML_for_owner_-_Certificate_-_30d": {
+                                                                        "type": "Compose",
+                                                                        "inputs": "Hello,<br/>\nWe want to update you that, you are owner of the application <strong>@{items('Foreach_-_apps')?['displayName']}</strong><br/>\n\nOne of the secrets of this applicatin is going to expire in @{variables('daysTilExpiration')} days.<br/>\n\nPlease take an action to avoid any authentication issues related to this secret.\n<br/><br/>\nHere are the details of the Certificate :<br/>\n<strong>Certificate Id :</strong> @{items('For_each_KeyCred')?['keyId']}<br/>\n<strong>Expiration time :</strong> @{formatDateTime(items('For_each_KeyCred')?['endDateTime'], 'g')}<br/>\n<strong>App Id :</strong> <a href=\"https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Credentials/appId/@{items('Foreach_-_apps')?['appId']}/isMSAApp/>@{items('Foreach_-_apps')?['appId']}</a><br/><br/>\n\n\nThank you"
                                                                     }
                                                                 },
-                                                                "else": {
-                                                                    "actions": {}
-                                                                },
-                                                                "expression": {
-                                                                    "and": [
-                                                                        {
-                                                                            "greater": [
-                                                                                "@variables('daysTilExpiration')",
-                                                                                0
-                                                                            ]
-                                                                        },
-                                                                        {
-                                                                            "less": [
-                                                                                "@variables('daysTilExpiration')",
-                                                                                30
-                                                                            ]
-                                                                        },
-                                                                        {
-                                                                            "equals": [
-                                                                                "@variables('CSA-Owner Check')",
-                                                                                "@true"
-                                                                            ]
-                                                                        }
-                                                                    ]
-                                                                },
-                                                                "type": "If"
+                                                                "type": "Foreach"
                                                             }
-                                                        }
-                                                    },
-                                                    "expression": {
-                                                        "and": [
-                                                            {
-                                                                "less": [
-                                                                    "@variables('daysTilExpiration')",
-                                                                    0
-                                                                ]
-                                                            }
-                                                        ]
-                                                    },
-                                                    "type": "If"
-                                                },
-                                                "DifferentAsDays2": {
-                                                    "runAfter": {
-                                                        "StartTimeTickValue2": [
-                                                            "Succeeded"
-                                                        ]
-                                                    },
-                                                    "type": "Compose",
-                                                    "inputs": "@div(div(div(mul(sub(outputs('EndTimeTickValue2'),outputs('StartTimeTickValue2')),100),1000000000) , 3600), 24)"
-                                                },
-                                                "EndTimeTickValue2": {
-                                                    "type": "Compose",
-                                                    "inputs": "@ticks(item()?['endDateTime'])"
-                                                },
-                                                "StartTimeTickValue2": {
-                                                    "runAfter": {
-                                                        "EndTimeTickValue2": [
-                                                            "Succeeded"
-                                                        ]
-                                                    },
-                                                    "type": "Compose",
-                                                    "inputs": "@ticks(utcnow())"
-                                                },
-                                                "Store_Days_till_expiration": {
-                                                    "runAfter": {
-                                                        "DifferentAsDays2": [
-                                                            "Succeeded"
-                                                        ]
-                                                    },
-                                                    "type": "SetVariable",
-                                                    "inputs": {
-                                                        "name": "daysTilExpiration",
-                                                        "value": "@outputs('DifferentAsDays2')"
-                                                    }
-                                                }
-                                            },
-                                            "runAfter": {
-                                                "For_each_-_PasswordCred": [
-                                                    "Succeeded"
-                                                ]
-                                            },
-                                            "type": "Foreach"
-                                        },
-                                        "HTTP_-_Get_CSA-Owner": {
-                                            "runAfter": {
-                                                "Set_variable_-_keyCredential": [
-                                                    "Succeeded"
-                                                ]
-                                            },
-                                            "type": "Http",
-                                            "inputs": {
-                                                "uri": "https://graph.microsoft.com/v1.0/servicePrincipals(appId='@{variables('AppID')}')?$select=customSecurityAttributes",
-                                                "method": "GET",
-                                                "authentication": {
-                                                    "audience": "https://graph.microsoft.com",
-                                                    "type": "ManagedServiceIdentity"
-                                                }
-                                            },
-                                            "runtimeConfiguration": {
-                                                "contentTransfer": {
-                                                    "transferMode": "Chunked"
-                                                }
-                                            }
-                                        },
-                                        "Parse_light_-_Owner": {
-                                            "runAfter": {
-                                                "HTTP_-_Get_CSA-Owner": [
-                                                    "Succeeded",
-                                                    "Failed"
-                                                ]
-                                            },
-                                            "type": "ParseJson",
-                                            "inputs": {
-                                                "content": "@body('HTTP_-_Get_CSA-Owner')",
-                                                "schema": {
-                                                    "properties": {
-                                                        "@@odata.context": {
-                                                            "type": "string"
                                                         },
-                                                        "customSecurityAttributes": {}
-                                                    },
-                                                    "type": "object"
+                                                        "else": {
+                                                            "actions": {}
+                                                        },
+                                                        "expression": {
+                                                            "and": [
+                                                                {
+                                                                    "greater": [
+                                                                        "@variables('daysTilExpiration')",
+                                                                        0
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "less": [
+                                                                        "@variables('daysTilExpiration')",
+                                                                        30
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "equals": [
+                                                                        "@variables('CSA-Owner Check')",
+                                                                        "@true"
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        "type": "If"
+                                                    }
                                                 }
-                                            }
+                                            },
+                                            "expression": {
+                                                "and": [
+                                                    {
+                                                        "less": [
+                                                            "@variables('daysTilExpiration')",
+                                                            0
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "type": "If"
                                         },
-                                        "Set_variable_-_appId": {
-                                            "type": "SetVariable",
-                                            "inputs": {
-                                                "name": "AppID",
-                                                "value": "@items('Foreach_-_apps')?['appId']"
-                                            }
-                                        },
-                                        "Set_variable_-_displayName": {
+                                        "DifferentAsDays2": {
                                             "runAfter": {
-                                                "Set_variable_-_appId": [
+                                                "StartTimeTickValue2": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Compose",
+                                            "inputs": "@div(div(div(mul(sub(outputs('EndTimeTickValue2'),outputs('StartTimeTickValue2')),100),1000000000) , 3600), 24)"
+                                        },
+                                        "EndTimeTickValue2": {
+                                            "type": "Compose",
+                                            "inputs": "@ticks(item()?['endDateTime'])"
+                                        },
+                                        "StartTimeTickValue2": {
+                                            "runAfter": {
+                                                "EndTimeTickValue2": [
+                                                    "Succeeded"
+                                                ]
+                                            },
+                                            "type": "Compose",
+                                            "inputs": "@ticks(utcnow())"
+                                        },
+                                        "Store_Days_till_expiration": {
+                                            "runAfter": {
+                                                "DifferentAsDays2": [
                                                     "Succeeded"
                                                 ]
                                             },
                                             "type": "SetVariable",
                                             "inputs": {
-                                                "name": "displayName",
-                                                "value": "@items('Foreach_-_apps')?['displayName']"
-                                            }
-                                        },
-                                        "Set_variable_-_keyCredential": {
-                                            "runAfter": {
-                                                "Set_variable_-_passwordCredential": [
-                                                    "Succeeded"
-                                                ]
-                                            },
-                                            "type": "SetVariable",
-                                            "inputs": {
-                                                "name": "keyCredential",
-                                                "value": "@items('Foreach_-_apps')?['keyCredentials']"
-                                            }
-                                        },
-                                        "Set_variable_-_passwordCredential": {
-                                            "runAfter": {
-                                                "Set_variable_-_displayName": [
-                                                    "Succeeded"
-                                                ]
-                                            },
-                                            "type": "SetVariable",
-                                            "inputs": {
-                                                "name": "passwordCredential",
-                                                "value": "@items('Foreach_-_apps')?['passwordCredentials']"
+                                                "name": "daysTilExpiration",
+                                                "value": "@outputs('DifferentAsDays2')"
                                             }
                                         }
                                     },
                                     "runAfter": {
-                                        "Parse_JSON_-_Get_Apps": [
+                                        "For_each_-_PasswordCred": [
                                             "Succeeded"
                                         ]
                                     },
-                                    "type": "Foreach",
-                                    "runtimeConfiguration": {
-                                        "concurrency": {
-                                            "repetitions": 1
-                                        }
-                                    }
+                                    "type": "Foreach"
                                 },
-                                "HTTP_-_Get_AzureAD_Applications": {
+                                "HTTP_-_Get_CSA-Owner": {
+                                    "runAfter": {
+                                        "Set_variable_-_keyCredential": [
+                                            "Succeeded"
+                                        ]
+                                    },
                                     "type": "Http",
                                     "inputs": {
-                                        "uri": "@variables('NextLink')",
+                                        "uri": "https://graph.microsoft.com/v1.0/servicePrincipals(appId='@{variables('AppID')}')?$select=customSecurityAttributes",
                                         "method": "GET",
                                         "authentication": {
                                             "audience": "https://graph.microsoft.com",
                                             "type": "ManagedServiceIdentity"
                                         }
+                                    },
+                                    "runtimeConfiguration": {
+                                        "contentTransfer": {
+                                            "transferMode": "Chunked"
+                                        }
                                     }
                                 },
-                                "Parse_JSON_-_Get_Apps": {
+                                "Parse_light_-_Owner": {
                                     "runAfter": {
-                                        "HTTP_-_Get_AzureAD_Applications": [
-                                            "Succeeded"
+                                        "HTTP_-_Get_CSA-Owner": [
+                                            "Succeeded",
+                                            "Failed"
                                         ]
                                     },
                                     "type": "ParseJson",
                                     "inputs": {
-                                        "content": "@body('HTTP_-_Get_AzureAD_Applications')",
+                                        "content": "@body('HTTP_-_Get_CSA-Owner')",
                                         "schema": {
                                             "properties": {
-                                                "properties": {
+                                                "@@odata.context": {
+                                                    "type": "string"
+                                                },
+                                                "customSecurityAttributes": {}
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "Set_variable_-_appId": {
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "AppID",
+                                        "value": "@items('Foreach_-_apps')?['appId']"
+                                    }
+                                },
+                                "Set_variable_-_displayName": {
+                                    "runAfter": {
+                                        "Set_variable_-_appId": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "displayName",
+                                        "value": "@items('Foreach_-_apps')?['displayName']"
+                                    }
+                                },
+                                "Set_variable_-_keyCredential": {
+                                    "runAfter": {
+                                        "Set_variable_-_passwordCredential": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "keyCredential",
+                                        "value": "@items('Foreach_-_apps')?['keyCredentials']"
+                                    }
+                                },
+                                "Set_variable_-_passwordCredential": {
+                                    "runAfter": {
+                                        "Set_variable_-_displayName": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "passwordCredential",
+                                        "value": "@items('Foreach_-_apps')?['passwordCredentials']"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Parse_JSON_-_Get_Apps": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach",
+                            "runtimeConfiguration": {
+                                "concurrency": {
+                                    "repetitions": 1
+                                }
+                            }
+                        },
+                        "HTTP_-_Get_AzureAD_Applications": {
+                            "type": "Http",
+                            "inputs": {
+                                "uri": "@variables('NextLink')",
+                                "method": "GET",
+                                "authentication": {
+                                    "audience": "https://graph.microsoft.com",
+                                    "type": "ManagedServiceIdentity"
+                                }
+                            }
+                        },
+                        "Parse_JSON_-_Get_Apps": {
+                            "runAfter": {
+                                "HTTP_-_Get_AzureAD_Applications": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ParseJson",
+                            "inputs": {
+                                "content": "@body('HTTP_-_Get_AzureAD_Applications')",
+                                "schema": {
+                                    "properties": {
+                                        "properties": {
+                                            "properties": {
+                                                "@@odata.context": {
                                                     "properties": {
-                                                        "@@odata.context": {
+                                                        "type": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "value": {
+                                                    "properties": {
+                                                        "items": {
                                                             "properties": {
-                                                                "type": {
-                                                                    "type": "string"
-                                                                }
-                                                            },
-                                                            "type": "object"
-                                                        },
-                                                        "value": {
-                                                            "properties": {
-                                                                "items": {
+                                                                "properties": {
                                                                     "properties": {
-                                                                        "properties": {
+                                                                        "@@odata.id": {
                                                                             "properties": {
-                                                                                "@@odata.id": {
+                                                                                "type": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "type": "object"
+                                                                        },
+                                                                        "appId": {
+                                                                            "properties": {
+                                                                                "type": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "type": "object"
+                                                                        },
+                                                                        "displayName": {
+                                                                            "properties": {
+                                                                                "type": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "type": "object"
+                                                                        },
+                                                                        "keyCredentials": {
+                                                                            "properties": {
+                                                                                "type": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "type": "object"
+                                                                        },
+                                                                        "passwordCredentials": {
+                                                                            "properties": {
+                                                                                "items": {
                                                                                     "properties": {
-                                                                                        "type": {
-                                                                                            "type": "string"
-                                                                                        }
-                                                                                    },
-                                                                                    "type": "object"
-                                                                                },
-                                                                                "appId": {
-                                                                                    "properties": {
-                                                                                        "type": {
-                                                                                            "type": "string"
-                                                                                        }
-                                                                                    },
-                                                                                    "type": "object"
-                                                                                },
-                                                                                "displayName": {
-                                                                                    "properties": {
-                                                                                        "type": {
-                                                                                            "type": "string"
-                                                                                        }
-                                                                                    },
-                                                                                    "type": "object"
-                                                                                },
-                                                                                "keyCredentials": {
-                                                                                    "properties": {
-                                                                                        "type": {
-                                                                                            "type": "string"
-                                                                                        }
-                                                                                    },
-                                                                                    "type": "object"
-                                                                                },
-                                                                                "passwordCredentials": {
-                                                                                    "properties": {
-                                                                                        "items": {
+                                                                                        "properties": {
                                                                                             "properties": {
-                                                                                                "properties": {
+                                                                                                "customKeyIdentifier": {
+                                                                                                    "properties": {},
+                                                                                                    "type": "object"
+                                                                                                },
+                                                                                                "displayName": {
                                                                                                     "properties": {
-                                                                                                        "customKeyIdentifier": {
-                                                                                                            "properties": {},
-                                                                                                            "type": "object"
-                                                                                                        },
-                                                                                                        "displayName": {
-                                                                                                            "properties": {
-                                                                                                                "type": {
-                                                                                                                    "type": "string"
-                                                                                                                }
-                                                                                                            },
-                                                                                                            "type": "object"
-                                                                                                        },
-                                                                                                        "endDateTime": {
-                                                                                                            "properties": {
-                                                                                                                "type": {
-                                                                                                                    "type": "string"
-                                                                                                                }
-                                                                                                            },
-                                                                                                            "type": "object"
-                                                                                                        },
-                                                                                                        "hint": {
-                                                                                                            "properties": {
-                                                                                                                "type": {
-                                                                                                                    "type": "string"
-                                                                                                                }
-                                                                                                            },
-                                                                                                            "type": "object"
-                                                                                                        },
-                                                                                                        "keyId": {
-                                                                                                            "properties": {
-                                                                                                                "type": {
-                                                                                                                    "type": "string"
-                                                                                                                }
-                                                                                                            },
-                                                                                                            "type": "object"
-                                                                                                        },
-                                                                                                        "secretText": {
-                                                                                                            "properties": {},
-                                                                                                            "type": "object"
-                                                                                                        },
-                                                                                                        "startDateTime": {
-                                                                                                            "properties": {
-                                                                                                                "type": {
-                                                                                                                    "type": "string"
-                                                                                                                }
-                                                                                                            },
-                                                                                                            "type": "object"
+                                                                                                        "type": {
+                                                                                                            "type": "string"
                                                                                                         }
                                                                                                     },
                                                                                                     "type": "object"
                                                                                                 },
-                                                                                                "required": {
-                                                                                                    "items": {
-                                                                                                        "type": "string"
+                                                                                                "endDateTime": {
+                                                                                                    "properties": {
+                                                                                                        "type": {
+                                                                                                            "type": "string"
+                                                                                                        }
                                                                                                     },
-                                                                                                    "type": "array"
+                                                                                                    "type": "object"
                                                                                                 },
-                                                                                                "type": {
-                                                                                                    "type": "string"
+                                                                                                "hint": {
+                                                                                                    "properties": {
+                                                                                                        "type": {
+                                                                                                            "type": "string"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "type": "object"
+                                                                                                },
+                                                                                                "keyId": {
+                                                                                                    "properties": {
+                                                                                                        "type": {
+                                                                                                            "type": "string"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "type": "object"
+                                                                                                },
+                                                                                                "secretText": {
+                                                                                                    "properties": {},
+                                                                                                    "type": "object"
+                                                                                                },
+                                                                                                "startDateTime": {
+                                                                                                    "properties": {
+                                                                                                        "type": {
+                                                                                                            "type": "string"
+                                                                                                        }
+                                                                                                    },
+                                                                                                    "type": "object"
                                                                                                 }
                                                                                             },
                                                                                             "type": "object"
+                                                                                        },
+                                                                                        "required": {
+                                                                                            "items": {
+                                                                                                "type": "string"
+                                                                                            },
+                                                                                            "type": "array"
                                                                                         },
                                                                                         "type": {
                                                                                             "type": "string"
                                                                                         }
                                                                                     },
                                                                                     "type": "object"
+                                                                                },
+                                                                                "type": {
+                                                                                    "type": "string"
                                                                                 }
                                                                             },
                                                                             "type": "object"
-                                                                        },
-                                                                        "required": {
-                                                                            "items": {
-                                                                                "type": "string"
-                                                                            },
-                                                                            "type": "array"
-                                                                        },
-                                                                        "type": {
-                                                                            "type": "string"
                                                                         }
                                                                     },
                                                                     "type": "object"
+                                                                },
+                                                                "required": {
+                                                                    "items": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "type": "array"
                                                                 },
                                                                 "type": {
                                                                     "type": "string"
                                                                 }
                                                             },
                                                             "type": "object"
+                                                        },
+                                                        "type": {
+                                                            "type": "string"
                                                         }
                                                     },
                                                     "type": "object"
-                                                },
-                                                "type": {
-                                                    "type": "string"
                                                 }
                                             },
                                             "type": "object"
+                                        },
+                                        "type": {
+                                            "type": "string"
                                         }
-                                    }
-                                },
-                                "Update_Next_Link": {
-                                    "runAfter": {
-                                        "Foreach_-_apps": [
-                                            "Succeeded"
-                                        ]
                                     },
-                                    "type": "SetVariable",
-                                    "inputs": {
-                                        "name": "NextLink",
-                                        "value": "@body('Parse_JSON_-_Get_Apps')?['@odata.nextLink']"
-                                    }
+                                    "type": "object"
                                 }
-                            },
-                            "runAfter": {
-                                "Initialize_-_NextLink": [
-                                    "Succeeded"
-                                ]
-                            },
-                            "expression": "@not(equals(variables('NextLink'), null))",
-                            "limit": {
-                                "count": 60,
-                                "timeout": "PT1H"
-                            },
-                            "type": "Until"
+                            }
                         },
                         "Initialize_CSA-Owner-Check": {
                             "runAfter": {
