@@ -15,6 +15,13 @@
             "metadata": {
                 "description": "Email of administrators to receive the report for all applications."
             }
+        },
+        "Location": {
+            "defaultValue": "",
+            "type": "String",
+            "metadata": {
+                "description": "eastus2, canadacentral, etc. To list all regions (az account list-locations -o table)"
+            }
         }
     },
     "variables": {},
@@ -23,7 +30,7 @@
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
             "name": "[parameters('LogicAppName')]",
-            "location": "eastus2",
+            "location": "[parameters('Location')]",
             "tags": {},
             "identity": {
                 "type": "SystemAssigned"
