@@ -83,7 +83,7 @@
                     "actions": {
                         "Close_HTML_tags": {
                             "runAfter": {
-                                "Until": [
+                                "Foreach_-_apps": [
                                     "Succeeded"
                                 ]
                             },
