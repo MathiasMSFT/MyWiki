@@ -15,22 +15,22 @@ Information required:
 - Invitation message
 
 <p align="center" width="100%">
-    <img width="70%" src="./images/Invite-GraphExplorer-1.png">
+    <img width="70%" src="./Images/Invite-GraphExplorer-1.png">
 </p>
 
 If you receive an permission error like this, add consent in Graph Explorer.
 <p align="center" width="100%">
-    <img width="70%" src="./images/Invite-GraphExplorer-2.png">
+    <img width="70%" src="./Images/Invite-GraphExplorer-2.png">
 </p>
 
 Go to Modify permissions and consent permission (User.Invite.All)
 <p align="center" width="100%">
-    <img width="70%" src="./images/Invite-GraphExplorer-3.png">
+    <img width="70%" src="./Images/Invite-GraphExplorer-3.png">
 </p>
 
 Then, you should receive a response like this.
 <p align="center" width="100%">
-    <img width="70%" src="./images/Invite-GraphExplorer-4.png">
+    <img width="70%" src="./Images/Invite-GraphExplorer-4.png">
 </p>
 
 
@@ -38,7 +38,7 @@ Then, you should receive a response like this.
 ## Go back to Entra External ID
 User now exists as guest
 <p align="center" width="100%">
-    <img width="70%" src="./images/Invite-GraphExplorer-5.png">
+    <img width="70%" src="./Images/Invite-GraphExplorer-5.png">
 </p>
 
 
@@ -47,13 +47,13 @@ User now exists as guest
 ## User experience
 User will receive this email.
 <p align="center" width="100%">
-    <img width="70%" src="./images/UserExp-email-1.png">
+    <img width="70%" src="./Images/UserExp-email-1.png">
 </p>
 
 
 Invite acceptation
 <p align="center" width="100%">
-    <img width="70%" src="./images/UserExp-Consent.png">
+    <img width="70%" src="./Images/UserExp-Consent.png">
 </p>
 
 
@@ -73,20 +73,20 @@ https://contosoext.ciamlogin.com/contosoext.onmicrosoft.com/oauth2/v2.0/authoriz
 
 Redirection to Entra External ID
 <p align="center" width="100%">
-    <img width="70%" src="./images/UserExp-2.png">
+    <img width="70%" src="./Images/UserExp-2.png">
 </p>
 
 
 I entered my email address and then I need to provide my password
 <p align="center" width="100%">
-    <img width="70%" src="./images/UserExp-3.png">
+    <img width="70%" src="./Images/UserExp-3.png">
 </p>
 
 I'am redirected to JWT website and I get my token
 1: Entra External ID manages the request
 2: Entra ID managed the authentication
 <p align="center" width="100%">
-    <img width="70%" src="./images/UserExp-4.png">
+    <img width="70%" src="./Images/UserExp-4.png">
 </p>
 
 
