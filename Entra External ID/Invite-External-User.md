@@ -7,10 +7,15 @@ This platform is the new version and will replace in the future Azure AD B2C. Ke
 
 
 ## Send an invite by Graph Explorer
+The first scenario, the user has a mailbox.
+The second one, the user has no mailbox.
+
+### Scenario 1:
+In this scenario, this user has an email address.
+
 Information required:
-- URL: https://graph.microsoft.com/v1.0/inivitations
-- Redirect URL:
-- Invitation message
+- URL: https://graph.microsoft.com/v1.0/invitations
+- Redirect URL: https://your-app.contoso.com
 
 <p align="center" width="100%">
     <img width="70%" src="./Images/Invite-GraphExplorer-1.png">
@@ -32,7 +37,22 @@ Then, you should receive a response like this.
 </p>
 
 
-Go back to Entra External IDand validate that user is created.
+### Scenario 2:
+In this scenario, this user is an admin and doesn't have an email address.
+
+Information required
+```
+{
+  "invitedUserEmailAddress": "admin.security@contoso.onmicrosoft.com",
+  "inviteRedirectUrl": "https://myapplications.microsoft.com/?tenantid=0000-00000-0000-0000-0000-0000000030",
+  "sendInvitationMessage": false,
+  "status": "Completed",
+  "resetRedemption": false
+}
+```
+
+### Validate the creation
+Go back to Entra External ID and validate that user is created.
 <p align="center" width="100%">
     <img width="70%" src="./Images/Invite-GraphExplorer-5.png">
 </p>
