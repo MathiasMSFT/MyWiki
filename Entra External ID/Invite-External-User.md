@@ -32,9 +32,7 @@ Then, you should receive a response like this.
 </p>
 
 
-
-## Go back to Entra External ID
-User now exists as guest
+Go back to Entra External IDand validate that user is created.
 <p align="center" width="100%">
     <img width="70%" src="./Images/Invite-GraphExplorer-5.png">
 </p>
