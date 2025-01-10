@@ -1,5 +1,3 @@
-Entra External ID
-
 # Introduction
 This platform is the new version and will replace in the future Azure AD B2C. Keep in mind AADB2C is still available and supported, but no future evolution is planned.
 
