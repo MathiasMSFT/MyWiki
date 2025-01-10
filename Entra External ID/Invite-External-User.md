@@ -64,7 +64,9 @@ or use this url after replacing those values:
 - AppId: AppId of your application
 - RedirectURI: https%3A%2F%2Fjwt.ms
 
+```
 https://contosoext.ciamlogin.com/contosoext.onmicrosoft.com/oauth2/v2.0/authorize?client_id=<AppId>>&nonce=defaultNonce&redirect_uri=<redirectURI>&scope=openid+profile&response_type=id_token&prompt=login
+```
 
 
 Redirection to Entra External ID
