@@ -12,29 +12,114 @@ Param (
     [Parameter(Mandatory=$false)]
     [switch]$Groups,
     [Parameter(Mandatory=$false)]
-    [switch]$CAPs
+    [switch]$CAPs,
+    [Parameter(Mandatory=$false)]
+    [switch]$RAUs,
+    [Parameter(Mandatory=$false)]
+    [switch]$UpdateCAPs
 )
 
+Function CreateRAU {
+    # Restricted Administrative Unit
+    $AllRAUs = Get-Content -Path "$DeploymentDirectory\RestrictedAU.json" | ConvertFrom-Json -Depth 10
+
+    ForEach ($RAU in $AllRAUs.RestrictedAU) {
+        try {
+            $RAUObject = [PSCustomObject]@{
+                displayName     = $RAU.displayName
+                description     = $RAU.description
+                IsMemberManagementRestricted = $true
+            }
+            $RAUBodyParam = $RAUObject | ConvertTo-Json -Depth 10
+
+            # Create the RAU using Microsoft Graph
+            $null = New-MgDirectoryAdministrativeUnit -Body $RAUBodyParam
+            Write-Host "    RAU created successfully: $($RAU.displayName) " -ForegroundColor Green
+        }
+        catch {
+            Write-Host "    Error while creating the RAU: $_" -ForegroundColor Red
+        }
+    }
+}
+# Get Terms Of use
+Function SearchTOU {
+    Write-Host "    [-] Search Terms Of Use" -ForegroundColor Yellow
+    $ExportTOU = $true
+    ## Get InTune app
+    $InTuneApp = Get-MgServicePrincipal -Filter "displayName eq 'Microsoft Intune'"
+    $InTuneEnrollApp = Get-MgServicePrincipal -Filter "displayName eq 'Microsoft Intune Enrollment'"
+    # Get TOU
+    $TOUs = Get-MgAgreement -Property Id,DisplayName -ErrorAction SilentlyContinue
+    If ($TOUs.DisplayName -contains "TOU-External-People") {
+        # Write-Host "[✅] Terms Of Use found"
+        $IdTOU = $(Get-MgAgreement -Filter 'DisplayName eq "TOU-External-People"' -ErrorAction SilentlyContinue).Id
+    } elseif ($TOUs) {
+        # Write-Host "[⚠️] Terms Of Use not found, but you've TOU. Modify "
+        $SelectedTOU = $TOUs # | Out-GridView -Title "Select the Terms of Use" -PassThru
+        if ($SelectedTOU) {
+            $SelectedTOU | ForEach-Object {
+                $IdTOU = $_.Id
+            }
+            # Write-Host "[✅] $($_.DisplayName) selected ($IdTOU)"
+        } else {
+            # Write-Host "[ℹ️] No TOU selected."
+            $ExportTOU = $false
+        }
+    } else {
+        $ExportTOU = $false
+    }
+    Return $ExportTOU
+}
+Function SearchTOU {
+    Write-Host "    [-] Search Terms Of Use" -ForegroundColor Yellow
+    $ExportTOU = $true
+    ## Get TOU
+    $TOUs = Get-MgAgreement -Property Id,DisplayName -ErrorAction SilentlyContinue
+    If ($TOUs.DisplayName -contains "TOU-External-People") {
+        # Write-Host "[✅] Terms Of Use found"
+        $IdTOU = $(Get-MgAgreement -Filter 'DisplayName eq "TOU-External-People"' -ErrorAction SilentlyContinue).Id
+    } elseif ($TOUs) {
+        # Write-Host "[⚠️] Terms Of Use not found, but you've TOU. Modify "
+        $SelectedTOU = $TOUs # | Out-GridView -Title "Select the Terms of Use" -PassThru
+        if ($SelectedTOU) {
+            $SelectedTOU | ForEach-Object {
+                $IdTOU = $_.Id
+            }
+            # Write-Host "[✅] $($_.DisplayName) selected ($IdTOU)"
+        } else {
+            # Write-Host "[ℹ️] No TOU selected."
+            $ExportTOU = $false
+        }
+    } else {
+        $ExportTOU = $false
+    }
+    Return $ExportTOU
+}
+$global:IdTOU
+
 # Connect to Microsoft Graph
-Connect-MgGraph -Scopes 'Policy.Read.All', 'Policy.ReadWrite.ConditionalAccess', 'Application.Read.All', 'Group.ReadWrite.All', 'Directory.ReadWrite.All', 'RoleManagement.ReadWrite.Directory' -TenantId $TenantId -NoWelcome
+# Connect-MgGraph -Scopes 'Policy.Read.All', 'Policy.ReadWrite.ConditionalAccess', 'Application.Read.All', 'Group.ReadWrite.All', 'Directory.ReadWrite.All', 'RoleManagement.ReadWrite.Directory', 'AdministrativeUnit.ReadWrite.All' -TenantId $TenantId -NoWelcome
 
 # Path of deployment directory
-$DeploymentDirectory = ".\Deployment\"
+$DeploymentDirectory = ".\Deployment"
 
 # Path of import directory containing your json files
 $CAPDirectory = ".\Import\"
 
+
 If ($Groups) {
-    $Groups = Get-Content -Path "$DeploymentDirectory/Groups.json" | ConvertFrom-Json -Depth 10
-
+    # To store details of groups to update all CAPs json files
+    $GroupDetails = @()
+    # All groups
+    $AllGroups = Get-Content -Path "$DeploymentDirectory\Groups.json" -Raw | ConvertFrom-Json -Depth 10
     # Personas
-    try {
-
-        ForEach ($persona in $Groups.Personas){
+    ForEach ($persona in $AllGroups.Personas) {
+        try {
             # Switch manual vs dynamic
-            Switch ($persona.Type){
+            Switch ($($persona.Type)){
                 "manual" {
-                    $personaObject = [PSCustomObject]@{
+                    $PersonaObject = [PSCustomObject]@{
+                        "@odata.type" = "#microsoft.graph.group"
                         DisplayName = $persona.Name
                         GroupTypes = @()
                         SecurityEnabled = $true
@@ -42,11 +127,11 @@ If ($Groups) {
                         MailEnabled = $false
                         MailNickname = (New-Guid).Guid.Substring(0,10)
                         Description = $persona.Description
-                        # restrictedau = $persona.RestrictedAU
                     }
                 }
                 "dynamic" {
-                    $personaObject = [PSCustomObject]@{
+                    $PersonaObject = [PSCustomObject]@{
+                        "@odata.type" = "#microsoft.graph.group"
                         DisplayName = $persona.Name
                         GroupTypes = @('DynamicMembership')
                         SecurityEnabled = $true
@@ -56,37 +141,98 @@ If ($Groups) {
                         Description = $persona.Description
                         membershipRuleProcessingState = 'On'
                         MembershipRule = $persona.Rule
-                        # restrictedau = $persona.RestrictedAU
                     }
                 }
                 Default {Write-Host "Type of group is unknown" -ForegroundColor Red}
             }
-
+            Write-Host "Persona : $($persona.Name)" -ForegroundColor Cyan
             $personaBodyParam = $personaObject | ConvertTo-Json -Depth 10
 
-            # Create the CAP
-            Write-Host "Creating group named $($persona.Name)" -ForegroundColor Yellow
-            If (!(Get-MgGroup -Filter "displayName eq '$($persona.Name)'")){
-                $null = New-MgGroup -BodyParameter $personaBodyParam
-                Write-Host "Group created successfully: $($persona.Name) - Type: $($persona.Type) " -ForegroundColor Green
+            # Get RestrictedAdministrativeUnit
+            If ($persona.RestrictedAU -eq $true) {
+                # Validate if the RAU exist
+                $RestrictedAUObj = Get-MgDirectoryAdministrativeUnit -Filter "DisplayName eq '$($persona.RestrictedAUName)'"
+                If ($RestrictedAUObj) {
+                    # Create the group using Microsoft Graph to the RAU
+                    Write-Host "    Creating group named $($persona.Name)" -ForegroundColor Yellow
+                    If (!(Get-MgGroup -Filter "displayName eq '$($persona.Name)'")){
+                        $CreateGroup = New-MgDirectoryAdministrativeUnitMember -AdministrativeUnitId $($RestrictedAUObj.Id) -BodyParameter $personaBodyParam
+                        $GroupDetails += @{
+                            Id = $persona.Id
+                            DisplayName = $persona.Name
+                            ObjectGuid = $CreateGroup.Id
+                        }
+                        Write-Host "    [✅] Group created successfully: $($persona.Name) - Type: $($persona.Type) " -ForegroundColor Green
+                    } Else {
+                        $GroupId = (Get-MgGRoup -Filter "displayName eq '$($persona.Name)'").Id
+                        $GroupDetails += @{
+                            Id = $persona.Id
+                            DisplayName = $persona.Name
+                            ObjectGuid = $GroupId
+                        }
+                        Write-Host "    [✅] Group named $($persona.Name) already exist" -ForegroundColor Magenta
+                    }
+                } Else {
+                    # Create RAU
+                    Write-Host "    Create Restricted AU" -ForegroundColor Yellow
+                    CreateRAU
+                    Start-Sleep 5
+                    # Create the group using Microsoft Graph to the RAU
+                    Write-Host "    Creating group named $($persona.Name)" -ForegroundColor Yellow
+                    If (!(Get-MgGroup -Filter "displayName eq '$($persona.Name)'")){
+                        $CreateGroup = New-MgDirectoryAdministrativeUnitMember -AdministrativeUnitId $($RestrictedAUObj.Id) -BodyParameter $personaBodyParam
+                        $GroupDetails += @{
+                            Id = $persona.Id
+                            DisplayName = $persona.Name
+                            ObjectGuid = $CreateGroup.Id
+                        }
+                        Write-Host "    [✅] Group created successfully: $($persona.Name) - Type: $($persona.Type) " -ForegroundColor Green
+                    } Else {
+                        $GroupId = (Get-MgGRoup -Filter "displayName eq '$($persona.Name)'").Id
+                        $GroupDetails += @{
+                            Id = $persona.Id
+                            DisplayName = $persona.Name
+                            ObjectGuid = $GroupId
+                        }
+                        Write-Host "    [✅] Group named $($persona.Name) already exist" -ForegroundColor Magenta
+                    }
+                }
             } Else {
-                Write-Host "Group named $($persona.Name) already exist" -ForegroundColor Red
+                # Create the group using Microsoft Graph
+                Write-Host "    Creating group named $($persona.Name)" -ForegroundColor Yellow
+                If (!(Get-MgGroup -Filter "displayName eq '$($persona.Name)'")){
+                    $CreateGroup = New-MgGroup -BodyParameter $personaBodyParam
+                    $GroupDetails += @{
+                        Id = $persona.Id
+                        DisplayName = $persona.Name
+                        ObjectGuid = $CreateGroup.Id
+                    }
+                    Write-Host "    [✅] Group created successfully: $($persona.Name) - Type: $($persona.Type) " -ForegroundColor Green
+                } Else {
+                    $GroupId = (Get-MgGRoup -Filter "displayName eq '$($persona.Name)'").Id
+                    $GroupDetails += @{
+                        Id = $persona.Id
+                        DisplayName = $persona.Name
+                        ObjectGuid = $GroupId
+                    }
+                    Write-Host "    [✅] Group named $($persona.Name) already exist" -ForegroundColor Magenta
+                }
             }
         }
-    }
-    catch {
-        Write-Host "Error while creating the group: $_" -ForegroundColor Red
+        catch {
+            Write-Host "    [❌] Error while creating the group: $_" -ForegroundColor Red
+        }
     }
 
     # Exclusions
-    try {
-
-        ForEach ($exclusiongrp in $Groups.Exclusions){
+    ForEach ($exclusiongrp in $AllGroups.Exclusions){
+        try{
             # Switch manual vs dynamic
             Switch ($exclusiongrp.Type){
                 "manual" {
                     # Create a custom object
                     $exclusiongrpObject = [PSCustomObject]@{
+                        "@odata.type" = "#microsoft.graph.group"
                         DisplayName = $exclusiongrp.Name
                         GroupTypes = @()
                         SecurityEnabled = $true
@@ -94,12 +240,12 @@ If ($Groups) {
                         MailEnabled = $false
                         MailNickname = (New-Guid).Guid.Substring(0,10)
                         Description = $exclusiongrp.Description
-                        # restrictedau = $exclusiongrp.RestrictedAU
                     }
                 }
                 "dynamic" {
                     # Create a custom object
                     $exclusiongrpObject = [PSCustomObject]@{
+                        "@odata.type" = "#microsoft.graph.group"
                         DisplayName = $exclusiongrp.Name
                         GroupTypes = @('DynamicMembership')
                         SecurityEnabled = $true
@@ -109,32 +255,141 @@ If ($Groups) {
                         Description = $exclusiongrp.Description
                         membershipRuleProcessingState = 'On'
                         MembershipRule = $exclusiongrp.Rule
-                        # restrictedau = $exclusiongrp.RestrictedAU
                     }
                 }
                 Default {Write-Host "Type of group is unknown" -ForegroundColor Red}
             }
-
+            Write-Host "Exclusions : $($exclusiongrp.Name)" -ForegroundColor Cyan
             $exclusionsBodyParam = $exclusiongrpObject | ConvertTo-Json -Depth 10
             # Create the group using Microsoft Graph
-            Write-Host "Creating group named $($exclusiongrp.Name)" -ForegroundColor Yellow
+            Write-Host "    Creating group named $($exclusiongrp.Name)" -ForegroundColor Yellow
             If (!(Get-MgGroup -Filter "displayName eq '$($exclusiongrp.Name)'")){
-                $null = New-MgGroup -BodyParameter $exclusionsBodyParam
-                Write-Host "Group created successfully: $($exclusiongrp.Name) - Type: $($exclusiongrp.Type) " -ForegroundColor Green
+                $CreateGroup = New-MgGroup -BodyParameter $exclusionsBodyParam
+                $GroupDetails += @{
+                    Id = $exclusiongrp.Id
+                    DisplayName = $exclusiongrp.Name
+                    ObjectGuid = $CreateGroup.Id
+                }
+                Write-Host "    [✅] Group created successfully: $($exclusiongrp.Name) - Type: $($exclusiongrp.Type) " -ForegroundColor Green
             } Else {
-                Write-Host "Group named $($exclusiongrp.Name) already exist" -ForegroundColor Red
+                $GroupId = (Get-MgGRoup -Filter "displayName eq '$($exclusiongrp.Name)'").Id
+                $GroupDetails += @{
+                    Id = $exclusiongrp.Id
+                    DisplayName = $exclusiongrp.Name
+                    ObjectGuid = $GroupId
+                }
+                Write-Host "    [✅] Group named $($exclusiongrp.Name) already exist" -ForegroundColor Magenta
             }
         }
+        catch {
+            Write-Host "    [❌] Error while creating the group of exclusion: $_" -ForegroundColor Red
+        }
     }
-    catch {
-        Write-Host "Error while creating the group of exclusion: $_" -ForegroundColor Red
+    # Write the details of groups to update all CAPs json files
+    $GroupDetails | ConvertTo-Json -Depth 10 | Set-Content -Path "$DeploymentDirectory\GroupDetails.json"
+}
+
+If ($UpdateCAPs) {
+    # Get all groups details
+    $GroupDetails = Get-Content -Path "$DeploymentDirectory\GroupDetails.json" -Raw | ConvertFrom-Json  -Depth 10
+    # Define $NewGroupIds based on $GroupDetails values
+    $NewGroupIds = @{}
+    foreach ($Group in $GroupDetails) {
+        $NewGroupIds[$Group.Id] = $Group.ObjectGuid
+    }
+
+    # Get all json files in the directory
+    $AllCAPs = Get-ChildItem -Path "$DeploymentDirectory\CAPs\" -Filter *.json
+    ## Check if there are no json files
+    If ($AllCAPs.Count -eq 0) {
+        Write-Host "[📢] Json files not found in the directory" -ForegroundColor Yellow
+    } Else {
+        ForEach ($Policy in $AllCAPs) {
+            try {
+                $Export = $true
+                $ContentPolicy = Get-Content -Path $Policy.FullName | ConvertFrom-Json
+                Write-Host "[-] Updating group IDs to $($ContentPolicy.DisplayName)" -ForegroundColor Yellow
+                # User/Group assignment
+                ## Exclude
+                $UpdatedExcludeGroups = @()
+                ForEach ($Group in $ContentPolicy.Conditions.Users.ExcludeGroups) {
+                    # Write-Host "    GroupId in CAP: $Group" -ForegroundColor Yellow
+                    $Match = $GroupDetails | Where-Object {$_.Id -eq $Group}
+                    if ($Match) {
+                        Write-Host "  [✅] Group matched '$($Group)' to '$($Match.ObjectGuid)'"
+                        # $Group = $Match.ObjectGuid
+                        $UpdatedExcludeGroups += $Match.ObjectGuid
+                    } else {
+                        Write-Host "  [⚠️] No match found for group '$($Group)' to '$($Match.ObjectGuid)'"
+                        $UpdatedExcludeGroups += $Group
+                    }
+                }
+                $ContentPolicy.Conditions.Users.ExcludeGroups = $UpdatedExcludeGroups
+
+                ## Include
+                $UpdatedIncludeGroups = @()
+                ForEach ($Group in $ContentPolicy.Conditions.Users.IncludeGroups) {
+                    # Write-Host "    GroupId in CAP: $Group" -ForegroundColor Yellow
+                    $Match = $GroupDetails | Where-Object {$_.Id -eq $Group}
+                    if ($Match) {
+                        Write-Host "  [✅] Group matched '$($Group)' to '$($Match.ObjectGuid)'"
+                        # $Group = $Match.ObjectGuid
+                        $UpdatedIncludeGroups += $Match.ObjectGuid
+                    } else {
+                        Write-Host "  [⚠️] No match found for group '$($Group)' to '$($Match.ObjectGuid)'"
+                        $UpdatedIncludeGroups += $Group
+                    }
+                }
+                $ContentPolicy.Conditions.Users.IncludeGroups = $UpdatedIncludeGroups
+                
+                # Resource assignment
+                ## ExcludeApplications
+                If ($ContentPolicy.Conditions.Applications.ExcludeApplications -contains "d4ebce55-015a-49b5-a083-c84d1797ae8c") {
+                    ## Get InTune Enrollment app
+                    Write-Host "    [ℹ️] Try to find InTune in your tenant"
+                    If (!(Get-MgServicePrincipal -Filter "displayName eq 'Microsoft Intune Enrollment'")) {
+                        $ContentPolicy.Conditions.Applications.ExcludeApplications = $null
+                        Write-Host "      [⚠️] InTune Enrollment will be removed from the policy"
+                    }
+                }
+
+                # Terms Of Use
+                If ($ContentPolicy.GrantControls.TermsOfUse) {
+                    Write-Host "    [ℹ️] Terms Of Use found in policy"
+                    If (!(SearchTOU)) {
+                        Write-Host "      [ℹ️] Terms Of Use policy will be excluded"
+                        $Export = $false
+                    } Else {
+                        Write-Host "      [✅] Terms Of Use policy found"
+                        $UpdatedTOUs = @()
+                        ForEach ($TOU in $ContentPolicy.GrantControls.TermsOfUse) {
+                            $UpdatedTOUs += $IdTOU
+                        }
+                        $ContentPolicy.GrantControls.TermsOfUse = $UpdatedTOUs
+                    }
+                }
+
+
+                # Export the file
+                If ($Export -eq $true) {
+                    # Save new file
+                    $UpdatedJson = $ContentPolicy | ConvertTo-Json -Depth 10
+                    $Path = "$DeploymentDirectory\newCAPs\$($Policy.Name)"
+                    Set-Content -Path $Path -Value $UpdatedJson -Encoding UTF8
+                    Write-Host "  [✅] Group IDs updated successfully"
+                }
+            }
+            catch {
+                Write-Host "  [❌] Error while update the policy file: $_"
+            }
+        }
     }
 }
 
 If ($CAPs) {
     # Conditional Access
     # Get all json files in the directory
-    $AllCAPs = Get-ChildItem -Path $CAPDirectory -Filter *.json
+    $AllCAPs = Get-ChildItem -Path "$DeploymentDirectory\newCAPs\" -Filter *.json
 
     ## Check if there are no json files
     If ($CAPs.Count -eq 0) {
@@ -153,10 +408,10 @@ If ($CAPs) {
                 $PolicyBodyParam = $PolicyObject | ConvertTo-Json -Depth 10
                 # Create the CAP using Microsoft Graph
                 $null = New-MgIdentityConditionalAccessPolicy -Body $PolicyBodyParam
-                Write-Host "Policy created successfully: $($Policy.displayName) " -ForegroundColor Green
+                Write-Host "    [✅] Policy created successfully: $($Policy.displayName)"
             }
             catch {
-                Write-Host "Error while creating the policy: $_" -ForegroundColor Red
+                Write-Host "    [❌] Error while creating the policy: $_"
             }
         }
     }

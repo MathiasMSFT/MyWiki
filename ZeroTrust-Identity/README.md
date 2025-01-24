@@ -8,10 +8,11 @@
 
 
 # Introduction
+In today’s digital landscape, security threats are more sophisticated and pervasive than ever. Traditional security models, which rely on perimeter defenses, are no longer sufficient to protect sensitive data and systems. This is where the concept of Zero Trust comes into play. Zero Trust is a security framework that operates on the principle of “never trust, always verify.” It requires continuous verification of user identities and strict access controls, regardless of whether the user is inside or outside the network.
 
-Zero Trust for Identity means you should trust nobody. But how to implement this principle ? This a question that I hear a lot.
-In this repo, we will see what you have to include and what are changes you have to implement.
-We will also our Microsoft solutions can be used to attempt your goal.
+Understanding the different personas within an organization is crucial for implementing an effective Zero Trust strategy. Personas represent the various roles and responsibilities of users, such as administrators, developers, and regular employees. By defining these personas, organizations can tailor their security policies to meet the specific needs and risks associated with each role. This approach not only enhances security but also ensures that users have the appropriate level of access to perform their duties efficiently.
+
+In this article, we will explore the importance of Zero Trust and how defining personas can help organizations achieve a more secure and resilient security posture. Readers will gain insights into the practical application of Zero Trust principles and learn how to create and manage personas to strengthen their security framework.
 
 In Microsoft documentation, a concept that already exist since many years, come back. Personas !!! But what does it mean ?
 And before starting to build your rules, start with Personas.
