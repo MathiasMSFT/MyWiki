@@ -3,7 +3,7 @@ By default, you can not disable the signup process through the portal. If you wa
 
 
 ## Documentation
-In Microsoft docuemntation, you will be to see that UserFlow doesn't exist, but authenticationEventsFlow exists.
+In Microsoft documentation, you will be to see that UserFlow doesn't exist, but authenticationEventsFlow exists.
 
 https://learn.microsoft.com/en-us/graph/api/resources/authenticationeventsflow?view=graph-rest-beta
 
@@ -33,7 +33,6 @@ Add headers
 <p align="center" width="100%">
     <img width="70%" src="./Images/Modify-Flow-1.png">
 </p>
-![alt text](./Images/Modify-Flow-1.png)
 
 Request body
 <p align="center" width="100%">
