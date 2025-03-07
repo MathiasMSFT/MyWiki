@@ -5,6 +5,19 @@ Source: https://github.com/JulianHayward/AzADServicePrincipalInsights
 ## Overview
 The Azure ServicePrincipal Insights project provides scripts and instructions to gain insights into Azure Service Principals. It helps in managing and visualizing service principal data.
 
+## Prerequisites
+
+- [Git](https://git-scm.com/downloads)
+- [PowerShell 7](https://github.com/PowerShell/PowerShell#get-powershell) (minimum supported version 7.0.3)
+- [Azure PowerShell](https://learn.microsoft.com/powershell/azure/install-azure-powershell), specifically `Az.Accounts`.
+- [AzAPICall](https://github.com/JulianHayward/AzAPICall#get--set-azapicall-powershell-module)
+- Azure Key Vault (Vault) to store the secret of your SP
+
+
+## Set up a service principal
+
+You can also use your admin account, but for tasks like this (automation for Ops or audit activities) it is preferable to use a SP.
+We will run it through a service principal. You can reuse the service principal used for Azure Governance Visualizer.
 
 ## Clone the Azure Governance Visualizer repository
 

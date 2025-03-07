@@ -16,7 +16,7 @@ The Azure Governance Visualizer is a tool designed to help visualize and manage 
 
 ## Set up a service principal
 
-You can also use your admin account, but for stuff like this (automation for Ops or audit activities) it is preferable to use a SP.
+You can also use your admin account, but for tasks like this (automation for Ops or audit activities) it is preferable to use a SP.
 We will run it through a service principal.
 
 ### Manually
