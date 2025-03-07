@@ -13,7 +13,7 @@ Welcome to my dedicated wiki repository, where we focus on empowering your journ
     - [Entra Connect](./Entra%20ID/Entra%20Connect/README.md)
     - [Monitoring](./Entra%20ID/Monitoring/README.md)
 - [Logic App](./Logic-App/README.md)
-- [Workbooks](./Logic-App/README.md)
+- [Workbooks](./Workbooks/README.md)
 - [Zero Trust Identity](./ZeroTrust-Identity/README.md)
 
 

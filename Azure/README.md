@@ -1,7 +1,7 @@
 # Azure
 
-## [Azure Fovernance Visualizer](./Azure%20Governance%20Visualizer.md)
+## [Azure Governance Visualizer](./Azure%20Governance%20Visualizer.md)
 
 
-## [Azure ServicePrincipal Insights](./Azure%20ServicePrincipal%20Insights.md)
+## [Azure Service Principal Insights](./Azure%20ServicePrincipal%20Insights.md)
 
