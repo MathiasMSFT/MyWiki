@@ -2,6 +2,9 @@
 
 Source: https://github.com/JulianHayward/Azure-MG-Sub-Governance-Reporting/blob/master/setup/console.md
 
+## Overview
+The Azure Governance Visualizer is a tool designed to help visualize and manage Azure governance. It includes scripts and instructions for setting up and using the visualizer.
+
 ## Prerequisites
 
 - [Git](https://git-scm.com/downloads)
@@ -17,7 +20,7 @@ You can also use your admin account, but for stuff like this (automation for Ops
 We will run it through a service principal.
 
 ### Manually
-Create your service principla and add these permissions:
+Create your service principal and add these permissions:
 - Application.Read.All
 - Group.Read.All
 - User.Read.All

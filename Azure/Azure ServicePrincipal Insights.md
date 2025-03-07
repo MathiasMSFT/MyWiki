@@ -1,5 +1,10 @@
+# Deploy Azure Service Principal Insights
 
 Source: https://github.com/JulianHayward/AzADServicePrincipalInsights
+
+## Overview
+The Azure ServicePrincipal Insights project provides scripts and instructions to gain insights into Azure Service Principals. It helps in managing and visualizing service principal data.
+
 
 ## Clone the Azure Governance Visualizer repository
 
