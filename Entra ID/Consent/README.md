@@ -1,4 +1,4 @@
-
+# Consent
 
 
 ## Configuration
@@ -63,13 +63,13 @@ Get token with this scope:
 https://login.microsoftonline.com/<tenantid>/oauth2/v2.0/authorize?client_id=<clientid>&nonce=defaultNonce&redirect_uri=https%3A%2F%2Fjwt.ms&scope=openid+profile+user.readwrite&response_type=token
 ```
 
-Admin consent is required !!
+**Admin consent is required !!**
 
 <p align="center" width="100%">
-    <img width="70%" src="./images/JUserConsent-Medium-1.png">
+    <img width="70%" src="./images/UserConsent-Medium-1.png">
 </p>
 
-This is normal because only "low impact: is supported ().
+Only "low impact" is supported.
 
 <p align="center" width="100%">
     <img width="70%" src="./images/UserConsent-options.png">
