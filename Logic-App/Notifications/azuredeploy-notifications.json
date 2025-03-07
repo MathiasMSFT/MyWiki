@@ -96,7 +96,7 @@
                                     "message": {
                                         "body": {
                                             "Content": "@{triggerBody()?['Body']}",
-                                            "ContentType": "Text"
+                                            "ContentType": "html"
                                         },
                                         "subject": "@{triggerBody()?['Subject']}",
                                         "toRecipients": [
