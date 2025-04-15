@@ -38,10 +38,10 @@ az group create --name rg-MAU --location eastus
 - Use the following script
 
 ```
-$tenantName = "MngEnvMCAP073183.onmicrosoft.com"
-$tenantId = "68c000e5-9b6e-44c0-9820-f1bb07ce0cdb"
-$subscriptionId="dcc4eb0c-127a-4a3a-a787-505f072cb493"
-$resourceGroup="rg-MAU"
+$tenantName = "contoso.onmicrosoft.com"
+$tenantId = "<tenantId>"
+$subscriptionId="<subId>"
+$resourceGroup="<ResourceGroup>"
 $locationName="United States"
 
 az rest --method put --url https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.AzureActiveDirectory/guestUsages/${tenantName}?api-version=2020-05-01-preview --body "{'location': '$locationName', 'name': '$tenantName', 'type': 'Microsoft.AzureActiveDirectory/GuestUsages', 'properties': {'tenantId': '$tenantId'}}"
