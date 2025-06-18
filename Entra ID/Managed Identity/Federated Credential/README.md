@@ -1,5 +1,6 @@
 # Use Managed Identity across tenant
-The goal here is to use a User Assigned Managed Identity to read users in a target tenant. In my scenario, from my main tenant, I use an Automation Account with a User Assigned Managed Identity to count users in my external tenant (formerly Azure AD B2C).
+Managed Identity is a powerful feature in Azure that allows you to securely access resources without managing credentials. In this guide, we will demonstrate how to use a User Assigned Managed Identity to read users in a target tenant from your main tenant.
+In my scenario, from my main tenant, I use an Automation Account with a User Assigned Managed Identity to count users in my external tenant (formerly Azure AD B2C).
 
 ## Architecture
 
@@ -16,7 +17,7 @@ The goal here is to use a User Assigned Managed Identity to read users in a targ
 </p>
 
 2. Create a new one
-3. Fill all the field
+3. Fill the fields
 <p align="center" width="100%">
     <img width="70%" src="./images/Create-UMI.png">
 </p>
@@ -33,7 +34,7 @@ The goal here is to use a User Assigned Managed Identity to read users in a targ
     <img width="70%" src="./images/Register-an-appreg.png">
 </p>
 
-4. Assign permissions. (User.Read.All)
+4. Assign permissions (User.Read.All)
 <p align="center" width="100%">
     <img width="70%" src="./images/Give-API-Permission.png">
 </p>
@@ -52,13 +53,11 @@ The goal here is to use a User Assigned Managed Identity to read users in a targ
 </p>
 
 
-
-
 ## Create an Enterprise Application in your target tenant
 
 1. Get the Application ID (client ID) of your App Registration
 2. Go to your other tenant to consent the application
-https://login.microsoftonline.com/common/adminConsent?client_id={client id of the app registration}
+https://login.microsoftonline.com/<tenantid>/adminConsent?client_id={client id of the app registration}
 
 <p align="center" width="100%">
     <img width="70%" src="./images/Register-the-app.png">
@@ -71,12 +70,7 @@ You will get this error
 
 
 
-https://login.microsoftonline.com/076894ec-4485-4768-9702-8269c43a2030/adminConsent?client_id=f004bd68-34a1-4840-977b-1142e0f2251f
-
-
-
 ## Use the Managed Identity with Automation Account
-
 
 <p align="center" width="100%">
     <img width="70%" src="./images/AutomationAccount.png">
@@ -150,3 +144,14 @@ Write-Output "Found $($Result.Count) users in the target tenant ($TargetTenantId
     <img width="70%" src="./images/AutomationAccount-Result.png">
 </p>
 
+
+By following these steps, you can effectively use Managed Identity to access resources across tenants, enhancing security and simplifying identity management.
+
+Feel free to ask if you need more specific changes or additional help!
+
+Sources:
+- https://learn.microsoft.com/en-us/azure/app-service/overview-managed-identity?tabs=portal%2Cpowershell#connect-to-azure-services-in-app-code
+- https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token
+- https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow#third-case-access-token-request-with-a-federated-credential
+- https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation
+- https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-config-app-trust-managed-identity?tabs=microsoft-entra-admin-center%2Cdotnet
