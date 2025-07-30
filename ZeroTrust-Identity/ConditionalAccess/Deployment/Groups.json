@@ -1,6 +1,5 @@
 {
     "Personas": [
-        // Groups required for personas
         {
             "id": "P000",
             "Name": "P-Breakglass",
@@ -95,8 +94,6 @@
         }
     ],
     "Exclusions": [
-        // Groups required for exclusions
-        // Global 
         {
             "id": "E001",
             "Name": "CA-Global-BaseProtection-NonPersonas-Exclusions",
@@ -216,7 +213,6 @@
             "IsAssignableToRole": true,
             "RestrictedAU": false
         },
-        // Internals
         {
             "id": "E200",
             "Name": "CA-Internals-BaseProtection-CompliantorEIDHJ-Exclusions",
@@ -235,7 +231,6 @@
             "IsAssignableToRole": false,
             "RestrictedAU": false
         },
-        // Externals
         {
             "id": "E300",
             "Name": "CA-Externals-BaseProtection-CompliantorEIDHJ-Exclusions",
@@ -254,7 +249,6 @@
             "IsAssignableToRole": false,
             "RestrictedAU": false
         },
-        // Guests
         {
             "id": "E400",
             "Name": "CA-Guests-BaseProtection-MFA-Exclusions",
@@ -338,7 +332,6 @@
             "IsAssignableToRole": false,
             "RestrictedAU": false
         },
-        // Service account
         {
             "id": "E600",
             "Name": "CA-ServiceAccounts-BaseProtection-BlockUntrustedLocations-Exclusions",
@@ -375,8 +368,6 @@
             "IsAssignableToRole": false,
             "RestrictedAU": false
         },
-        // Generic Accounts
-        /// TODO: a implémenter
         {
             "id": "E610",
             "Name": "CA-GenericAccounts-BaseProtection-BlockUntrustedLocations-Exclusions",
@@ -413,11 +404,9 @@
             "IsAssignableToRole": false,
             "RestrictedAU": false
         },
-        // PAW Users
-        /// TODO: ajouter medium pour user risk et signin
         {
             "id": "E700",
-            "Name": "CA-Developers-BaseProtection-MDCA-Exclusions",
+            "Name": "CA-PAW-BaseProtection-MDCA-Exclusions",
             "Type": "manual",
             "Rule": "",
             "Description": "To exclude accounts to CAP",
@@ -426,7 +415,7 @@
         },
         {
             "id": "E701",
-            "Name": "CA-Developers-BaseProtection-MFAUnmanagedDevices-Exclusions",
+            "Name": "CA-PAW-BaseProtection-MFAUnmanagedDevices-Exclusions",
             "Type": "manual",
             "Rule": "",
             "Description": "To exclude accounts to CAP",
@@ -435,7 +424,7 @@
         },
         {
             "id": "E702",
-            "Name": "CA-Developers-DataandAppProtection-IOSorAndroid-Exclusions",
+            "Name": "CA-PAW-DataandAppProtection-IOSorAndroid-Exclusions",
             "Type": "manual",
             "Rule": "",
             "Description": "To exclude accounts to CAP",

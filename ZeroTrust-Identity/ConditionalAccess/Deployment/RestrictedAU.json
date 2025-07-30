@@ -1,11 +1,4 @@
-//Administrative Unit management
 {
-    "AU": [
-        {
-            "id": "AU01",
-            "Name": "CAP-"
-        }
-    ],
     "RestrictedAU": [
         {
             "id": "RAU01",
