@@ -98,7 +98,7 @@ Function SearchTOU {
 $global:IdTOU
 
 # Connect to Microsoft Graph
-# Connect-MgGraph -Scopes 'Policy.Read.All', 'Policy.ReadWrite.ConditionalAccess', 'Application.Read.All', 'Group.ReadWrite.All', 'Directory.ReadWrite.All', 'RoleManagement.ReadWrite.Directory', 'AdministrativeUnit.ReadWrite.All' -TenantId $TenantId -NoWelcome
+Connect-MgGraph -Scopes 'Policy.Read.All', 'Policy.ReadWrite.ConditionalAccess', 'Application.Read.All', 'Group.ReadWrite.All', 'Directory.ReadWrite.All', 'RoleManagement.ReadWrite.Directory', 'AdministrativeUnit.ReadWrite.All' -TenantId $TenantId -NoWelcome
 
 # Path of deployment directory
 $DeploymentDirectory = ".\Deployment"
@@ -286,7 +286,7 @@ If ($Groups) {
         }
     }
     # Write the details of groups to update all CAPs json files
-    $GroupDetails | ConvertTo-Json -Depth 10 | Set-Content -Path "$DeploymentDirectory\GroupDetails.json"
+    $GroupDetails | ConvertTo-Json -Depth 10 | Set-Content -Path "$DeploymentDirectory\GroupDetails.json" -Force
 }
 
 If ($UpdateCAPs) {
@@ -368,7 +368,6 @@ If ($UpdateCAPs) {
                         $ContentPolicy.GrantControls.TermsOfUse = $UpdatedTOUs
                     }
                 }
-
 
                 # Export the file
                 If ($Export -eq $true) {

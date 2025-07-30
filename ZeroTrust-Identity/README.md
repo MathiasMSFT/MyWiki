@@ -1,3 +1,5 @@
+⚠️ IN PROGRESS ⚠️
+
 # Table of Contents
 - [Introduction](#introduction)
 - [Personas](#Personas)
@@ -74,3 +76,37 @@ Your second level:
 # Purview (in progress)
 
 
+# Deployment
+
+## Groups
+Use the script named **Deploy-Solution.ps1** with switch **Groups**. The script will get the list of groups from **Groups.json**.
+Then, a new file named **GroupDetail.json** will appear under the directory. The script will use it to update all Conditional Access json file.
+
+Before running this, be sure the name of your groups match/respect your naming convention.
+Here is an example
+```
+"id": "P100",
+"Name": "P-Admins",
+"Type": "dynamic",
+"Rule": "(user.userPrincipalName -startswith \"adm-\")",
+"Description": "Contains all administrators based on their userPrincipalName",
+"IsAssignableToRole": false,
+"RestrictedAU": true,
+"RestrictedAUName": "CAP-Exceptions"
+```
+- id: id used in different file. Don't change them.
+- Name: name of your Persona
+- Type: type of group (manual or dynamic)
+- Rule: rule used for dynamic group
+- Description: put description that will be helpful for your admins
+- IsAssignableToRole: option in Entra ID to protect your group. Be careful, there is a limitation in your tenant (no more than 500 )
+- RestrictedAU: define if the group will be under the Restricted Administrative Unit (RAU)
+- RestrictedAUName: name of your Restricted Administrative Unit
+
+## UpdateCAPs
+Use the script named **Deploy-Solution.ps1** with switch **UpdateCAPs**. The script will get the list of groups from **GroupsDetails.json**.
+Then, based on the id, the script will replace the id of group in Conditional Access json file by the objectid of the group from **GroupsDetails.json**.
+
+
+## CAPs
+Use the script named **Deploy-Solution.ps1** with switch **CAPs**. The script will create all Conditional Access policies.

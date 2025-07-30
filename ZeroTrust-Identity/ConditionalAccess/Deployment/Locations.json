@@ -1,0 +1,42 @@
+{
+    "Trusted": [
+        {
+            "id": "L000",
+            "Name": "P-Breakglass",
+            "Type": "manual",
+            "Rule": "",
+            "Description": "Contains 2 Breakglass accounts",
+            "IsAssignableToRole": true,
+            "RestrictedAU": true
+        },
+        {
+            "id": "L100",
+            "Name": "P-Admins",
+            "Type": "dynamic",
+            "Rule": "(user.userPrincipalName -startswith \"adm-\")",
+            "Description": "Contains all administrators based on their userPrincipalName",
+            "IsAssignableToRole": false,
+            "RestrictedAU": true
+        }
+    ],
+    "NoTrusted": [
+        {
+            "id": "E001",
+            "Name": "CA-Global-BaseProtection-NonPersonas-Exclusions",
+            "Type": "manual",
+            "Rule": "",
+            "Description": "To exclude accounts to CAP",
+            "IsAssignableToRole": true,
+            "RestrictedAU": false
+        },
+        {
+            "id": "E002",
+            "Name": "CA-Global-ASR-Exclusions",
+            "Type": "manual",
+            "Rule": "",
+            "Description": "To exclude accounts to CAP",
+            "IsAssignableToRole": true,
+            "RestrictedAU": false
+        }
+    ]
+}
