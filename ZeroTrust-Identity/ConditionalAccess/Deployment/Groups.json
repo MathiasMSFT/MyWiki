@@ -86,7 +86,7 @@
         {
             "id": "P620",
             "Name": "P-MTR",
-            "Type": "maual",
+            "Type": "manual",
             "Rule": "",
             "Description": "Containts all Microsoft Teams Rooms accounts",
             "IsAssignableToRole": false,
