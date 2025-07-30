@@ -166,8 +166,6 @@
             "IsAssignableToRole": false,
             "RestrictedAU": false
         },
-        // Admins
-        /// TODO: ajouter medium pour user risk et signin
         {
             "id": "E100",
             "Name": "CA-Admins-BaseProtection-ComplianceandMFA-Exclusions",
@@ -303,8 +301,6 @@
             "IsAssignableToRole": false,
             "RestrictedAU": false
         },
-        // Developers
-        /// TODO: ajouter medium pour user risk et signin
         {
             "id": "E500",
             "Name": "CA-Developers-BaseProtection-MDCA-Exclusions",
