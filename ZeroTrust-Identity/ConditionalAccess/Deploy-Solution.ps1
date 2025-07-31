@@ -405,8 +405,12 @@ If ($DeployCAs) {
                 }
                 $PolicyBodyParam = $PolicyObject | ConvertTo-Json -Depth 10
                 # Create the CAP using Microsoft Graph
-                $null = New-MgIdentityConditionalAccessPolicy -Body $PolicyBodyParam
-                Write-Host "    [✅] Policy created successfully: $($Policy.displayName)"
+                If (!(Get-MgIdentityConditionalAccessPolicy -Filter "displayName eq '$($Policy.displayName)'")) {
+                    $null = New-MgIdentityConditionalAccessPolicy -Body $PolicyBodyParam
+                    Write-Host "    [✅] Policy created successfully: $($Policy.displayName)"
+                } Else {
+                    Write-Host "    [✅] Policy named $($Policy.displayName) already exist" -ForegroundColor Magenta
+                }
             }
             catch {
                 Write-Host "    [❌] Error while creating the policy: $_"
