@@ -13,11 +13,11 @@ Param (
     [Parameter(Mandatory=$false)]
     [switch]$Groups,
     [Parameter(Mandatory=$false)]
-    [switch]$CAPs,
+    [switch]$DeployCAs,
     [Parameter(Mandatory=$false)]
     [switch]$RAUs,
     [Parameter(Mandatory=$false)]
-    [switch]$UpdateCAPs
+    [switch]$GenerateCAs
 )
 
 
@@ -288,7 +288,7 @@ If ($Groups) {
     $GroupDetails | ConvertTo-Json -Depth 10 | Set-Content -Path "$DeploymentDirectory\GroupDetails.json" -Force
 }
 
-If ($UpdateCAPs) {
+If ($GenerateCAs) {
     # Get all groups details
     $GroupDetails = Get-Content -Path "$DeploymentDirectory\GroupDetails.json" -Raw | ConvertFrom-Json  -Depth 10
     # Define $NewGroupIds based on $GroupDetails values
@@ -384,7 +384,7 @@ If ($UpdateCAPs) {
     }
 }
 
-If ($CAPs) {
+If ($DeployCAs) {
     # Conditional Access
     # Get all json files in the directory
     $AllCAPs = Get-ChildItem -Path "$DeploymentDirectory\MyCAs\" -Filter *.json
