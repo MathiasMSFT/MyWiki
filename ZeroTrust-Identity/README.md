@@ -106,6 +106,8 @@ Here is an example
 - RestrictedAU: define if the group will be under the Restricted Administrative Unit (RAU)
 - RestrictedAUName: name of your Restricted Administrative Unit
 
+🚩Be sure your breakglass account are member to the Persona. Don't say *I will do it later* !!
+
 ## UpdateCAPs
 Use the script named **Deploy-Solution.ps1** with switch **UpdateCAPs**. The script will get the list of groups from **GroupsDetails.json**.
 Then, based on the id, the script will replace the id of group in Conditional Access json file by the objectid of the group from **GroupsDetails.json**.
