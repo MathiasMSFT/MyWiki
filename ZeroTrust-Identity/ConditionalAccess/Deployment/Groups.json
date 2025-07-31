@@ -48,7 +48,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "P500",
+            "id": "P800",
             "Name": "P-Developers",
             "Type": "dynamic",
             "Rule": "(user.userPrincipalName -startswith \"dev-\")",
@@ -66,17 +66,8 @@
             "RestrictedAU": false
         },
         {
-            "id": "P610",
+            "id": "P500",
             "Name": "P-GenericAccount",
-            "Type": "dynamic",
-            "Rule": "(user.userPrincipalName -startswith \"g-\")",
-            "Description": "Containts all generic accounts based on their userPrincipalName",
-            "IsAssignableToRole": false,
-            "RestrictedAU": false
-        },
-        {
-            "id": "P700",
-            "Name": "P-PAWUsers",
             "Type": "dynamic",
             "Rule": "(user.userPrincipalName -startswith \"g-\")",
             "Description": "Containts all generic accounts based on their userPrincipalName",
@@ -89,6 +80,15 @@
             "Type": "manual",
             "Rule": "",
             "Description": "Containts all Microsoft Teams Rooms accounts",
+            "IsAssignableToRole": false,
+            "RestrictedAU": false
+        },
+        {
+            "id": "P700",
+            "Name": "P-PAWUsers",
+            "Type": "dynamic",
+            "Rule": "(user.userPrincipalName -startswith \"paw-\")",
+            "Description": "Containts all PAW users based on their userPrincipalName",
             "IsAssignableToRole": false,
             "RestrictedAU": false
         }
@@ -104,7 +104,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E002",
+            "id": "E010",
             "Name": "CA-Global-ASR-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -113,7 +113,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E003",
+            "id": "E011",
             "Name": "CA-Global-ASR-UnknownPLFT-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -121,8 +121,17 @@
             "IsAssignableToRole": true,
             "RestrictedAU": false
         },
+                {
+            "id": "E012",
+            "Name": "CA-Global-ASR-UnTrustedLocations-Exclusions",
+            "Type": "manual",
+            "Rule": "",
+            "Description": "To exclude accounts to CAP",
+            "IsAssignableToRole": true,
+            "RestrictedAU": false
+        },
         {
-            "id": "E004",
+            "id": "E020",
             "Name": "CA-Global-IdentityProtection-High_UserRisk-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -131,7 +140,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E005",
+            "id": "E021",
             "Name": "CA-Global-IdentityProtection-High_SigninRisk-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -140,7 +149,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E006",
+            "id": "E022",
             "Name": "CA-Global-IdentityProtection-LegacyAuth-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -149,7 +158,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E007",
+            "id": "E023",
             "Name": "CA-Global-IdentityProtection-CombinedRegistration-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -158,7 +167,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E008",
+            "id": "E030",
             "Name": "CA-Global-AppProtection-InTune-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -176,7 +185,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E101",
+            "id": "E130",
             "Name": "CA-Admins-DataandAppProtection-IOSorAndroid-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -185,7 +194,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E102",
+            "id": "E120",
             "Name": "CA-Admins-IdentityProtection-Medium_UserRisk-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -194,17 +203,8 @@
             "RestrictedAU": false
         },
         {
-            "id": "E103",
+            "id": "E121",
             "Name": "CA-Admins-IdentityProtection-Medium_SigninRisk-Exclusions",
-            "Type": "manual",
-            "Rule": "",
-            "Description": "To exclude accounts to CAP",
-            "IsAssignableToRole": true,
-            "RestrictedAU": false
-        },
-        {
-            "id": "E104",
-            "Name": "CA-Admins-DataProtection-Session-Exclusions",
             "Type": "manual",
             "Rule": "",
             "Description": "To exclude accounts to CAP",
@@ -221,7 +221,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E201",
+            "id": "E230",
             "Name": "CA-Internals-DataandAppProtection-IOSorAndroid-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -239,7 +239,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E301",
+            "id": "E330",
             "Name": "CA-Externals-DataandAppProtection-IOSorAndroid-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -257,7 +257,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E401",
+            "id": "E420",
             "Name": "CA-Guests-IdentityProtection-TOU-CombinedRegistration-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -266,7 +266,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E402",
+            "id": "E421",
             "Name": "CA-Guests-IdentityProtection-UserRiskandSignin-MFA-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -275,7 +275,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E403",
+            "id": "E410",
             "Name": "CA-Guests-ASR-BlockNonGuestAppAccess-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -284,7 +284,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E404",
+            "id": "E440",
             "Name": "CA-Guests-ComplianceProtection-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -293,7 +293,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E405",
+            "id": "E430",
             "Name": "CA-Guests-DataProtection-Session-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -302,7 +302,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E500",
+            "id": "E800",
             "Name": "CA-Developers-BaseProtection-MDCA-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -311,7 +311,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E501",
+            "id": "E801",
             "Name": "CA-Developers-BaseProtection-MFAUnmanagedDevices-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -320,7 +320,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E502",
+            "id": "E830",
             "Name": "CA-Developers-DataandAppProtection-IOSorAndroid-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -338,7 +338,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E601",
+            "id": "E620",
             "Name": "CA-ServiceAccounts-IdentityProtection-High_UserRisk-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -347,7 +347,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E602",
+            "id": "E621",
             "Name": "CA-ServiceAccounts-IdentityProtection-High_SigninRisk-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -356,7 +356,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E603",
+            "id": "E610",
             "Name": "CA-ServiceAccounts-ASR-BlockAllApps-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -365,7 +365,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E610",
+            "id": "E500",
             "Name": "CA-GenericAccounts-BaseProtection-BlockUntrustedLocations-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -374,7 +374,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E611",
+            "id": "E520",
             "Name": "CA-GenericAccounts-IdentityProtection-High_UserRisk-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -383,7 +383,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E612",
+            "id": "E621",
             "Name": "CA-GenericAccounts-IdentityProtection-High_SigninRisk-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -392,7 +392,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E613",
+            "id": "E510",
             "Name": "CA-GenericAccounts-ASR-BlockAllApps-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -419,7 +419,7 @@
             "RestrictedAU": false
         },
         {
-            "id": "E702",
+            "id": "E730",
             "Name": "CA-PAW-DataandAppProtection-IOSorAndroid-Exclusions",
             "Type": "manual",
             "Rule": "",
