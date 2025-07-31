@@ -17,7 +17,8 @@ Param (
 Connect-MgGraph -Scopes 'Policy.Read.All' -TenantId $TenantId -NoWelcome
 
 # Export path for CAP
-$ExportCAPsPath = ".\Export\"
+$ExportCAPsPath = ".\Export\CAPs"
+$ExportLocationsPath = ".\Export\NamedLocations"
 
 If ($CAPs){
     try {
@@ -55,7 +56,7 @@ If ($Locations){
             try {
                 $LocationName = $Location.DisplayName
                 $Location = $Location | ConvertTo-Json -Depth 10
-                $Location | Out-File "$ExportPath\$LocationName.json" -Force
+                $Location | Out-File "$ExportLocationsPath\$LocationName.json" -Force
                 Write-Host "Successfully export location named $($Location.DisplayName)" -ForegroundColor Green
             }
             catch {
