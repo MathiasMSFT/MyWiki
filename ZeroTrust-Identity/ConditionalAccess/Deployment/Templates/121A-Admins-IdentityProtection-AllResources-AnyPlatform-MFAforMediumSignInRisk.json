@@ -46,7 +46,6 @@
       "ExcludeGroups": [
         "P000",
         "P600",
-        "P620",
         "E121"
       ],
       "ExcludeGuestsOrExternalUsers": {
