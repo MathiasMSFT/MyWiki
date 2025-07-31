@@ -301,7 +301,7 @@ If ($GenerateCAs) {
     $AllCAPs = Get-ChildItem -Path "$DeploymentDirectory\Templates\" -Filter *.json
     ## Check if there are no json files
     If ($AllCAPs.Count -eq 0) {
-        Write-Host "[📢] Json files not found in the directory" -ForegroundColor Yellow
+        Write-Host "[⚠️] Json files not found in the directory" -ForegroundColor Yellow
     } Else {
         ForEach ($Policy in $AllCAPs) {
             try {
@@ -349,6 +349,7 @@ If ($GenerateCAs) {
                     If (!(Get-MgServicePrincipal -Filter "displayName eq 'Microsoft Intune Enrollment'")) {
                         $ContentPolicy.Conditions.Applications.ExcludeApplications = $null
                         Write-Host "      [⚠️] InTune Enrollment will be removed from the policy"
+                        $Export = $false
                     }
                 }
 
