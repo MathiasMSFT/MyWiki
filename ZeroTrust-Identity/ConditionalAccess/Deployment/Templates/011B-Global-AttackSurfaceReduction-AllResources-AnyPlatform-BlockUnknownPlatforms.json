@@ -34,16 +34,17 @@
       "IncludeLocations": null
     },
     "Platforms": {
+      "IncludePlatforms": [
+        "all"
+      ],
       "ExcludePlatforms": [
         "android",
         "iOS",
         "windows",
         "macOS",
         "linux"
-      ],
-      "IncludePlatforms": [
-        "all"
       ]
+
     },
     "ServicePrincipalRiskLevels": [],
     "SignInRiskLevels": [],
