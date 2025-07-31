@@ -34,8 +34,8 @@
       "IncludeLocations": null
     },
     "Platforms": {
-      "ExcludePlatforms": [],
-      "IncludePlatforms": []
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
     },
     "ServicePrincipalRiskLevels": [],
     "SignInRiskLevels": [],
