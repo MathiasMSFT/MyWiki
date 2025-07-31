@@ -78,6 +78,8 @@ Your second level:
 
 # Deployment
 
+## Restricted Administrative Unit
+
 ## Groups
 Use the script named **Deploy-Solution.ps1** with switch **Groups**. The script will get the list of groups from **Groups.json**.
 Then, a new file named **GroupDetail.json** will appear under the directory. The script will use it to update all Conditional Access json file.

@@ -6,6 +6,7 @@
     Deploy Groups and Conditional Access policies from json files.
 #>
 
+
 Param (
     [Parameter(Mandatory=$true)]
     [String]$TenantId,
