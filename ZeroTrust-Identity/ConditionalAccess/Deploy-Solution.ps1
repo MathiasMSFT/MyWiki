@@ -104,10 +104,6 @@ Connect-MgGraph -Scopes 'Policy.Read.All', 'Policy.ReadWrite.ConditionalAccess',
 # Path of deployment directory
 $DeploymentDirectory = ".\Deployment"
 
-# Path of import directory containing your json files
-$CAPDirectory = ".\Import\"
-
-
 If ($Groups) {
     # To store details of groups to update all CAPs json files
     $GroupDetails = @()
@@ -300,7 +296,7 @@ If ($UpdateCAPs) {
     }
 
     # Get all json files in the directory
-    $AllCAPs = Get-ChildItem -Path "$DeploymentDirectory\CAPs\" -Filter *.json
+    $AllCAPs = Get-ChildItem -Path "$DeploymentDirectory\Templates\" -Filter *.json
     ## Check if there are no json files
     If ($AllCAPs.Count -eq 0) {
         Write-Host "[📢] Json files not found in the directory" -ForegroundColor Yellow
@@ -374,7 +370,7 @@ If ($UpdateCAPs) {
                 If ($Export -eq $true) {
                     # Save new file
                     $UpdatedJson = $ContentPolicy | ConvertTo-Json -Depth 10
-                    $Path = "$DeploymentDirectory\newCAPs\$($Policy.Name)"
+                    $Path = "$DeploymentDirectory\MyCAs\$($Policy.Name)"
                     Set-Content -Path $Path -Value $UpdatedJson -Encoding UTF8
                     Write-Host "  [✅] Group IDs updated successfully"
                 }
@@ -389,7 +385,7 @@ If ($UpdateCAPs) {
 If ($CAPs) {
     # Conditional Access
     # Get all json files in the directory
-    $AllCAPs = Get-ChildItem -Path "$DeploymentDirectory\newCAPs\" -Filter *.json
+    $AllCAPs = Get-ChildItem -Path "$DeploymentDirectory\MyCAs\" -Filter *.json
 
     ## Check if there are no json files
     If ($CAPs.Count -eq 0) {
