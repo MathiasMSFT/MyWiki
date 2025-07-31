@@ -390,7 +390,7 @@ If ($DeployCAs) {
     $AllCAPs = Get-ChildItem -Path "$DeploymentDirectory\MyCAs\" -Filter *.json
 
     ## Check if there are no json files
-    If ($CAPs.Count -eq 0) {
+    If ($AllCAPs.Count -eq 0) {
         Write-Host "json files not found in the directory" -ForegroundColor Yellow
     } Else {
         ForEach ($Policy in $AllCAPs) {
