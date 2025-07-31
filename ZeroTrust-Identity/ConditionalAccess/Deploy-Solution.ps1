@@ -20,28 +20,7 @@ Param (
     [switch]$UpdateCAPs
 )
 
-Function CreateRAU {
-    # Restricted Administrative Unit
-    $AllRAUs = Get-Content -Path "$DeploymentDirectory\RestrictedAU.json" | ConvertFrom-Json -Depth 10
 
-    ForEach ($RAU in $AllRAUs.RestrictedAU) {
-        try {
-            $RAUObject = [PSCustomObject]@{
-                displayName     = $RAU.displayName
-                description     = $RAU.description
-                IsMemberManagementRestricted = $true
-            }
-            $RAUBodyParam = $RAUObject | ConvertTo-Json -Depth 10
-
-            # Create the RAU using Microsoft Graph
-            $null = New-MgDirectoryAdministrativeUnit -Body $RAUBodyParam
-            Write-Host "    RAU created successfully: $($RAU.displayName) " -ForegroundColor Green
-        }
-        catch {
-            Write-Host "    Error while creating the RAU: $_" -ForegroundColor Red
-        }
-    }
-}
 # Get Terms Of use
 Function SearchTOU {
     Write-Host "    [-] Search Terms Of Use" -ForegroundColor Yellow
@@ -103,6 +82,29 @@ Connect-MgGraph -Scopes 'Policy.Read.All', 'Policy.ReadWrite.ConditionalAccess',
 
 # Path of deployment directory
 $DeploymentDirectory = ".\Deployment"
+
+If ($RAUs) {
+    # Restricted Administrative Unit
+    $AllRAUs = Get-Content -Path "$DeploymentDirectory\RestrictedAU.json" | ConvertFrom-Json -Depth 10
+
+    ForEach ($RAU in $AllRAUs.RestrictedAU) {
+        try {
+            $RAUObject = [PSCustomObject]@{
+                displayName     = $RAU.displayName
+                description     = $RAU.description
+                IsMemberManagementRestricted = $true
+            }
+            $RAUBodyParam = $RAUObject | ConvertTo-Json -Depth 10
+
+            # Create the RAU using Microsoft Graph
+            $null = New-MgDirectoryAdministrativeUnit -Body $RAUBodyParam
+            Write-Host "    RAU created successfully: $($RAU.displayName) " -ForegroundColor Green
+        }
+        catch {
+            Write-Host "    Error while creating the RAU: $_" -ForegroundColor Red
+        }
+    }
+}
 
 If ($Groups) {
     # To store details of groups to update all CAPs json files
