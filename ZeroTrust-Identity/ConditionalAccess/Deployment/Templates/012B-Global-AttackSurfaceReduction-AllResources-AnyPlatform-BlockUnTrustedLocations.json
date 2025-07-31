@@ -60,9 +60,9 @@
         "P400",
         "P500",
         "P600",
-        "P610",
-        "P620",
-        "P700"
+        "P700",
+        "P800",
+        "P900"
       ],
       "IncludeGuestsOrExternalUsers": {
         "ExternalTenants": {
