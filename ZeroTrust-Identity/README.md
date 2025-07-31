@@ -79,7 +79,7 @@ Your second level:
 # Deployment
 
 ## Restricted Administrative Unit
-Use
+Use the script named **Deploy-Solution.ps1** with switch **RAUs**
 
 ## Groups
 Use the script named **Deploy-Solution.ps1** with switch **Groups**. The script will get the list of groups from **Groups.json**.
