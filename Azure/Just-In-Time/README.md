@@ -40,6 +40,10 @@ You will be prompted to choose a VM from the listed options. The script will the
     <img width="70%" src="./images/Sample-2.png">
 </p>
 
+If you want to start multiple VMs
+<p align="center" width="100%">
+    <img width="70%" src="./images/Sample-3.png">
+</p>
 
 ### Expected Outcome:
 
