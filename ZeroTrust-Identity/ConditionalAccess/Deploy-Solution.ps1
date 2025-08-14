@@ -291,18 +291,21 @@ If ($Locations) {
     $AllLocations = Get-Content -Path "$DeploymentDirectory\Locations.json" -Raw | ConvertFrom-Json -Depth 10
     ForEach ($location in $AllLocations.Locations) {
         try {
-            $LocationObject = [PSCustomObject]@{
-                displayName = $location.Name
-                isTrusted = $location.IsTrusted
-                ipRanges = $location.IpRanges
-            }
-            $LocationBodyParam = $LocationObject | ConvertTo-Json -Depth 10
+            If (!(Get-MgIdentityConditionalAccessNamedLocation -Filter "displayName eq '$($location.Name)'")) {
+                $namedLocation = @{
+                    "@odata.type" = "#microsoft.graph.ipNamedLocation"
+                    displayName = $location.Name
+                    ipRanges = $location.IpRanges
+                    isTrusted = $location.IsTrusted
+                }
 
-            # Create the location using Microsoft Graph
-            $null = New-MgIdentityConditionalAccessNamedLocation -BodyParameter $LocationBodyParam
-            Write-Host "    Location created successfully: $($location.Name)" -ForegroundColor Green
-        }
-        catch {
+                # Create the location using Microsoft Graph
+                $null = New-MgIdentityConditionalAccessNamedLocation -BodyParameter $namedLocation
+                Write-Host "    Location created successfully: $($location.Name)" -ForegroundColor Green
+            } else {
+                Write-Host "    Location already exists: $($location.Name)" -ForegroundColor Magenta
+            }
+        } catch {
             Write-Host "    Error while creating the location: $_" -ForegroundColor Red
         }
     }
