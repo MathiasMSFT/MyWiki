@@ -172,10 +172,6 @@ If ($Groups) {
                         Write-Host "    [✅] Group named $($persona.Name) already exist" -ForegroundColor Magenta
                     }
                 } Else {
-                    # Create RAU
-                    Write-Host "    Create Restricted AU" -ForegroundColor Yellow
-                    CreateRAU
-                    Start-Sleep 5
                     # Create the group using Microsoft Graph to the RAU
                     Write-Host "    Creating group named $($persona.Name)" -ForegroundColor Yellow
                     If (!(Get-MgGroup -Filter "displayName eq '$($persona.Name)'")){
@@ -427,3 +423,4 @@ If ($DeployCAs) {
 ## Administrative Unit
 # Impossible to use groups under Administrative Unit with Identity Governance: https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/admin-units-restricted-management#limitations
 # Only modifiable by GA and PIM Admin (not owner)
+# Use an app and not an account
