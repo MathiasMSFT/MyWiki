@@ -287,23 +287,23 @@ If ($Groups) {
 }
 
 If ($Locations) {
-    # Locations
+    # Locations trusted
     $AllLocations = Get-Content -Path "$DeploymentDirectory\Locations.json" -Raw | ConvertFrom-Json -Depth 10
-    ForEach ($location in $AllLocations.Locations) {
+    ForEach ($location in $AllLocations.Trusted) {
         try {
-            If (!(Get-MgIdentityConditionalAccessNamedLocation -Filter "displayName eq '$($location.Name)'")) {
+            If (!(Get-MgIdentityConditionalAccessNamedLocation -Filter "displayName eq '$($location.DisplayName)'")) {
                 $namedLocation = @{
                     "@odata.type" = "#microsoft.graph.ipNamedLocation"
-                    displayName = $location.Name
+                    displayName = $location.DisplayName
                     ipRanges = $location.IpRanges
                     isTrusted = $location.IsTrusted
                 }
 
                 # Create the location using Microsoft Graph
                 $null = New-MgIdentityConditionalAccessNamedLocation -BodyParameter $namedLocation
-                Write-Host "    Location created successfully: $($location.Name)" -ForegroundColor Green
+                Write-Host "    Location created successfully: $($location.DisplayName)" -ForegroundColor Green
             } else {
-                Write-Host "    Location already exists: $($location.Name)" -ForegroundColor Magenta
+                Write-Host "    Location already exists: $($location.DisplayName)" -ForegroundColor Magenta
             }
         } catch {
             Write-Host "    Error while creating the location: $_" -ForegroundColor Red
