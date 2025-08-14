@@ -1,42 +1,89 @@
 {
     "Trusted": [
         {
-            "id": "L000",
-            "Name": "P-Breakglass",
-            "Type": "manual",
-            "Rule": "",
-            "Description": "Contains 2 Breakglass accounts",
-            "IsAssignableToRole": true,
-            "RestrictedAU": true
+            "id": "LT0xx",
+            "DisplayName": "Trusted Countries",
+            "AdditionalProperties": {
+                "@odata.type": "#microsoft.graph.countryNamedLocation",
+                "isTrusted": true,
+                "countriesAndRegions": [
+                    "CA"
+                ],
+                "includeUnknownCountriesAndRegions": false,
+                "countryLookupMethod": "clientIpAddress"
+            }
         },
         {
-            "id": "L100",
-            "Name": "P-Admins",
-            "Type": "dynamic",
-            "Rule": "(user.userPrincipalName -startswith \"adm-\")",
-            "Description": "Contains all administrators based on their userPrincipalName",
-            "IsAssignableToRole": false,
-            "RestrictedAU": true
+            "id": "LT110",
+            "DisplayName": "Operational",
+            "AdditionalProperties": {
+                "@odata.type": "#microsoft.graph.ipNamedLocation",
+                "isTrusted": true,
+                "ipRanges": [
+                    {
+                        "@odata.type": "#microsoft.graph.iPv4CidrRange",
+                        "cidrAddress": "102.133.177.48/32"
+                    }
+                ]
+            }
+
         }
     ],
     "NoTrusted": [
         {
-            "id": "E001",
-            "Name": "CA-Global-BaseProtection-NonPersonas-Exclusions",
-            "Type": "manual",
-            "Rule": "",
-            "Description": "To exclude accounts to CAP",
-            "IsAssignableToRole": true,
-            "RestrictedAU": false
+            "id": "LU012",
+            "DisplayName": "Blocked Countries (Gov Canada)",
+            "AdditionalProperties": {
+                "@odata.type": "#microsoft.graph.countryNamedLocation",
+                "isTrusted": false,
+                "countriesAndRegions": [
+                    "BY",
+                    "CF",
+                    "CN",
+                    "CD",
+                    "GT",
+                    "HT",
+                    "IR",
+                    "IQ",
+                    "LB",
+                    "LY",
+                    "MD",
+                    "MM",
+                    "NI",
+                    "KP",
+                    "RU",
+                    "SO",
+                    "SS",
+                    "LK",
+                    "SD",
+                    "SY",
+                    "UA",
+                    "VE",
+                    "YE",
+                    "ZW"
+                ],
+                "includeUnknownCountriesAndRegions": true,
+                "countryLookupMethod": "clientIpAddress"
+            }
         },
         {
-            "id": "E002",
-            "Name": "CA-Global-ASR-Exclusions",
-            "Type": "manual",
-            "Rule": "",
-            "Description": "To exclude accounts to CAP",
-            "IsAssignableToRole": true,
-            "RestrictedAU": false
+            "id": "LU110",
+            "DisplayName": "VPN and SAW IP Ranges",
+            "AdditionalProperties": {
+                "@odata.type": "#microsoft.graph.ipNamedLocation",
+                "isTrusted": false,
+                "ipRanges": [
+                    {
+                        "@odata.type": "#microsoft.graph.iPv4CidrRange",
+                        "cidrAddress": "102.133.177.48/32"
+                    },
+                    {
+                        "@odata.type": "#microsoft.graph.iPv6CidrRange",
+                        "cidrAddress": "2a01:110:3000::/42"
+                    }
+                ]
+            }
+
         }
     ]
 }
