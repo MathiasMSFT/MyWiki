@@ -17,7 +17,9 @@ Param (
     [Parameter(Mandatory=$false)]
     [switch]$RAUs,
     [Parameter(Mandatory=$false)]
-    [switch]$GenerateCAs
+    [switch]$GenerateCAs,
+    [Parameter(Mandatory=$false)]
+    [switch]$Locations
 )
 
 
@@ -284,6 +286,28 @@ If ($Groups) {
     $GroupDetails | ConvertTo-Json -Depth 10 | Set-Content -Path "$DeploymentDirectory\GroupDetails.json" -Force
 }
 
+If ($Locations) {
+    # Locations
+    $AllLocations = Get-Content -Path "$DeploymentDirectory\Locations.json" -Raw | ConvertFrom-Json -Depth 10
+    ForEach ($location in $AllLocations.Locations) {
+        try {
+            $LocationObject = [PSCustomObject]@{
+                displayName = $location.Name
+                isTrusted = $location.IsTrusted
+                ipRanges = $location.IpRanges
+            }
+            $LocationBodyParam = $LocationObject | ConvertTo-Json -Depth 10
+
+            # Create the location using Microsoft Graph
+            $null = New-MgIdentityConditionalAccessNamedLocation -BodyParameter $LocationBodyParam
+            Write-Host "    Location created successfully: $($location.Name)" -ForegroundColor Green
+        }
+        catch {
+            Write-Host "    Error while creating the location: $_" -ForegroundColor Red
+        }
+    }
+}
+
 If ($GenerateCAs) {
     # Get all groups details
     $GroupDetails = Get-Content -Path "$DeploymentDirectory\GroupDetails.json" -Raw | ConvertFrom-Json  -Depth 10
@@ -419,8 +443,4 @@ If ($DeployCAs) {
 
 ##########################################################
 #### Notes
-
-## Administrative Unit
-# Impossible to use groups under Administrative Unit with Identity Governance: https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/admin-units-restricted-management#limitations
-# Only modifiable by GA and PIM Admin (not owner)
 # Use an app and not an account
