@@ -287,6 +287,8 @@ If ($Groups) {
 }
 
 If ($Locations) {
+    # To store details of groups to update all CAPs json files
+    $LocationDetails = @()
     # Create / Update Named Locations (Trusted IP ranges)
     $LocationsFile = Join-Path $DeploymentDirectory 'Locations.json'
     if (!(Test-Path $LocationsFile)) {
@@ -303,6 +305,12 @@ If ($Locations) {
             try {
                 if (Get-MgIdentityConditionalAccessNamedLocation -Filter "displayName eq '$($location.DisplayName)'") {
                     Write-Host "    [⚠️] Location already exists: $($location.DisplayName)" -ForegroundColor Yellow
+                    $LocationId = (Get-MgIdentityConditionalAccessNamedLocation -Filter "displayName eq '$($location.DisplayName)'").Id
+                    $LocationDetails += @{
+                        Id = $Location.Id
+                        DisplayName = $location.DisplayName
+                        ObjectGuid = $LocationId
+                    }
                 } Else {
                     # Build ipRanges objects with correct @odata.type
                     if ($location.ipRanges) {
@@ -343,12 +351,20 @@ If ($Locations) {
                         $null = New-MgIdentityConditionalAccessNamedLocation -BodyParameter $namedLocation
                         Write-Host "    [✅] Location created: $($location.DisplayName) (Countries: $($location.CountriesAndRegions -join ', '))" -ForegroundColor Green
                     }
+                    $LocationId = (Get-MgIdentityConditionalAccessNamedLocation -Filter "displayName eq '$($location.DisplayName)'").Id
+                    $LocationDetails += @{
+                        Id = $Location.Id
+                        DisplayName = $location.DisplayName
+                        ObjectGuid = $LocationId
+                    }
                 }
             } catch {
                 Write-Host "    [❌] Error processing location '$($location.DisplayName)': $($_.Exception.Message)" -ForegroundColor Red
             }
         }
     }
+    # Write the details of locations to update all CAs json files
+    $LocationDetails | ConvertTo-Json -Depth 10 | Set-Content -Path "$DeploymentDirectory\LocationDetails.json" -Force
 }
 
 If ($GenerateCAs) {
