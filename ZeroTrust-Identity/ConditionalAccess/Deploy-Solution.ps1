@@ -287,26 +287,71 @@ If ($Groups) {
 }
 
 If ($Locations) {
-    # Locations trusted
-    $AllLocations = Get-Content -Path "$DeploymentDirectory\Locations.json" -Raw | ConvertFrom-Json -Depth 10
-    ForEach ($location in $AllLocations.Trusted) {
+    # Create / Update Named Locations (Trusted IP ranges)
+    $LocationsFile = Join-Path $DeploymentDirectory 'Locations.json'
+    if (!(Test-Path $LocationsFile)) {
+        Write-Host "    [⚠️] Locations file not found: $LocationsFile" -ForegroundColor Yellow
+    } else {
         try {
-            If (!(Get-MgIdentityConditionalAccessNamedLocation -Filter "displayName eq '$($location.DisplayName)'")) {
-                $namedLocation = @{
-                    "@odata.type" = "#microsoft.graph.ipNamedLocation"
-                    displayName = $location.DisplayName
-                    ipRanges = $location.IpRanges
-                    isTrusted = $location.IsTrusted
-                }
-
-                # Create the location using Microsoft Graph
-                $null = New-MgIdentityConditionalAccessNamedLocation -BodyParameter $namedLocation
-                Write-Host "    Location created successfully: $($location.DisplayName)" -ForegroundColor Green
-            } else {
-                Write-Host "    Location already exists: $($location.DisplayName)" -ForegroundColor Magenta
-            }
+            $AllLocations = Get-Content -Path $LocationsFile -Raw | ConvertFrom-Json -Depth 10
         } catch {
-            Write-Host "    Error while creating the location: $_" -ForegroundColor Red
+            Write-Host "    [❌] Unable to parse Locations.json : $($_.Exception.Message)" -ForegroundColor Red
+            return
+        }
+
+        if (-not $AllLocations.Trusted) {
+            Write-Host "    [ℹ️] No 'Trusted' locations array found in Locations.json" -ForegroundColor Yellow
+        } else {
+            foreach ($location in $AllLocations.Trusted) {
+                try {
+                    if (-not $location.DisplayName) { Write-Host "    [⚠️] Skipping entry without DisplayName" -ForegroundColor Yellow; continue }
+                    if (-not $location.IpRanges) { Write-Host "    [⚠️] Skipping '$($location.DisplayName)' (no IpRanges)" -ForegroundColor Yellow; continue }
+
+                    # Build ipRanges objects with correct @odata.type
+                    $ipRangeObjects = @()
+                    foreach ($range in $location.IpRanges) {
+                        $rangeTrim = ($range | Out-String).Trim()
+                        if ($rangeTrim -match ':') {
+                            # IPv6
+                            $ipRangeObjects += @{ '@odata.type' = '#microsoft.graph.iPv6CidrRange'; cidrAddress = $rangeTrim }
+                        } else {
+                            # IPv4
+                            $ipRangeObjects += @{ '@odata.type' = '#microsoft.graph.iPv4CidrRange'; cidrAddress = $rangeTrim }
+                        }
+                    }
+
+                    $existing = Get-MgIdentityConditionalAccessNamedLocation -All -Filter "displayName eq '$($location.DisplayName)'" -ErrorAction SilentlyContinue
+
+                    if (-not $existing) {
+                        $namedLocation = @{
+                            '@odata.type' = '#microsoft.graph.ipNamedLocation'
+                            displayName  = $location.DisplayName
+                            isTrusted    = [bool]$location.IsTrusted
+                            ipRanges     = $ipRangeObjects
+                        }
+                        $null = New-MgIdentityConditionalAccessNamedLocation -BodyParameter $namedLocation
+                        Write-Host "    [✅] Location created: $($location.DisplayName) (Ranges: $($location.IpRanges -join ', '))" -ForegroundColor Green
+                    } else {
+                        # Determine if update is needed (compare sets of cidrAddress)
+                        $existingRanges = $existing.IpRanges.cidrAddress | Sort-Object -Unique
+                        $newRanges = $ipRangeObjects.cidrAddress | Sort-Object -Unique
+                        if (@(Compare-Object $existingRanges $newRanges).Count -gt 0 -or ($existing.IsTrusted -ne [bool]$location.IsTrusted)) {
+                            $updateBody = @{
+                                '@odata.type' = '#microsoft.graph.ipNamedLocation'
+                                displayName  = $location.DisplayName
+                                isTrusted    = [bool]$location.IsTrusted
+                                ipRanges     = $ipRangeObjects
+                            }
+                            Update-MgIdentityConditionalAccessNamedLocation -NamedLocationId $existing.Id -BodyParameter $updateBody | Out-Null
+                            Write-Host "    [🔄] Location updated: $($location.DisplayName)" -ForegroundColor Cyan
+                        } else {
+                            Write-Host "    [↺] Location unchanged: $($location.DisplayName)" -ForegroundColor Magenta
+                        }
+                    }
+                } catch {
+                    Write-Host "    [❌] Error processing location '$($location.DisplayName)': $($_.Exception.Message)" -ForegroundColor Red
+                }
+            }
         }
     }
 }
