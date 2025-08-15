@@ -1,89 +1,78 @@
 {
-    "Trusted": [
+    "namedLocations": [
         {
-            "id": "LT0xx",
+            "id": "L0xxT",
             "DisplayName": "Trusted Countries",
-            "AdditionalProperties": {
-                "@odata.type": "#microsoft.graph.countryNamedLocation",
-                "isTrusted": true,
-                "countriesAndRegions": [
-                    "CA"
-                ],
-                "includeUnknownCountriesAndRegions": false,
-                "countryLookupMethod": "clientIpAddress"
-            }
+            "type": "#microsoft.graph.countryNamedLocation",
+            "isTrusted": true,
+            "countriesAndRegions": [
+                "CA",
+                "US"
+            ],
+            "includeUnknownCountriesAndRegions": false,
+            "countryLookupMethod": "clientIpAddress"
         },
         {
-            "id": "LT110",
+            "id": "L110T",
             "DisplayName": "Operational",
-            "AdditionalProperties": {
-                "@odata.type": "#microsoft.graph.ipNamedLocation",
-                "isTrusted": true,
-                "ipRanges": [
-                    {
-                        "@odata.type": "#microsoft.graph.iPv4CidrRange",
-                        "cidrAddress": "102.133.177.48/32"
-                    }
-                ]
-            }
-
-        }
-    ],
-    "NoTrusted": [
-        {
-            "id": "LU012",
-            "DisplayName": "Blocked Countries (Gov Canada)",
-            "AdditionalProperties": {
-                "@odata.type": "#microsoft.graph.countryNamedLocation",
-                "isTrusted": false,
-                "countriesAndRegions": [
-                    "BY",
-                    "CF",
-                    "CN",
-                    "CD",
-                    "GT",
-                    "HT",
-                    "IR",
-                    "IQ",
-                    "LB",
-                    "LY",
-                    "MD",
-                    "MM",
-                    "NI",
-                    "KP",
-                    "RU",
-                    "SO",
-                    "SS",
-                    "LK",
-                    "SD",
-                    "SY",
-                    "UA",
-                    "VE",
-                    "YE",
-                    "ZW"
-                ],
-                "includeUnknownCountriesAndRegions": true,
-                "countryLookupMethod": "clientIpAddress"
-            }
+            "type": "#microsoft.graph.ipNamedLocation",
+            "isTrusted": true,
+            "ipRanges": [
+                {
+                    "@odata.type": "#microsoft.graph.iPv4CidrRange",
+                    "cidrAddress": "102.133.177.48/32"
+                }
+            ]
         },
         {
-            "id": "LU110",
-            "DisplayName": "VPN and SAW IP Ranges",
-            "AdditionalProperties": {
-                "@odata.type": "#microsoft.graph.ipNamedLocation",
-                "isTrusted": false,
-                "ipRanges": [
-                    {
-                        "@odata.type": "#microsoft.graph.iPv4CidrRange",
-                        "cidrAddress": "102.133.177.48/32"
-                    },
-                    {
-                        "@odata.type": "#microsoft.graph.iPv6CidrRange",
-                        "cidrAddress": "2a01:110:3000::/42"
-                    }
-                ]
-            }
-
+            "id": "L012U",
+            "DisplayName": "Blocked Countries (Gov Canada)",
+            "type": "#microsoft.graph.countryNamedLocation",
+            "isTrusted": false,
+            "countriesAndRegions": [
+                "BY",
+                "CF",
+                "CN",
+                "CD",
+                "GT",
+                "HT",
+                "IR",
+                "IQ",
+                "LB",
+                "LY",
+                "MD",
+                "MM",
+                "NI",
+                "KP",
+                "RU",
+                "SO",
+                "SS",
+                "LK",
+                "SD",
+                "SY",
+                "UA",
+                "VE",
+                "YE",
+                "ZW"
+            ],
+            "includeUnknownCountriesAndRegions": true,
+            "countryLookupMethod": "clientIpAddress"
+        },
+        {
+            "id": "L110U",
+            "DisplayName": "Partner Network Untrusted",
+            "type": "#microsoft.graph.ipNamedLocation",
+            "isTrusted": false,
+            "ipRanges": [
+                {
+                    "@odata.type": "#microsoft.graph.iPv4CidrRange",
+                    "cidrAddress": "102.133.177.48/32"
+                },
+                {
+                    "@odata.type": "#microsoft.graph.iPv6CidrRange",
+                    "cidrAddress": "2a01:110:3000::/42"
+                }
+            ]
         }
     ]
 }
