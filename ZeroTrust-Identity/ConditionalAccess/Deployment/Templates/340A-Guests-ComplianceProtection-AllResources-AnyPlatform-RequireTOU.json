@@ -34,17 +34,8 @@
       "IncludeLocations": null
     },
     "Platforms": {
-      "IncludePlatforms": [
-        "all"
-      ],
-      "ExcludePlatforms": [
-        "android",
-        "iOS",
-        "windows",
-        "macOS",
-        "linux"
-      ]
-
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
     },
     "ServicePrincipalRiskLevels": [],
     "SignInRiskLevels": [],
@@ -52,7 +43,7 @@
     "Users": {
       "ExcludeGroups": [
         "P000",
-        "E011"
+        "E440"
       ],
       "ExcludeGuestsOrExternalUsers": {
         "ExternalTenants": {
@@ -62,28 +53,20 @@
       },
       "ExcludeRoles": [],
       "ExcludeUsers": [],
-      "IncludeGroups": [
-        "P100",
-        "P200",
-        "P300",
-        "P400",
-        "P500",
-        "P600",
-        "P700"
-      ],
+      "IncludeGroups": [],
       "IncludeGuestsOrExternalUsers": {
         "ExternalTenants": {
-          "MembershipKind": null
+          "MembershipKind": "all"
         },
-        "GuestOrExternalUserTypes": null
+        "GuestOrExternalUserTypes": "internalGuest,b2bCollaborationGuest,b2bCollaborationMember,b2bDirectConnectUser,otherExternalUser,serviceProvider"
       },
       "IncludeRoles": [],
       "IncludeUsers": []
     }
   },
-  "CreatedDateTime": "2024-06-17T19:11:24.4566705Z",
+  "CreatedDateTime": "2024-06-18T01:24:53.4687992Z",
   "Description": null,
-  "DisplayName": "011B-Global-AttackSurfaceReduction-AllResources-AnyPlatform-BlockUnknownPlatforms",
+  "DisplayName": "340A-Guests-ComplianceProtection-AllResources-AnyPlatform-RequireTOU",
   "GrantControls": {
     "AuthenticationStrength": {
       "AllowedCombinations": null,
@@ -96,15 +79,15 @@
       "PolicyType": null,
       "RequirementsSatisfied": null
     },
-    "BuiltInControls": [
-      "block"
-    ],
+    "BuiltInControls": [],
     "CustomAuthenticationFactors": [],
     "Operator": "OR",
-    "TermsOfUse": []
+    "TermsOfUse": [
+      "0915c1d2-1ec3-407e-ad6e-9dfa066c8aaf"
+    ]
   },
-  "Id": "019292e5-4833-40a4-b7aa-7601984832d6",
-  "ModifiedDateTime": "2024-06-18T00:18:42.7304326Z",
+  "Id": "01ba199c-2775-43b0-917b-9590d907b2f8",
+  "ModifiedDateTime": null,
   "SessionControls": {
     "ApplicationEnforcedRestrictions": {
       "IsEnabled": null

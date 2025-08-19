@@ -34,25 +34,18 @@
       "IncludeLocations": null
     },
     "Platforms": {
-      "IncludePlatforms": [
-        "all"
-      ],
-      "ExcludePlatforms": [
-        "android",
-        "iOS",
-        "windows",
-        "macOS",
-        "linux"
-      ]
-
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
     },
     "ServicePrincipalRiskLevels": [],
-    "SignInRiskLevels": [],
+    "SignInRiskLevels": [
+      "high"
+    ],
     "UserRiskLevels": [],
     "Users": {
       "ExcludeGroups": [
         "P000",
-        "E011"
+        "E121"
       ],
       "ExcludeGuestsOrExternalUsers": {
         "ExternalTenants": {
@@ -63,13 +56,7 @@
       "ExcludeRoles": [],
       "ExcludeUsers": [],
       "IncludeGroups": [
-        "P100",
-        "P200",
-        "P300",
-        "P400",
-        "P500",
-        "P600",
-        "P700"
+        "P100"
       ],
       "IncludeGuestsOrExternalUsers": {
         "ExternalTenants": {
@@ -81,9 +68,9 @@
       "IncludeUsers": []
     }
   },
-  "CreatedDateTime": "2024-06-17T19:11:24.4566705Z",
+  "CreatedDateTime": "2024-06-17T22:04:54.0111353Z",
   "Description": null,
-  "DisplayName": "011B-Global-AttackSurfaceReduction-AllResources-AnyPlatform-BlockUnknownPlatforms",
+  "DisplayName": "121A-Admins-IdentityProtection-AllResources-AnyPlatform-BlockHighSignInRisk",
   "GrantControls": {
     "AuthenticationStrength": {
       "AllowedCombinations": null,
@@ -103,8 +90,8 @@
     "Operator": "OR",
     "TermsOfUse": []
   },
-  "Id": "019292e5-4833-40a4-b7aa-7601984832d6",
-  "ModifiedDateTime": "2024-06-18T00:18:42.7304326Z",
+  "Id": "d4068257-18b7-4d2a-bb62-1b5fdf44e840",
+  "ModifiedDateTime": "2024-06-18T00:44:37.6335474Z",
   "SessionControls": {
     "ApplicationEnforcedRestrictions": {
       "IsEnabled": null

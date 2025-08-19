@@ -5,7 +5,9 @@
         "Mode": null,
         "Rule": null
       },
-      "ExcludeApplications": [],
+      "ExcludeApplications": [
+        "d4ebce55-015a-49b5-a083-c84d1797ae8c"
+      ],
       "IncludeApplications": [
         "All"
       ],
@@ -34,17 +36,8 @@
       "IncludeLocations": null
     },
     "Platforms": {
-      "IncludePlatforms": [
-        "all"
-      ],
-      "ExcludePlatforms": [
-        "android",
-        "iOS",
-        "windows",
-        "macOS",
-        "linux"
-      ]
-
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
     },
     "ServicePrincipalRiskLevels": [],
     "SignInRiskLevels": [],
@@ -52,7 +45,7 @@
     "Users": {
       "ExcludeGroups": [
         "P000",
-        "E011"
+        "E800"
       ],
       "ExcludeGuestsOrExternalUsers": {
         "ExternalTenants": {
@@ -63,13 +56,7 @@
       "ExcludeRoles": [],
       "ExcludeUsers": [],
       "IncludeGroups": [
-        "P100",
-        "P200",
-        "P300",
-        "P400",
-        "P500",
-        "P600",
-        "P700"
+        "P800"
       ],
       "IncludeGuestsOrExternalUsers": {
         "ExternalTenants": {
@@ -81,9 +68,9 @@
       "IncludeUsers": []
     }
   },
-  "CreatedDateTime": "2024-06-17T19:11:24.4566705Z",
+  "CreatedDateTime": "2024-06-18T01:49:57.5409688Z",
   "Description": null,
-  "DisplayName": "011B-Global-AttackSurfaceReduction-AllResources-AnyPlatform-BlockUnknownPlatforms",
+  "DisplayName": "800A-Developers-BaseProtection-AllResources-AnyPlatform-ForwardToDefenderforCloudApps",
   "GrantControls": {
     "AuthenticationStrength": {
       "AllowedCombinations": null,
@@ -96,22 +83,20 @@
       "PolicyType": null,
       "RequirementsSatisfied": null
     },
-    "BuiltInControls": [
-      "block"
-    ],
-    "CustomAuthenticationFactors": [],
-    "Operator": "OR",
-    "TermsOfUse": []
+    "BuiltInControls": null,
+    "CustomAuthenticationFactors": null,
+    "Operator": null,
+    "TermsOfUse": null
   },
-  "Id": "019292e5-4833-40a4-b7aa-7601984832d6",
-  "ModifiedDateTime": "2024-06-18T00:18:42.7304326Z",
+  "Id": "9393bf7c-ee0b-4051-89b0-fa37fb8988d4",
+  "ModifiedDateTime": null,
   "SessionControls": {
     "ApplicationEnforcedRestrictions": {
       "IsEnabled": null
     },
     "CloudAppSecurity": {
-      "CloudAppSecurityType": null,
-      "IsEnabled": null
+      "CloudAppSecurityType": "mcasConfigured",
+      "IsEnabled": true
     },
     "DisableResilienceDefaults": null,
     "PersistentBrowser": {

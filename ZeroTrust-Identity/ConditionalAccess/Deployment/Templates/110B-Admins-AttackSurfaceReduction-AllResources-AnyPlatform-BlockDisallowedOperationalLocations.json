@@ -34,17 +34,8 @@
       "IncludeLocations": null
     },
     "Platforms": {
-      "IncludePlatforms": [
-        "all"
-      ],
-      "ExcludePlatforms": [
-        "android",
-        "iOS",
-        "windows",
-        "macOS",
-        "linux"
-      ]
-
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
     },
     "ServicePrincipalRiskLevels": [],
     "SignInRiskLevels": [],
@@ -52,7 +43,7 @@
     "Users": {
       "ExcludeGroups": [
         "P000",
-        "E011"
+        "E012"
       ],
       "ExcludeGuestsOrExternalUsers": {
         "ExternalTenants": {
@@ -63,13 +54,7 @@
       "ExcludeRoles": [],
       "ExcludeUsers": [],
       "IncludeGroups": [
-        "P100",
-        "P200",
-        "P300",
-        "P400",
-        "P500",
-        "P600",
-        "P700"
+        "P100"
       ],
       "IncludeGuestsOrExternalUsers": {
         "ExternalTenants": {
@@ -83,7 +68,7 @@
   },
   "CreatedDateTime": "2024-06-17T19:11:24.4566705Z",
   "Description": null,
-  "DisplayName": "011B-Global-AttackSurfaceReduction-AllResources-AnyPlatform-BlockUnknownPlatforms",
+  "DisplayName": "110B-Admins-AttackSurfaceReduction-AllResources-AnyPlatform-BlockDisallowedOperationalLocations",
   "GrantControls": {
     "AuthenticationStrength": {
       "AllowedCombinations": null,

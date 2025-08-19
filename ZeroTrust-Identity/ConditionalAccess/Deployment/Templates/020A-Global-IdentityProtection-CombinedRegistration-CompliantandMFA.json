@@ -6,11 +6,11 @@
         "Rule": null
       },
       "ExcludeApplications": [],
-      "IncludeApplications": [
-        "All"
-      ],
+      "IncludeApplications": [],
       "IncludeAuthenticationContextClassReferences": [],
-      "IncludeUserActions": []
+      "IncludeUserActions": [
+        "urn:user:registersecurityinfo"
+      ]
     },
     "ClientAppTypes": [
       "all"
@@ -34,17 +34,8 @@
       "IncludeLocations": null
     },
     "Platforms": {
-      "IncludePlatforms": [
-        "all"
-      ],
-      "ExcludePlatforms": [
-        "android",
-        "iOS",
-        "windows",
-        "macOS",
-        "linux"
-      ]
-
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
     },
     "ServicePrincipalRiskLevels": [],
     "SignInRiskLevels": [],
@@ -52,13 +43,13 @@
     "Users": {
       "ExcludeGroups": [
         "P000",
-        "E011"
+        "E023"
       ],
       "ExcludeGuestsOrExternalUsers": {
         "ExternalTenants": {
-          "MembershipKind": null
+          "MembershipKind": "all"
         },
-        "GuestOrExternalUserTypes": null
+        "GuestOrExternalUserTypes": "internalGuest,b2bCollaborationGuest,b2bCollaborationMember,b2bDirectConnectUser,otherExternalUser,serviceProvider"
       },
       "ExcludeRoles": [],
       "ExcludeUsers": [],
@@ -66,9 +57,7 @@
         "P100",
         "P200",
         "P300",
-        "P400",
         "P500",
-        "P600",
         "P700"
       ],
       "IncludeGuestsOrExternalUsers": {
@@ -81,9 +70,9 @@
       "IncludeUsers": []
     }
   },
-  "CreatedDateTime": "2024-06-17T19:11:24.4566705Z",
+  "CreatedDateTime": "2024-06-17T19:11:17.8238197Z",
   "Description": null,
-  "DisplayName": "011B-Global-AttackSurfaceReduction-AllResources-AnyPlatform-BlockUnknownPlatforms",
+  "DisplayName": "020A-Global-IdentityProtection-CombinedRegistration-CompliantandMFA.json",
   "GrantControls": {
     "AuthenticationStrength": {
       "AllowedCombinations": null,
@@ -97,14 +86,15 @@
       "RequirementsSatisfied": null
     },
     "BuiltInControls": [
-      "block"
+      "compliantDevice",
+      "mfa"
     ],
     "CustomAuthenticationFactors": [],
-    "Operator": "OR",
+    "Operator": "AND",
     "TermsOfUse": []
   },
-  "Id": "019292e5-4833-40a4-b7aa-7601984832d6",
-  "ModifiedDateTime": "2024-06-18T00:18:42.7304326Z",
+  "Id": "b342a530-f657-45da-961a-75034c6dc15b",
+  "ModifiedDateTime": "2024-06-18T00:28:27.3997835Z",
   "SessionControls": {
     "ApplicationEnforcedRestrictions": {
       "IsEnabled": null

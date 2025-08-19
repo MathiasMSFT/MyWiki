@@ -13,7 +13,8 @@
       "IncludeUserActions": []
     },
     "ClientAppTypes": [
-      "all"
+      "exchangeActiveSync",
+      "other"
     ],
     "ClientApplications": {
       "ExcludeServicePrincipals": null,
@@ -34,17 +35,8 @@
       "IncludeLocations": null
     },
     "Platforms": {
-      "IncludePlatforms": [
-        "all"
-      ],
-      "ExcludePlatforms": [
-        "android",
-        "iOS",
-        "windows",
-        "macOS",
-        "linux"
-      ]
-
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
     },
     "ServicePrincipalRiskLevels": [],
     "SignInRiskLevels": [],
@@ -52,7 +44,7 @@
     "Users": {
       "ExcludeGroups": [
         "P000",
-        "E011"
+        "E022"
       ],
       "ExcludeGuestsOrExternalUsers": {
         "ExternalTenants": {
@@ -62,15 +54,7 @@
       },
       "ExcludeRoles": [],
       "ExcludeUsers": [],
-      "IncludeGroups": [
-        "P100",
-        "P200",
-        "P300",
-        "P400",
-        "P500",
-        "P600",
-        "P700"
-      ],
+      "IncludeGroups": [],
       "IncludeGuestsOrExternalUsers": {
         "ExternalTenants": {
           "MembershipKind": null
@@ -78,12 +62,14 @@
         "GuestOrExternalUserTypes": null
       },
       "IncludeRoles": [],
-      "IncludeUsers": []
+      "IncludeUsers": [
+        "All"
+      ]
     }
   },
-  "CreatedDateTime": "2024-06-17T19:11:24.4566705Z",
+  "CreatedDateTime": "2024-06-17T19:11:19.8702092Z",
   "Description": null,
-  "DisplayName": "011B-Global-AttackSurfaceReduction-AllResources-AnyPlatform-BlockUnknownPlatforms",
+  "DisplayName": "015B-Global-IdentityProtection-AllResources-AnyPlatform-BlockLegacyAuth",
   "GrantControls": {
     "AuthenticationStrength": {
       "AllowedCombinations": null,
@@ -103,8 +89,8 @@
     "Operator": "OR",
     "TermsOfUse": []
   },
-  "Id": "019292e5-4833-40a4-b7aa-7601984832d6",
-  "ModifiedDateTime": "2024-06-18T00:18:42.7304326Z",
+  "Id": "cc7857ad-7520-4c04-90fe-d01d881ec370",
+  "ModifiedDateTime": "2024-06-18T00:27:48.5996423Z",
   "SessionControls": {
     "ApplicationEnforcedRestrictions": {
       "IsEnabled": null

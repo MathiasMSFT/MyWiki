@@ -7,7 +7,7 @@
       },
       "ExcludeApplications": [],
       "IncludeApplications": [
-        "All"
+        "d4ebce55-015a-49b5-a083-c84d1797ae8c"
       ],
       "IncludeAuthenticationContextClassReferences": [],
       "IncludeUserActions": []
@@ -34,17 +34,8 @@
       "IncludeLocations": null
     },
     "Platforms": {
-      "IncludePlatforms": [
-        "all"
-      ],
-      "ExcludePlatforms": [
-        "android",
-        "iOS",
-        "windows",
-        "macOS",
-        "linux"
-      ]
-
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
     },
     "ServicePrincipalRiskLevels": [],
     "SignInRiskLevels": [],
@@ -52,7 +43,7 @@
     "Users": {
       "ExcludeGroups": [
         "P000",
-        "E011"
+        "E030"
       ],
       "ExcludeGuestsOrExternalUsers": {
         "ExternalTenants": {
@@ -66,9 +57,7 @@
         "P100",
         "P200",
         "P300",
-        "P400",
         "P500",
-        "P600",
         "P700"
       ],
       "IncludeGuestsOrExternalUsers": {
@@ -81,9 +70,9 @@
       "IncludeUsers": []
     }
   },
-  "CreatedDateTime": "2024-06-17T19:11:24.4566705Z",
+  "CreatedDateTime": "2024-06-17T22:16:33.7473734Z",
   "Description": null,
-  "DisplayName": "011B-Global-AttackSurfaceReduction-AllResources-AnyPlatform-BlockUnknownPlatforms",
+  "DisplayName": "030A-Global-AppProtection-MicrosoftIntuneEnrollment-AnyPlatform-MFA",
   "GrantControls": {
     "AuthenticationStrength": {
       "AllowedCombinations": null,
@@ -97,14 +86,14 @@
       "RequirementsSatisfied": null
     },
     "BuiltInControls": [
-      "block"
+      "mfa"
     ],
     "CustomAuthenticationFactors": [],
     "Operator": "OR",
     "TermsOfUse": []
   },
-  "Id": "019292e5-4833-40a4-b7aa-7601984832d6",
-  "ModifiedDateTime": "2024-06-18T00:18:42.7304326Z",
+  "Id": "23e35a29-67c3-480e-afd5-a738d8f8f537",
+  "ModifiedDateTime": "2024-06-18T00:28:58.6052651Z",
   "SessionControls": {
     "ApplicationEnforcedRestrictions": {
       "IsEnabled": null
