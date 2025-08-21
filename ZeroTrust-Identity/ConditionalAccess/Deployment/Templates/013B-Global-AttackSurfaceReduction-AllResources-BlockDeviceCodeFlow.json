@@ -46,7 +46,8 @@
     "UserRiskLevels": [],
     "Users": {
       "ExcludeGroups": [
-        "P000"
+        "P000",
+        "P013"
       ],
       "ExcludeGuestsOrExternalUsers": {
         "ExternalTenants": {

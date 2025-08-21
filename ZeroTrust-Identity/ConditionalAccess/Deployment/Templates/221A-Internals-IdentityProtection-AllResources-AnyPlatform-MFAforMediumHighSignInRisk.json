@@ -45,8 +45,7 @@
     "Users": {
       "ExcludeGroups": [
         "P000",
-        "P600",
-        "E121"
+        "E221"
       ],
       "ExcludeGuestsOrExternalUsers": {
         "ExternalTenants": {
@@ -57,7 +56,7 @@
       "ExcludeRoles": [],
       "ExcludeUsers": [],
       "IncludeGroups": [
-        "P100"
+        "P200"
       ],
       "IncludeGuestsOrExternalUsers": {
         "ExternalTenants": {

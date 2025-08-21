@@ -56,8 +56,9 @@
       "IncludeGroups": [
         "P100",
         "P200",
-        "P300",
+        "P400",
         "P500",
+        "P600",
         "P700"
       ],
       "IncludeGuestsOrExternalUsers": {

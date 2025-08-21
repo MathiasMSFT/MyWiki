@@ -46,7 +46,7 @@
     "Users": {
       "ExcludeGroups": [
         "P000",
-        "E410"
+        "E310"
       ],
       "ExcludeGuestsOrExternalUsers": {
         "ExternalTenants": {
