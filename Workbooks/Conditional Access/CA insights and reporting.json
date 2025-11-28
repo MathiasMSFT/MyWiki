@@ -24,7 +24,6 @@
             "quote": "'",
             "delimiter": ",",
             "value": [
-              "/subscriptions/1cd758ce-de25-439f-9d82-685e63ce8bf0/resourcegroups/rg-logs/providers/microsoft.operationalinsights/workspaces/la-azuread"
             ],
             "typeSettings": {
               "resourceTypeFilter": {
@@ -2090,11 +2089,7 @@
       "name": "Service principal sign-ins tab"
     }
   ],
-  "fallbackResourceIds": [
-    "/subscriptions/1cd758ce-de25-439f-9d82-685e63ce8bf0/resourcegroups/rg-logs/providers/microsoft.operationalinsights/workspaces/la-azuread",
-    "/subscriptions/1cd758ce-de25-439f-9d82-685e63ce8bf0/resourcegroups/defaultresourcegroup-eus/providers/microsoft.operationalinsights/workspaces/workspace-96917d1f-df15-40d8-8785-7e8be074f033-eus",
-    "/subscriptions/1cd758ce-de25-439f-9d82-685e63ce8bf0/resourceGroups/rg-logs/providers/Microsoft.OperationalInsights/workspaces/la-sentinel"
-  ],
+  "fallbackResourceIds": [],
   "fromTemplateId": "community-Workbooks/Azure Active Directory Conditional Access/Conditional Access Insights and Reporting",
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
 }
