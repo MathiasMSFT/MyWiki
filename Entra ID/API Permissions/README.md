@@ -1,5 +1,6 @@
 # App Inventory — Export app permissions & consents (PowerShell)
 
+## Script
 Purpose
 - Export service principals (Enterprise Apps), their application permissions (app role assignments) and delegated consents (oauth2PermissionGrants), flatten the results (one row per permission/consent), and optionally export a CSV for Power BI.
 
@@ -67,6 +68,18 @@ Troubleshooting
     - `Invoke-RestMethod -Headers $authHeader -Uri "https://graph.microsoft.com/v1.0/oauth2PermissionGrants?`$filter=clientId eq '$spId'" | Select-Object -ExpandProperty value`
     - `Invoke-RestMethod -Headers $authHeader -Uri "https://graph.microsoft.com/v1.0/oauth2PermissionGrants?`$filter=resourceId eq '$spId'" | Select-Object -ExpandProperty value`
 - No results: check `-IncludeBuiltin`, token permissions, and that SP exists in this tenant.
+
+
+## Power BI
+
+Prerequisites
+- download Power BI desktop
+
+How it works
+- Open the pbix file and update the source path of the csv file
+- Read the description
+- Play with the filter
+
 
 # Credit
 
