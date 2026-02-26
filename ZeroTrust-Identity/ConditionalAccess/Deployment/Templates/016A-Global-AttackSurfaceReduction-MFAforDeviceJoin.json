@@ -1,120 +1,120 @@
 {
-  "Conditions": {
-    "Applications": {
-      "ApplicationFilter": {
-        "Mode": null,
-        "Rule": null
+  "conditions": {
+    "applications": {
+      "applicationFilter": {
+        "mode": null,
+        "rule": null
       },
-      "ExcludeApplications": [],
-      "IncludeApplications": [],
-      "IncludeAuthenticationContextClassReferences": [],
-      "IncludeUserActions": [
+      "excludeApplications": [],
+      "includeApplications": [],
+      "includeAuthenticationContextClassReferences": [],
+      "includeUserActions": [
         "urn:user:registerdevice"
       ]
     },
-    "AuthenticationFlows": {
-      "TransferMethods": null
+    "authenticationFlows": {
+      "transferMethods": null
     },
-    "ClientAppTypes": [
+    "clientAppTypes": [
       "all"
     ],
-    "ClientApplications": {
-      "ExcludeServicePrincipals": null,
-      "IncludeServicePrincipals": null,
-      "ServicePrincipalFilter": {
-        "Mode": null,
-        "Rule": null
+    "clientApplications": {
+      "excludeServicePrincipals": null,
+      "includeServicePrincipals": null,
+      "servicePrincipalFilter": {
+        "mode": null,
+        "rule": null
       }
     },
-    "Devices": {
-      "DeviceFilter": {
-        "Mode": null,
-        "Rule": null
+    "devices": {
+      "deviceFilter": {
+        "mode": null,
+        "rule": null
       }
     },
-    "InsiderRiskLevels": null,
-    "Locations": {
-      "ExcludeLocations": null,
-      "IncludeLocations": null
+    "insiderRiskLevels": null,
+    "locations": {
+      "excludeLocations": null,
+      "includeLocations": null
     },
-    "Platforms": {
-      "ExcludePlatforms": null,
-      "IncludePlatforms": null
+    "platforms": {
+      "excludePlatforms": null,
+      "includePlatforms": null
     },
-    "ServicePrincipalRiskLevels": [],
-    "SignInRiskLevels": [],
-    "UserRiskLevels": [],
-    "Users": {
-      "ExcludeGroups": [
+    "servicePrincipalRiskLevels": [],
+    "signInRiskLevels": [],
+    "userRiskLevels": [],
+    "users": {
+      "excludeGroups": [
         "P000"
       ],
-      "ExcludeGuestsOrExternalUsers": {
-        "ExternalTenants": {
-          "MembershipKind": null
+      "excludeGuestsOrExternalUsers": {
+        "externalTenants": {
+          "membershipKind": null
         },
-        "GuestOrExternalUserTypes": null
+        "guestOrExternalUserTypes": null
       },
-      "ExcludeRoles": [],
-      "ExcludeUsers": [],
-      "IncludeGroups": [],
-      "IncludeGuestsOrExternalUsers": {
-        "ExternalTenants": {
-          "MembershipKind": null
+      "excludeRoles": [],
+      "excludeUsers": [],
+      "includeGroups": [],
+      "includeGuestsOrExternalUsers": {
+        "externalTenants": {
+          "membershipKind": null
         },
-        "GuestOrExternalUserTypes": null
+        "guestOrExternalUserTypes": null
       },
-      "IncludeRoles": [],
-      "IncludeUsers": [
+      "includeRoles": [],
+      "includeUsers": [
         "All"
       ]
     }
   },
-  "CreatedDateTime": "2025-07-31T23:48:18.5305469Z",
-  "Description": null,
-  "DisplayName": "016A-Global-AttackSurfaceReduction-MFAforDeviceJoin",
-  "GrantControls": {
-    "AuthenticationStrength": {
-      "AllowedCombinations": null,
-      "CombinationConfigurations": null,
-      "CreatedDateTime": null,
-      "Description": null,
-      "DisplayName": null,
-      "Id": null,
-      "ModifiedDateTime": null,
-      "PolicyType": null,
-      "RequirementsSatisfied": null
+  "createdDateTime": "2025-07-31T23:48:18.5305469Z",
+  "description": null,
+  "displayName": "016A-Global-AttackSurfaceReduction-MFAforDeviceJoin",
+  "grantControls": {
+    "authenticationStrength": {
+      "allowedCombinations": null,
+      "combinationConfigurations": null,
+      "createdDateTime": null,
+      "description": null,
+      "displayName": null,
+      "id": null,
+      "modifiedDateTime": null,
+      "policyType": null,
+      "requirementsSatisfied": null
     },
-    "BuiltInControls": [
+    "builtInControls": [
       "mfa"
     ],
-    "CustomAuthenticationFactors": [],
-    "Operator": "OR",
-    "TermsOfUse": []
+    "customAuthenticationFactors": [],
+    "operator": "OR",
+    "termsOfUse": []
   },
-  "Id": "f1814871-a95d-4bc2-b552-d107c0c3ea1b",
-  "ModifiedDateTime": "2025-07-31T23:48:47.0032615Z",
-  "SessionControls": {
-    "ApplicationEnforcedRestrictions": {
-      "IsEnabled": null
+  "id": "f1814871-a95d-4bc2-b552-d107c0c3ea1b",
+  "modifiedDateTime": "2025-07-31T23:48:47.0032615Z",
+  "sessionControls": {
+    "applicationEnforcedRestrictions": {
+      "isEnabled": null
     },
-    "CloudAppSecurity": {
-      "CloudAppSecurityType": null,
-      "IsEnabled": null
+    "cloudAppSecurity": {
+      "cloudAppSecurityType": null,
+      "isEnabled": null
     },
-    "DisableResilienceDefaults": null,
-    "PersistentBrowser": {
-      "IsEnabled": null,
-      "Mode": null
+    "disableResilienceDefaults": null,
+    "persistentBrowser": {
+      "isEnabled": null,
+      "mode": null
     },
-    "SignInFrequency": {
-      "AuthenticationType": null,
-      "FrequencyInterval": null,
-      "IsEnabled": null,
-      "Type": null,
-      "Value": null
+    "signInFrequency": {
+      "authenticationType": null,
+      "frequencyInterval": null,
+      "isEnabled": null,
+      "type": null,
+      "value": null
     }
   },
-  "State": "enabledForReportingButNotEnforced",
-  "TemplateId": null,
-  "AdditionalProperties": {}
+  "state": "enabledForReportingButNotEnforced",
+  "templateId": null,
+  "additionalProperties": {}
 }

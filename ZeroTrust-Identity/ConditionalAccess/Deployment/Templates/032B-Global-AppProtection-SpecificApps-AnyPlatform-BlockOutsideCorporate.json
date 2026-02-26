@@ -7,7 +7,7 @@
       },
       "excludeApplications": [],
       "includeApplications": [
-        "All"
+        "d4ebce55-015a-49b5-a083-c84d1797ae8c"
       ],
       "includeAuthenticationContextClassReferences": [],
       "includeUserActions": []
@@ -43,7 +43,7 @@
     "users": {
       "excludeGroups": [
         "P000",
-        "E610"
+        "E032"
       ],
       "excludeGuestsOrExternalUsers": {
         "externalTenants": {
@@ -54,7 +54,12 @@
       "excludeRoles": [],
       "excludeUsers": [],
       "includeGroups": [
-        "P600"
+        "P100",
+        "P200",
+        "P400",
+        "P500",
+        "P600",
+        "P700"
       ],
       "includeGuestsOrExternalUsers": {
         "externalTenants": {
@@ -66,9 +71,9 @@
       "includeUsers": []
     }
   },
-  "createdDateTime": "2024-06-17T19:11:24.4566705Z",
+  "createdDateTime": "2024-06-17T22:16:33.7473734Z",
   "description": null,
-  "displayName": "610B-MTR-AttackSurfaceReduction-AllResources-AnyPlatform-BlockAllLocationsExceptMTRLocations",
+  "displayName": "032B-Global-AppProtection-SpecificApps-AnyPlatform-BlockOutsideCorporate",
   "grantControls": {
     "authenticationStrength": {
       "allowedCombinations": null,
@@ -88,8 +93,8 @@
     "operator": "OR",
     "termsOfUse": []
   },
-  "id": "019292e5-4833-40a4-b7aa-7601984832d6",
-  "modifiedDateTime": "2024-06-18T00:18:42.7304326Z",
+  "id": "23e35a29-67c3-480e-afd5-a738d8f8f537",
+  "modifiedDateTime": "2024-06-18T00:28:58.6052651Z",
   "sessionControls": {
     "applicationEnforcedRestrictions": {
       "isEnabled": null
