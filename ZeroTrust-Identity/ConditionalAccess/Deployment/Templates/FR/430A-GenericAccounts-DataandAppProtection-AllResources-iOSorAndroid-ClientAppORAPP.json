@@ -6,11 +6,11 @@
         "rule": null
       },
       "excludeApplications": [],
-      "includeApplications": [],
+      "includeApplications": [
+        "All"
+      ],
       "includeAuthenticationContextClassReferences": [],
-      "includeUserActions": [
-        "urn:user:registersecurityinfo"
-      ]
+      "includeUserActions": []
     },
     "clientAppTypes": [
       "all"
@@ -35,7 +35,10 @@
     },
     "platforms": {
       "excludePlatforms": null,
-      "includePlatforms": null
+      "includePlatforms": [
+        "android",
+        "iOS"
+      ]
     },
     "servicePrincipalRiskLevels": [],
     "signInRiskLevels": [],
@@ -43,23 +46,18 @@
     "users": {
       "excludeGroups": [
         "P000",
-        "E020"
+        "E430"
       ],
       "excludeGuestsOrExternalUsers": {
         "externalTenants": {
-          "membershipKind": "all"
+          "membershipKind": null
         },
-        "guestOrExternalUserTypes": "internalGuest,b2bCollaborationGuest,b2bCollaborationMember,b2bDirectConnectUser,otherExternalUser,serviceProvider"
+        "guestOrExternalUserTypes": null
       },
       "excludeRoles": [],
       "excludeUsers": [],
       "includeGroups": [
-        "P100",
-        "P200",
-        "P400",
-        "P500",
-        "P600",
-        "P700"
+        "P400"
       ],
       "includeGuestsOrExternalUsers": {
         "externalTenants": {
@@ -71,9 +69,9 @@
       "includeUsers": []
     }
   },
-  "createdDateTime": "2024-06-17T19:11:17.8238197Z",
+  "createdDateTime": "2024-06-18T01:53:45.5963542Z",
   "description": null,
-  "displayName": "020A-Global-IdentityProtection-CombinedRegistration-CompliantandMFA.json",
+  "displayName": "430A-ComptesGeneriques-ProtectionDonneesetApps-ToutesRessources-iOSouAndroid-AppClientOUAPP",
   "grantControls": {
     "authenticationStrength": {
       "allowedCombinations": null,
@@ -87,15 +85,14 @@
       "requirementsSatisfied": null
     },
     "builtInControls": [
-      "compliantDevice",
-      "mfa"
+      "compliantApplication"
     ],
     "customAuthenticationFactors": [],
-    "operator": "AND",
+    "operator": "OR",
     "termsOfUse": []
   },
-  "id": "b342a530-f657-45da-961a-75034c6dc15b",
-  "modifiedDateTime": "2024-06-18T00:28:27.3997835Z",
+  "id": "9eb46dd5-b5d7-4416-a15e-bfbdf22e12fc",
+  "modifiedDateTime": "2024-06-18T01:53:58.1453032Z",
   "sessionControls": {
     "applicationEnforcedRestrictions": {
       "isEnabled": null

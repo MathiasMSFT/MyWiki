@@ -25,8 +25,8 @@
     },
     "devices": {
       "deviceFilter": {
-        "mode": null,
-        "rule": null
+        "mode": "include",
+        "rule": "device.trustType -ne \"ServerAD\" -and device.trustType -ne \"AzureAD\""
       }
     },
     "locations": {
@@ -43,14 +43,7 @@
     "users": {
       "excludeGroups": [
         "P000",
-        "P100",
-        "P200",
-        "P300",
-        "P400",
-        "P500",
-        "P600",
-        "P700",
-        "E001"
+        "E401"
       ],
       "excludeGuestsOrExternalUsers": {
         "externalTenants": {
@@ -60,7 +53,9 @@
       },
       "excludeRoles": [],
       "excludeUsers": [],
-      "includeGroups": [],
+      "includeGroups": [
+        "P400"
+      ],
       "includeGuestsOrExternalUsers": {
         "externalTenants": {
           "membershipKind": null
@@ -68,13 +63,12 @@
         "guestOrExternalUserTypes": null
       },
       "includeRoles": [],
-      "includeUsers": [
-        "All"
-      ]
+      "includeUsers": []
     }
   },
+  "createdDateTime": "2024-06-18T01:51:49.0558245Z",
   "description": null,
-  "displayName": "000B-Global-BaseProtection-AllResources-BlockNonPersonas",
+  "displayName": "401A-ComptesGeneriques-ProtectionDonneesetApps-ToutesRessources-AppareilsNonGeres-MFA",
   "grantControls": {
     "authenticationStrength": {
       "allowedCombinations": null,
@@ -88,13 +82,14 @@
       "requirementsSatisfied": null
     },
     "builtInControls": [
-      "block"
+      "mfa"
     ],
     "customAuthenticationFactors": [],
     "operator": "OR",
     "termsOfUse": []
   },
-  "ModifiedDateTime": "2024-06-18T00:00:00.0000000Z",
+  "id": "f16db69a-8109-42d2-8f37-2ab681d47900",
+  "modifiedDateTime": null,
   "sessionControls": {
     "applicationEnforcedRestrictions": {
       "isEnabled": null
@@ -116,5 +111,7 @@
       "value": null
     }
   },
-  "state": "enabledForReportingButNotEnforced"
+  "state": "enabledForReportingButNotEnforced",
+  "templateId": null,
+  "additionalProperties": {}
 }

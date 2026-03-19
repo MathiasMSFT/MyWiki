@@ -7,7 +7,7 @@
       },
       "excludeApplications": [],
       "includeApplications": [
-        "All"
+        "None"
       ],
       "includeAuthenticationContextClassReferences": [],
       "includeUserActions": []
@@ -38,14 +38,12 @@
       "includePlatforms": null
     },
     "servicePrincipalRiskLevels": [],
-    "signInRiskLevels": [
-      "high"
-    ],
+    "signInRiskLevels": [],
     "userRiskLevels": [],
     "users": {
       "excludeGroups": [
         "P000",
-        "E121"
+        "E010"
       ],
       "excludeGuestsOrExternalUsers": {
         "externalTenants": {
@@ -55,9 +53,7 @@
       },
       "excludeRoles": [],
       "excludeUsers": [],
-      "includeGroups": [
-        "P100"
-      ],
+      "includeGroups": [],
       "includeGuestsOrExternalUsers": {
         "externalTenants": {
           "membershipKind": null
@@ -65,12 +61,13 @@
         "guestOrExternalUserTypes": null
       },
       "includeRoles": [],
-      "includeUsers": []
+      "includeUsers": [
+        "All"
+      ]
     }
   },
-  "createdDateTime": "2024-06-17T22:04:54.0111353Z",
   "description": null,
-  "displayName": "121A-Admins-IdentityProtection-AllResources-AnyPlatform-BlockHighSignInRisk",
+  "displayName": "010B-Global-ReductionSurfaceAttaque-RessourcesVariees-ToutesPlateformes-Bloquer",
   "grantControls": {
     "authenticationStrength": {
       "allowedCombinations": null,
@@ -90,8 +87,7 @@
     "operator": "OR",
     "termsOfUse": []
   },
-  "id": "d4068257-18b7-4d2a-bb62-1b5fdf44e840",
-  "modifiedDateTime": "2024-06-18T00:44:37.6335474Z",
+  "modifiedDateTime": "2024-06-18T00:00:00Z",
   "sessionControls": {
     "applicationEnforcedRestrictions": {
       "isEnabled": null
@@ -113,7 +109,5 @@
       "value": null
     }
   },
-  "state": "enabledForReportingButNotEnforced",
-  "templateId": null,
-  "additionalProperties": {}
+  "state": "enabledForReportingButNotEnforced"
 }

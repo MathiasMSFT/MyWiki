@@ -25,8 +25,8 @@
     },
     "devices": {
       "deviceFilter": {
-        "mode": null,
-        "rule": null
+        "mode": "include",
+        "rule": "device.trustType -ne \"ServerAD\" -and device.trustType -ne \"AzureAD\""
       }
     },
     "locations": {
@@ -39,13 +39,11 @@
     },
     "servicePrincipalRiskLevels": [],
     "signInRiskLevels": [],
-    "userRiskLevels": [
-      "high"
-    ],
+    "userRiskLevels": [],
     "users": {
       "excludeGroups": [
         "P000",
-        "E220"
+        "E701"
       ],
       "excludeGuestsOrExternalUsers": {
         "externalTenants": {
@@ -56,7 +54,7 @@
       "excludeRoles": [],
       "excludeUsers": [],
       "includeGroups": [
-        "P200"
+        "P700"
       ],
       "includeGuestsOrExternalUsers": {
         "externalTenants": {
@@ -68,9 +66,9 @@
       "includeUsers": []
     }
   },
-  "createdDateTime": "2024-06-17T22:02:31.9642882Z",
+  "createdDateTime": "2024-06-18T01:51:49.0558245Z",
   "description": null,
-  "displayName": "220A-Internals-IdentityProtection-AllResources-AnyPlatform-MFAandPWDforHighUserRisk",
+  "displayName": "701A-UtilisateursPAW-ProtectiondeBase-ToutesRessources-ToutesPlateformes-MFAdepuisAppareilsNonGeres",
   "grantControls": {
     "authenticationStrength": {
       "allowedCombinations": null,
@@ -84,15 +82,14 @@
       "requirementsSatisfied": null
     },
     "builtInControls": [
-      "mfa",
-      "passwordChange"
+      "mfa"
     ],
     "customAuthenticationFactors": [],
-    "operator": "AND",
+    "operator": "OR",
     "termsOfUse": []
   },
-  "id": "b9eef9d1-7e48-48bf-91fb-a9bb2b3f0aea",
-  "modifiedDateTime": "2024-06-18T00:41:44.3825337Z",
+  "id": "f16db69a-8109-42d2-8f37-2ab681d47900",
+  "modifiedDateTime": null,
   "sessionControls": {
     "applicationEnforcedRestrictions": {
       "isEnabled": null
