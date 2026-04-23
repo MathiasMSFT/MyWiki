@@ -8,6 +8,9 @@
     .MODULES
     Install-Module -Name Microsoft.Graph -Force -AllowClobber.
     Install-Module -Name Microsoft.Graph.Beta -Force -AllowClobber.
+
+    .VERSION PS
+    PowerShell v7
 #>
 
 
