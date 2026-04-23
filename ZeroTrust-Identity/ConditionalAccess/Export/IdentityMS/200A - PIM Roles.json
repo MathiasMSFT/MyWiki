@@ -1,0 +1,157 @@
+{
+  "Conditions": {
+    "AgentIdRiskLevels": null,
+    "Applications": {
+      "ApplicationFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeApplications": [],
+      "GlobalSecureAccess": {},
+      "IncludeApplications": [],
+      "IncludeAuthenticationContextClassReferences": [
+        "c3"
+      ],
+      "IncludeUserActions": [],
+      "NetworkAccess": {}
+    },
+    "AuthenticationFlows": {
+      "TransferMethods": null
+    },
+    "ClientAppTypes": [
+      "all"
+    ],
+    "ClientApplications": {
+      "AgentIdServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeAgentIdServicePrincipals": null,
+      "ExcludeServicePrincipals": null,
+      "IncludeAgentIdServicePrincipals": null,
+      "IncludeServicePrincipals": null,
+      "ServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      }
+    },
+    "DeviceStates": {
+      "ExcludeStates": null,
+      "IncludeStates": null
+    },
+    "Devices": {
+      "DeviceFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeDeviceStates": null,
+      "ExcludeDevices": null,
+      "IncludeDeviceStates": null,
+      "IncludeDevices": null
+    },
+    "InsiderRiskLevels": null,
+    "Locations": {
+      "ExcludeLocations": null,
+      "IncludeLocations": null
+    },
+    "Platforms": {
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
+    },
+    "ServicePrincipalRiskLevels": null,
+    "SignInRiskLevels": [],
+    "UserRiskLevels": [],
+    "Users": {
+      "ExcludeGroups": [],
+      "ExcludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "ExcludeRoles": [],
+      "ExcludeUsers": [
+        "f0510ca6-fc21-4ce6-acdb-e4e776cf43dc",
+        "08601fbc-80c7-4f07-8d5a-3e899b0fd0b4",
+        "ac62159a-48cd-42fa-a6d7-520d47ee1973"
+      ],
+      "IncludeGroups": [],
+      "IncludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "IncludeRoles": [],
+      "IncludeUsers": [
+        "All"
+      ]
+    }
+  },
+  "CreatedDateTime": "2023-03-22T12:46:58.1499818Z",
+  "DeletedDateTime": null,
+  "Description": null,
+  "DisplayName": "200A - PIM Roles",
+  "GrantControls": {
+    "AuthenticationStrength": {
+      "AllowedCombinations": [
+        "fido2",
+        "temporaryAccessPassOneTime"
+      ],
+      "CombinationConfigurations": [
+        {
+          "AppliesToCombinations": [
+            "fido2"
+          ],
+          "Id": "4976eb68-5486-44f4-90a4-de0b6545b347"
+        }
+      ],
+      "CreatedDateTime": "2023-03-29T15:43:00.9062006Z",
+      "Description": "",
+      "DisplayName": "FIDO2 + TAP",
+      "Id": "113e9a70-7f24-4c01-9a21-ef467b2fe53e",
+      "ModifiedDateTime": "2025-09-04T17:46:17.7237433Z",
+      "PolicyType": "custom",
+      "RequirementsSatisfied": "mfa"
+    },
+    "BuiltInControls": [],
+    "CustomAuthenticationFactors": [],
+    "Operator": "OR",
+    "TermsOfUse": []
+  },
+  "Id": "6adcc06a-72e8-4f68-8e11-34930b4f2798",
+  "ModifiedDateTime": "2025-09-04T17:31:22.7378446Z",
+  "SessionControls": {
+    "ApplicationEnforcedRestrictions": {
+      "IsEnabled": null
+    },
+    "CloudAppSecurity": {
+      "CloudAppSecurityType": null,
+      "IsEnabled": null
+    },
+    "ContinuousAccessEvaluation": {
+      "Mode": null
+    },
+    "DisableResilienceDefaults": null,
+    "GlobalSecureAccessFilteringProfile": {
+      "IsEnabled": null,
+      "ProfileId": null
+    },
+    "PersistentBrowser": {
+      "IsEnabled": null,
+      "Mode": null
+    },
+    "SecureSignInSession": {
+      "IsEnabled": null
+    },
+    "SignInFrequency": {
+      "AuthenticationType": "primaryAndSecondaryAuthentication",
+      "FrequencyInterval": "everyTime",
+      "IsEnabled": true,
+      "Type": null,
+      "Value": null
+    }
+  },
+  "State": "enabledForReportingButNotEnforced",
+  "AdditionalProperties": {}
+}

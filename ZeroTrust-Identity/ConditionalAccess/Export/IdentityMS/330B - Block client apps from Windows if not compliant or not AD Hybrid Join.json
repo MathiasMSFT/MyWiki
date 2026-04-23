@@ -1,0 +1,150 @@
+{
+  "Conditions": {
+    "AgentIdRiskLevels": null,
+    "Applications": {
+      "ApplicationFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeApplications": [
+        "797f4846-ba00-4fd7-ba43-dac1f8f63013"
+      ],
+      "GlobalSecureAccess": {},
+      "IncludeApplications": [
+        "All"
+      ],
+      "IncludeAuthenticationContextClassReferences": [],
+      "IncludeUserActions": [],
+      "NetworkAccess": {}
+    },
+    "AuthenticationFlows": {
+      "TransferMethods": null
+    },
+    "ClientAppTypes": [
+      "browser",
+      "mobileAppsAndDesktopClients"
+    ],
+    "ClientApplications": {
+      "AgentIdServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeAgentIdServicePrincipals": null,
+      "ExcludeServicePrincipals": null,
+      "IncludeAgentIdServicePrincipals": null,
+      "IncludeServicePrincipals": null,
+      "ServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      }
+    },
+    "DeviceStates": {
+      "ExcludeStates": null,
+      "IncludeStates": null
+    },
+    "Devices": {
+      "DeviceFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeDeviceStates": null,
+      "ExcludeDevices": null,
+      "IncludeDeviceStates": null,
+      "IncludeDevices": null
+    },
+    "InsiderRiskLevels": null,
+    "Locations": {
+      "ExcludeLocations": null,
+      "IncludeLocations": null
+    },
+    "Platforms": {
+      "ExcludePlatforms": [],
+      "IncludePlatforms": [
+        "windows"
+      ]
+    },
+    "ServicePrincipalRiskLevels": null,
+    "SignInRiskLevels": [],
+    "UserRiskLevels": [],
+    "Users": {
+      "ExcludeGroups": [],
+      "ExcludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "ExcludeRoles": [],
+      "ExcludeUsers": [],
+      "IncludeGroups": [],
+      "IncludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "IncludeRoles": [],
+      "IncludeUsers": [
+        "None"
+      ]
+    }
+  },
+  "CreatedDateTime": "2021-10-25T19:44:27.0963033Z",
+  "DeletedDateTime": null,
+  "Description": null,
+  "DisplayName": "330B - Block client apps from Windows if not compliant or not AD Hybrid Join",
+  "GrantControls": {
+    "AuthenticationStrength": {
+      "AllowedCombinations": null,
+      "CombinationConfigurations": null,
+      "CreatedDateTime": null,
+      "Description": null,
+      "DisplayName": null,
+      "Id": null,
+      "ModifiedDateTime": null,
+      "PolicyType": null,
+      "RequirementsSatisfied": null
+    },
+    "BuiltInControls": [
+      "block"
+    ],
+    "CustomAuthenticationFactors": [],
+    "Operator": "OR",
+    "TermsOfUse": []
+  },
+  "Id": "93ce41fa-3011-4f40-bc72-6a3447fc24eb",
+  "ModifiedDateTime": "2025-12-03T18:39:24.2691009Z",
+  "SessionControls": {
+    "ApplicationEnforcedRestrictions": {
+      "IsEnabled": null
+    },
+    "CloudAppSecurity": {
+      "CloudAppSecurityType": null,
+      "IsEnabled": null
+    },
+    "ContinuousAccessEvaluation": {
+      "Mode": null
+    },
+    "DisableResilienceDefaults": null,
+    "GlobalSecureAccessFilteringProfile": {
+      "IsEnabled": null,
+      "ProfileId": null
+    },
+    "PersistentBrowser": {
+      "IsEnabled": null,
+      "Mode": null
+    },
+    "SecureSignInSession": {
+      "IsEnabled": null
+    },
+    "SignInFrequency": {
+      "AuthenticationType": null,
+      "FrequencyInterval": null,
+      "IsEnabled": null,
+      "Type": null,
+      "Value": null
+    }
+  },
+  "State": "enabled",
+  "AdditionalProperties": {}
+}

@@ -1,0 +1,262 @@
+[
+  {
+    "ObjectGuid": "f961ab7c-8e19-41da-839f-13e55aa12a92",
+    "Id": "P000",
+    "DisplayName": "P-Breakglass"
+  },
+  {
+    "ObjectGuid": "660e1958-adc4-40b8-8410-5d3585337598",
+    "Id": "P100",
+    "DisplayName": "P-Admins"
+  },
+  {
+    "ObjectGuid": "3f288f54-02bb-44dc-8488-dcd90b232fae",
+    "Id": "P200",
+    "DisplayName": "P-Internals"
+  },
+  {
+    "ObjectGuid": "463372d5-4cca-4095-98d5-af625e534248",
+    "Id": "P300",
+    "DisplayName": "P-Guests"
+  },
+  {
+    "ObjectGuid": "2c4d8645-a543-46bd-ba4a-6962606b7612",
+    "Id": "P400",
+    "DisplayName": "P-GenericAccount"
+  },
+  {
+    "ObjectGuid": "b78915bb-670a-43a7-8cce-481054d9194e",
+    "Id": "P500",
+    "DisplayName": "P-ServiceAccounts"
+  },
+  {
+    "ObjectGuid": "cb6c05c3-6560-4770-9e82-8b4d3cea235c",
+    "Id": "P600",
+    "DisplayName": "P-MTR"
+  },
+  {
+    "ObjectGuid": "3bac701a-d1cf-4835-9d11-c772e1dfbc36",
+    "Id": "P700",
+    "DisplayName": "P-PAWUsers"
+  },
+  {
+    "ObjectGuid": "bb6ac321-5e1a-4478-8622-fd08675ecdef",
+    "Id": "E001",
+    "DisplayName": "CA-Global-BaseProtection-NonPersonas-Exclusions"
+  },
+  {
+    "ObjectGuid": "8d39b4bd-bdf7-434c-bd95-73ca65948428",
+    "Id": "E010",
+    "DisplayName": "CA-Global-ASR-Exclusions"
+  },
+  {
+    "ObjectGuid": "6f3dd4d7-b5b8-4cf0-a0c0-d64a3b484bc8",
+    "Id": "E011",
+    "DisplayName": "CA-Global-ASR-UnknownPLFT-Exclusions"
+  },
+  {
+    "ObjectGuid": "9b663304-1d22-4a0a-b460-113ef317ab34",
+    "Id": "E012",
+    "DisplayName": "CA-Global-ASR-DisallowedLocations-Exclusions"
+  },
+  {
+    "ObjectGuid": "f035ccfd-028d-4ead-8854-6e1f41d6a95b",
+    "Id": "E013",
+    "DisplayName": "CA-Global-ASR-DeviceCodeFlow-Exclusions"
+  },
+  {
+    "ObjectGuid": "b017d21d-d412-402a-8cdc-126f49aeb145",
+    "Id": "E014",
+    "DisplayName": "CA-Global-ASR-AuthTransferFlow-Exclusions"
+  },
+  {
+    "ObjectGuid": "874c643c-f0f3-4b07-9ffb-0b943a8bd7c1",
+    "Id": "E015",
+    "DisplayName": "CA-Global-ASR-LegacyAuth-Exclusions"
+  },
+  {
+    "ObjectGuid": "584965cf-9699-4bf0-8fe8-3f9788325b71",
+    "Id": "E016",
+    "DisplayName": "CA-Global-ASR-MFAforDevices-Exclusions"
+  },
+  {
+    "ObjectGuid": "802b639b-6e7e-4dec-8fea-849878c974e5",
+    "Id": "E020",
+    "DisplayName": "CA-Global-IdentityProtection-CombinedRegistration-Exclusions"
+  },
+  {
+    "ObjectGuid": "51f7dcd8-a324-4e52-bcad-773040eb5e62",
+    "Id": "E030",
+    "DisplayName": "CA-Global-AppProtection-InTune-Exclusions"
+  },
+  {
+    "ObjectGuid": "7e38ddd3-5230-4947-9d24-43939b248075",
+    "Id": "E031",
+    "DisplayName": "CA-Global-AppProtection-AdminPortals-Exclusions"
+  },
+  {
+    "ObjectGuid": "0670a1e9-6105-4317-bf06-253f0f37d8b4",
+    "Id": "E032",
+    "DisplayName": "CA-Global-AppProtection-SpecificApps-Exclusions"
+  },
+  {
+    "ObjectGuid": "ff4bda01-cd65-4c93-bc42-9cbdc920c5f0",
+    "Id": "E100",
+    "DisplayName": "CA-Admins-BaseProtection-ComplianceandMFA-Exclusions"
+  },
+  {
+    "ObjectGuid": "8f3093ad-5f02-4e22-8a42-b7bdea1a97d9",
+    "Id": "E110",
+    "DisplayName": "CA-Admins-ASR-DisallowedOperationalLocations-Exclusions"
+  },
+  {
+    "ObjectGuid": "50787762-7b81-4f11-8609-6670d5d647d5",
+    "Id": "E120",
+    "DisplayName": "CA-Admins-IdentityProtection-MediumHigh_UserRisk-Exclusions"
+  },
+  {
+    "ObjectGuid": "b8b4abbb-5613-476a-8ff6-c92fc7fb3819",
+    "Id": "E121",
+    "DisplayName": "CA-Admins-IdentityProtection-Block_HighSigninRisk-Exclusions"
+  },
+  {
+    "ObjectGuid": "40237261-262c-4f13-9cac-106a09e08dba",
+    "Id": "E130",
+    "DisplayName": "CA-Admins-DataandAppProtection-IOSorAndroid-Exclusions"
+  },
+  {
+    "ObjectGuid": "96046ee4-0ade-4272-bd1b-a1d5e8c633cd",
+    "Id": "E200",
+    "DisplayName": "CA-Internals-BaseProtection-CompliantorEIDHJ-Exclusions"
+  },
+  {
+    "ObjectGuid": "7a3648ec-173c-4065-86e8-e11102fb99d7",
+    "Id": "E220",
+    "DisplayName": "CA-Internals-IdentityProtection-MFAandPWDforHighUserRisk-Exclusions"
+  },
+  {
+    "ObjectGuid": "32548ac4-feda-46a5-a257-e392dd5478b9",
+    "Id": "E221",
+    "DisplayName": "CA-Internals-IdentityProtection-MFAforMediumHighSignInRisk-Exclusions"
+  },
+  {
+    "ObjectGuid": "96582e09-5541-45f1-a1c3-27bb88253da2",
+    "Id": "E230",
+    "DisplayName": "CA-Internals-DataandAppProtection-IOSorAndroid-Exclusions"
+  },
+  {
+    "ObjectGuid": "dd778ba0-877f-4904-81a6-0b16596ea9fb",
+    "Id": "E300",
+    "DisplayName": "CA-Guests-BaseProtection-MFA-Exclusions"
+  },
+  {
+    "ObjectGuid": "032c358b-15d3-4907-abdf-b1862d8875fd",
+    "Id": "E310",
+    "DisplayName": "CA-Guests-ASR-BlockNonGuestAppAccess-Exclusions"
+  },
+  {
+    "ObjectGuid": "87dea2c1-f8c4-4f7f-ae4c-ccd0eb19f460",
+    "Id": "E320",
+    "DisplayName": "CA-Guests-IdentityProtection-BlockHighUserRisk-Exclusions"
+  },
+  {
+    "ObjectGuid": "109d05b7-406b-4686-9636-536689a7063d",
+    "Id": "E321",
+    "DisplayName": "CA-Guests-IdentityProtection-MFAforMediumHighSignInRisk-Exclusions"
+  },
+  {
+    "ObjectGuid": "c383336f-dca4-48d0-ade8-69f8fac2da91",
+    "Id": "E330",
+    "DisplayName": "CA-Guests-DataandAppProtection-SignInSessionPolicy-Exclusions"
+  },
+  {
+    "ObjectGuid": "9e32ace2-b47a-47ed-a12c-a6e499a97167",
+    "Id": "E331",
+    "DisplayName": "CA-Guests-DataandAppProtection-BlockDownload-Exclusions"
+  },
+  {
+    "ObjectGuid": "1d32d5fc-2c17-4226-bc97-b2d58212792b",
+    "Id": "E332",
+    "DisplayName": "CA-Guests-DataandAppProtection-BlockRichApps-Exclusions"
+  },
+  {
+    "ObjectGuid": "98455d9e-87b5-421c-9394-ef842df16637",
+    "Id": "E340",
+    "DisplayName": "CA-Guests-ComplianceProtection-RequireTOU-Exclusions"
+  },
+  {
+    "ObjectGuid": "acf1788d-1a23-4985-b514-aef7bdeff443",
+    "Id": "E400",
+    "DisplayName": "CA-GenericAccounts-BaseProtection-MDA-Exclusions"
+  },
+  {
+    "ObjectGuid": "255ef440-9a93-4571-a7de-788f65a4554e",
+    "Id": "E401",
+    "DisplayName": "CA-GenericAccounts-DataandAppProtection-UnmanagedDevices-Exclusions"
+  },
+  {
+    "ObjectGuid": "404a0d45-d504-422a-b855-581f99278f72",
+    "Id": "E430",
+    "DisplayName": "CA-GenericAccounts-DataandAppProtection-IOSorAndroid-Exclusions"
+  },
+  {
+    "ObjectGuid": "894c9f0f-955a-426f-87b4-cb10793aec46",
+    "Id": "E500",
+    "DisplayName": "CA-ServiceAccounts-BaseProtection-BlockUntrustedLocations-Exclusions"
+  },
+  {
+    "ObjectGuid": "f3c17b7f-73c1-482e-afa3-216eb56298f8",
+    "Id": "E510",
+    "DisplayName": "CA-ServiceAccounts-ASR-BlockAllApps-Exclusions"
+  },
+  {
+    "ObjectGuid": "53b56dd9-1a3f-451e-9bf0-5a32acb34067",
+    "Id": "E520",
+    "DisplayName": "CA-ServiceAccounts-IdentityProtection-High_UserRisk-Exclusions"
+  },
+  {
+    "ObjectGuid": "1960df59-48e6-4870-aeb0-5d7cfb6ecc96",
+    "Id": "E521",
+    "DisplayName": "CA-ServiceAccounts-IdentityProtection-High_SignInRisk-Exclusions"
+  },
+  {
+    "ObjectGuid": "fec3a274-7615-4d68-bedc-4872c3f2f86f",
+    "Id": "E600",
+    "DisplayName": "CA-MTR-BaseProtection-MDA-Exclusions"
+  },
+  {
+    "ObjectGuid": "66ee98cf-3f27-4463-bc5b-31588a6db829",
+    "Id": "E610",
+    "DisplayName": "CA-MTR-ASR-BlockAllLocations-Exclusions"
+  },
+  {
+    "ObjectGuid": "48d8a50f-3658-4f6e-ad99-37bd84180cc9",
+    "Id": "E620",
+    "DisplayName": "CA-MTR-IdentityProtection-MediumHigh_UserRisk-Exclusions"
+  },
+  {
+    "ObjectGuid": "2fa50ade-c262-4dc3-9acb-9527da4dadbc",
+    "Id": "E621",
+    "DisplayName": "CA-MTR-IdentityProtection-MediumHigh_SigninRisk-Exclusions"
+  },
+  {
+    "ObjectGuid": "6b6a82ed-4691-44af-a3c8-5a91c51fc17e",
+    "Id": "E630",
+    "DisplayName": "CA-MTR-DataandApplication-BlockPlatform-Exclusions"
+  },
+  {
+    "ObjectGuid": "28f92dfc-3a47-490f-af03-070e7a4b9ae5",
+    "Id": "E700",
+    "DisplayName": "CA-PAW-BaseProtection-MDA-Exclusions"
+  },
+  {
+    "ObjectGuid": "0dc65b69-6a6a-479d-a9f8-a6c1e24c333b",
+    "Id": "E701",
+    "DisplayName": "CA-PAW-BaseProtection-MFAUnmanagedDevices-Exclusions"
+  },
+  {
+    "ObjectGuid": "1aefef25-a2dc-41d2-b4ef-3f4aa6c26b96",
+    "Id": "E730",
+    "DisplayName": "CA-PAW-DataandAppProtection-IOSorAndroid-Exclusions"
+  }
+]

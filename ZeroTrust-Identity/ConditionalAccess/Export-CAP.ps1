@@ -21,7 +21,7 @@ $ExportCAPsPath = ".\Export\"
 
 If ($CAPs){
     try {
-        $AllCAPs = Get-MgIdentityConditionalAccessPolicy -All
+        $AllCAPs = Get-MgBetaIdentityConditionalAccessPolicy -All
 
         If ($AllCAPs.Count -eq 0) {
             Write-Host "There are no CA policies found to export." -ForegroundColor Yellow

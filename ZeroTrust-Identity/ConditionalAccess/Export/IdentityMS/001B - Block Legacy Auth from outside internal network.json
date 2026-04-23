@@ -1,0 +1,149 @@
+{
+  "Conditions": {
+    "AgentIdRiskLevels": null,
+    "Applications": {
+      "ApplicationFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeApplications": [],
+      "GlobalSecureAccess": {},
+      "IncludeApplications": [
+        "All"
+      ],
+      "IncludeAuthenticationContextClassReferences": [],
+      "IncludeUserActions": [],
+      "NetworkAccess": {}
+    },
+    "AuthenticationFlows": {
+      "TransferMethods": null
+    },
+    "ClientAppTypes": [
+      "exchangeActiveSync",
+      "other"
+    ],
+    "ClientApplications": {
+      "AgentIdServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeAgentIdServicePrincipals": null,
+      "ExcludeServicePrincipals": null,
+      "IncludeAgentIdServicePrincipals": null,
+      "IncludeServicePrincipals": null,
+      "ServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      }
+    },
+    "DeviceStates": {
+      "ExcludeStates": null,
+      "IncludeStates": null
+    },
+    "Devices": {
+      "DeviceFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeDeviceStates": null,
+      "ExcludeDevices": null,
+      "IncludeDeviceStates": null,
+      "IncludeDevices": null
+    },
+    "InsiderRiskLevels": null,
+    "Locations": {
+      "ExcludeLocations": null,
+      "IncludeLocations": null
+    },
+    "Platforms": {
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
+    },
+    "ServicePrincipalRiskLevels": null,
+    "SignInRiskLevels": [],
+    "UserRiskLevels": [],
+    "Users": {
+      "ExcludeGroups": [],
+      "ExcludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "ExcludeRoles": [],
+      "ExcludeUsers": [
+        "08601fbc-80c7-4f07-8d5a-3e899b0fd0b4",
+        "ac62159a-48cd-42fa-a6d7-520d47ee1973"
+      ],
+      "IncludeGroups": [],
+      "IncludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "IncludeRoles": [],
+      "IncludeUsers": [
+        "All"
+      ]
+    }
+  },
+  "CreatedDateTime": "2021-07-09T17:48:05.5571639Z",
+  "DeletedDateTime": null,
+  "Description": null,
+  "DisplayName": "001B - Block Legacy Auth from outside internal network",
+  "GrantControls": {
+    "AuthenticationStrength": {
+      "AllowedCombinations": null,
+      "CombinationConfigurations": null,
+      "CreatedDateTime": null,
+      "Description": null,
+      "DisplayName": null,
+      "Id": null,
+      "ModifiedDateTime": null,
+      "PolicyType": null,
+      "RequirementsSatisfied": null
+    },
+    "BuiltInControls": [
+      "block"
+    ],
+    "CustomAuthenticationFactors": [],
+    "Operator": "OR",
+    "TermsOfUse": []
+  },
+  "Id": "2d0e2a35-3cfd-4170-8c2c-850af6636093",
+  "ModifiedDateTime": "2025-12-03T18:38:47.3718751Z",
+  "SessionControls": {
+    "ApplicationEnforcedRestrictions": {
+      "IsEnabled": null
+    },
+    "CloudAppSecurity": {
+      "CloudAppSecurityType": null,
+      "IsEnabled": null
+    },
+    "ContinuousAccessEvaluation": {
+      "Mode": null
+    },
+    "DisableResilienceDefaults": null,
+    "GlobalSecureAccessFilteringProfile": {
+      "IsEnabled": null,
+      "ProfileId": null
+    },
+    "PersistentBrowser": {
+      "IsEnabled": null,
+      "Mode": null
+    },
+    "SecureSignInSession": {
+      "IsEnabled": null
+    },
+    "SignInFrequency": {
+      "AuthenticationType": null,
+      "FrequencyInterval": null,
+      "IsEnabled": null,
+      "Type": null,
+      "Value": null
+    }
+  },
+  "State": "enabled",
+  "AdditionalProperties": {}
+}

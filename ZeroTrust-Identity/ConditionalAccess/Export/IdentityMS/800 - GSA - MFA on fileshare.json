@@ -1,0 +1,147 @@
+{
+  "Conditions": {
+    "AgentIdRiskLevels": null,
+    "Applications": {
+      "ApplicationFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeApplications": [],
+      "GlobalSecureAccess": {},
+      "IncludeApplications": [
+        "b0f9ff95-0da6-4e99-a098-0a9b060c2f0c"
+      ],
+      "IncludeAuthenticationContextClassReferences": [],
+      "IncludeUserActions": [],
+      "NetworkAccess": {}
+    },
+    "AuthenticationFlows": {
+      "TransferMethods": null
+    },
+    "ClientAppTypes": [
+      "all"
+    ],
+    "ClientApplications": {
+      "AgentIdServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeAgentIdServicePrincipals": null,
+      "ExcludeServicePrincipals": null,
+      "IncludeAgentIdServicePrincipals": null,
+      "IncludeServicePrincipals": null,
+      "ServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      }
+    },
+    "DeviceStates": {
+      "ExcludeStates": null,
+      "IncludeStates": null
+    },
+    "Devices": {
+      "DeviceFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeDeviceStates": null,
+      "ExcludeDevices": null,
+      "IncludeDeviceStates": null,
+      "IncludeDevices": null
+    },
+    "InsiderRiskLevels": null,
+    "Locations": {
+      "ExcludeLocations": null,
+      "IncludeLocations": null
+    },
+    "Platforms": {
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
+    },
+    "ServicePrincipalRiskLevels": null,
+    "SignInRiskLevels": [],
+    "UserRiskLevels": [],
+    "Users": {
+      "ExcludeGroups": [],
+      "ExcludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "ExcludeRoles": [],
+      "ExcludeUsers": [],
+      "IncludeGroups": [],
+      "IncludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "IncludeRoles": [],
+      "IncludeUsers": [
+        "All"
+      ]
+    }
+  },
+  "CreatedDateTime": "2026-01-22T18:05:01.3589016Z",
+  "DeletedDateTime": null,
+  "Description": null,
+  "DisplayName": "800 - GSA - MFA on fileshare",
+  "GrantControls": {
+    "AuthenticationStrength": {
+      "AllowedCombinations": [
+        "windowsHelloForBusiness",
+        "fido2",
+        "x509CertificateMultiFactor"
+      ],
+      "CombinationConfigurations": [],
+      "CreatedDateTime": "2021-12-01T08:00:00Z",
+      "Description": "Phishing-resistant, Passwordless methods for the strongest authentication, such as a FIDO2 security key",
+      "DisplayName": "Phishing-resistant MFA",
+      "Id": "00000000-0000-0000-0000-000000000004",
+      "ModifiedDateTime": "2021-12-01T08:00:00Z",
+      "PolicyType": "builtIn",
+      "RequirementsSatisfied": "mfa"
+    },
+    "BuiltInControls": [],
+    "CustomAuthenticationFactors": [],
+    "Operator": "OR",
+    "TermsOfUse": []
+  },
+  "Id": "7956c40a-0a2a-45c3-be04-78774c31febb",
+  "ModifiedDateTime": null,
+  "SessionControls": {
+    "ApplicationEnforcedRestrictions": {
+      "IsEnabled": null
+    },
+    "CloudAppSecurity": {
+      "CloudAppSecurityType": null,
+      "IsEnabled": null
+    },
+    "ContinuousAccessEvaluation": {
+      "Mode": null
+    },
+    "DisableResilienceDefaults": null,
+    "GlobalSecureAccessFilteringProfile": {
+      "IsEnabled": null,
+      "ProfileId": null
+    },
+    "PersistentBrowser": {
+      "IsEnabled": null,
+      "Mode": null
+    },
+    "SecureSignInSession": {
+      "IsEnabled": null
+    },
+    "SignInFrequency": {
+      "AuthenticationType": "primaryAndSecondaryAuthentication",
+      "FrequencyInterval": "everyTime",
+      "IsEnabled": true,
+      "Type": null,
+      "Value": null
+    }
+  },
+  "State": "enabled",
+  "AdditionalProperties": {}
+}

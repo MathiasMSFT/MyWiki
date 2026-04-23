@@ -1,0 +1,144 @@
+{
+  "Conditions": {
+    "AgentIdRiskLevels": null,
+    "Applications": {
+      "ApplicationFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeApplications": [],
+      "GlobalSecureAccess": {},
+      "IncludeApplications": [
+        "c08f52c9-8f03-4558-a0ea-9a4c878cf343",
+        "5dc48733-b5df-475c-a49b-fa307ef00853"
+      ],
+      "IncludeAuthenticationContextClassReferences": [],
+      "IncludeUserActions": [],
+      "NetworkAccess": {}
+    },
+    "AuthenticationFlows": {
+      "TransferMethods": null
+    },
+    "ClientAppTypes": [
+      "all"
+    ],
+    "ClientApplications": {
+      "AgentIdServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeAgentIdServicePrincipals": null,
+      "ExcludeServicePrincipals": null,
+      "IncludeAgentIdServicePrincipals": null,
+      "IncludeServicePrincipals": null,
+      "ServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      }
+    },
+    "DeviceStates": {
+      "ExcludeStates": null,
+      "IncludeStates": null
+    },
+    "Devices": {
+      "DeviceFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeDeviceStates": null,
+      "ExcludeDevices": null,
+      "IncludeDeviceStates": null,
+      "IncludeDevices": null
+    },
+    "InsiderRiskLevels": null,
+    "Locations": {
+      "ExcludeLocations": null,
+      "IncludeLocations": null
+    },
+    "Platforms": {
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
+    },
+    "ServicePrincipalRiskLevels": null,
+    "SignInRiskLevels": [],
+    "UserRiskLevels": [],
+    "Users": {
+      "ExcludeGroups": [],
+      "ExcludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "ExcludeRoles": [],
+      "ExcludeUsers": [],
+      "IncludeGroups": [],
+      "IncludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "IncludeRoles": [],
+      "IncludeUsers": [
+        "f0510ca6-fc21-4ce6-acdb-e4e776cf43dc"
+      ]
+    }
+  },
+  "CreatedDateTime": "2025-12-03T20:01:32.1056967Z",
+  "DeletedDateTime": null,
+  "Description": null,
+  "DisplayName": "011A - Allow specific categories in GSA for admins",
+  "GrantControls": {
+    "AuthenticationStrength": {
+      "AllowedCombinations": null,
+      "CombinationConfigurations": null,
+      "CreatedDateTime": null,
+      "Description": null,
+      "DisplayName": null,
+      "Id": null,
+      "ModifiedDateTime": null,
+      "PolicyType": null,
+      "RequirementsSatisfied": null
+    },
+    "BuiltInControls": null,
+    "CustomAuthenticationFactors": null,
+    "Operator": null,
+    "TermsOfUse": null
+  },
+  "Id": "cf0e7b0b-76c9-40d8-93b3-6f94dc4b6155",
+  "ModifiedDateTime": "2025-12-03T20:04:50.981233Z",
+  "SessionControls": {
+    "ApplicationEnforcedRestrictions": {
+      "IsEnabled": null
+    },
+    "CloudAppSecurity": {
+      "CloudAppSecurityType": null,
+      "IsEnabled": null
+    },
+    "ContinuousAccessEvaluation": {
+      "Mode": null
+    },
+    "DisableResilienceDefaults": null,
+    "GlobalSecureAccessFilteringProfile": {
+      "IsEnabled": true,
+      "ProfileId": "899e5e22-4b9d-4138-8a2e-bbf563f259b9"
+    },
+    "PersistentBrowser": {
+      "IsEnabled": null,
+      "Mode": null
+    },
+    "SecureSignInSession": {
+      "IsEnabled": null
+    },
+    "SignInFrequency": {
+      "AuthenticationType": null,
+      "FrequencyInterval": null,
+      "IsEnabled": null,
+      "Type": null,
+      "Value": null
+    }
+  },
+  "State": "enabled",
+  "AdditionalProperties": {}
+}

@@ -1,0 +1,120 @@
+{
+  "Conditions": {
+    "Applications": {
+      "ApplicationFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeApplications": [],
+      "IncludeApplications": [
+        "Office365"
+      ],
+      "IncludeAuthenticationContextClassReferences": [],
+      "IncludeUserActions": []
+    },
+    "ClientAppTypes": [
+      "all"
+    ],
+    "ClientApplications": {
+      "ExcludeServicePrincipals": null,
+      "IncludeServicePrincipals": null,
+      "ServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      }
+    },
+    "Devices": {
+      "DeviceFilter": {
+        "Mode": null,
+        "Rule": null
+      }
+    },
+    "Locations": {
+      "ExcludeLocations": null,
+      "IncludeLocations": null
+    },
+    "Platforms": {
+      "ExcludePlatforms": [],
+      "IncludePlatforms": [
+        "android",
+        "iOS"
+      ]
+    },
+    "ServicePrincipalRiskLevels": [],
+    "SignInRiskLevels": [],
+    "UserRiskLevels": [],
+    "Users": {
+      "ExcludeGroups": [
+        "f961ab7c-8e19-41da-839f-13e55aa12a92",
+        "96582e09-5541-45f1-a1c3-27bb88253da2"
+      ],
+      "ExcludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "ExcludeRoles": [],
+      "ExcludeUsers": [],
+      "IncludeGroups": [
+        "3f288f54-02bb-44dc-8488-dcd90b232fae"
+      ],
+      "IncludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "IncludeRoles": [],
+      "IncludeUsers": []
+    }
+  },
+  "CreatedDateTime": "2024-06-17T19:11:31.5828022Z",
+  "Description": null,
+  "DisplayName": "CA201-Internals-DataandAppProtection-AllApps-iOSorAndroid-ClientAppORAPP",
+  "GrantControls": {
+    "AuthenticationStrength": {
+      "AllowedCombinations": null,
+      "CombinationConfigurations": null,
+      "CreatedDateTime": null,
+      "Description": null,
+      "DisplayName": null,
+      "Id": null,
+      "ModifiedDateTime": null,
+      "PolicyType": null,
+      "RequirementsSatisfied": null
+    },
+    "BuiltInControls": [
+      "compliantApplication"
+    ],
+    "CustomAuthenticationFactors": [],
+    "Operator": "OR",
+    "TermsOfUse": []
+  },
+  "Id": "a27cd93e-53a5-4413-8347-ee3c460542b6",
+  "ModifiedDateTime": "2024-06-18T01:04:03.3829034Z",
+  "SessionControls": {
+    "ApplicationEnforcedRestrictions": {
+      "IsEnabled": null
+    },
+    "CloudAppSecurity": {
+      "CloudAppSecurityType": null,
+      "IsEnabled": null
+    },
+    "DisableResilienceDefaults": null,
+    "PersistentBrowser": {
+      "IsEnabled": null,
+      "Mode": null
+    },
+    "SignInFrequency": {
+      "AuthenticationType": null,
+      "FrequencyInterval": null,
+      "IsEnabled": null,
+      "Type": null,
+      "Value": null
+    }
+  },
+  "State": "enabledForReportingButNotEnforced",
+  "TemplateId": null,
+  "AdditionalProperties": {}
+}

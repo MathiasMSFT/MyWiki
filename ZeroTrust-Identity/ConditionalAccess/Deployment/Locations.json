@@ -1,42 +1,115 @@
 {
-    "Trusted": [
+    "namedLocations": [
         {
-            "id": "L000",
-            "Name": "P-Breakglass",
-            "Type": "manual",
-            "Rule": "",
-            "Description": "Contains 2 Breakglass accounts",
-            "IsAssignableToRole": true,
-            "RestrictedAU": true
+            "id": "L001T",
+            "DisplayName": "Trusted Corp Level 1",
+            "type": "#microsoft.graph.countryNamedLocation",
+            "isTrusted": true,
+            "countriesAndRegions": [
+                "CA",
+                "US"
+            ],
+            "includeUnknownCountriesAndRegions": false,
+            "countryLookupMethod": "clientIpAddress"
         },
         {
-            "id": "L100",
-            "Name": "P-Admins",
-            "Type": "dynamic",
-            "Rule": "(user.userPrincipalName -startswith \"adm-\")",
-            "Description": "Contains all administrators based on their userPrincipalName",
-            "IsAssignableToRole": false,
-            "RestrictedAU": true
-        }
-    ],
-    "NoTrusted": [
-        {
-            "id": "E001",
-            "Name": "CA-Global-BaseProtection-NonPersonas-Exclusions",
-            "Type": "manual",
-            "Rule": "",
-            "Description": "To exclude accounts to CAP",
-            "IsAssignableToRole": true,
-            "RestrictedAU": false
+            "id": "L002T",
+            "DisplayName": "Trusted Corp Level 2",
+            "type": "#microsoft.graph.countryNamedLocation",
+            "isTrusted": true,
+            "countriesAndRegions": [
+                "CA",
+                "US",
+                "FR"
+            ],
+            "includeUnknownCountriesAndRegions": false,
+            "countryLookupMethod": "clientIpAddress"
         },
         {
-            "id": "E002",
-            "Name": "CA-Global-ASR-Exclusions",
-            "Type": "manual",
-            "Rule": "",
-            "Description": "To exclude accounts to CAP",
-            "IsAssignableToRole": true,
-            "RestrictedAU": false
+            "id": "L010B",
+            "DisplayName": "Blocked Countries (Gov Canada)",
+            "type": "#microsoft.graph.countryNamedLocation",
+            "isTrusted": false,
+            "countriesAndRegions": [
+                "BY",
+                "CF",
+                "CN",
+                "CD",
+                "GT",
+                "HT",
+                "IR",
+                "IQ",
+                "LB",
+                "LY",
+                "MD",
+                "MM",
+                "NI",
+                "KP",
+                "RU",
+                "SO",
+                "SS",
+                "LK",
+                "SD",
+                "SY",
+                "UA",
+                "VE",
+                "YE",
+                "ZW"
+            ],
+            "includeUnknownCountriesAndRegions": true,
+            "countryLookupMethod": "clientIpAddress"
+        },
+        {
+            "id": "L020A",
+            "DisplayName": "Allowed Countries Level 1",
+            "type": "#microsoft.graph.countryNamedLocation",
+            "isTrusted": false,
+            "countriesAndRegions": [
+                "CA",
+                "US"
+            ],
+            "includeUnknownCountriesAndRegions": true,
+            "countryLookupMethod": "clientIpAddress"
+        },
+        {
+            "id": "L021A",
+            "DisplayName": "Allowed Countries Level 2",
+            "type": "#microsoft.graph.countryNamedLocation",
+            "isTrusted": false,
+            "countriesAndRegions": [
+                "FR",
+                "GB"
+            ],
+            "includeUnknownCountriesAndRegions": true,
+            "countryLookupMethod": "clientIpAddress"
+        },
+        {
+            "id": "L100A",
+            "DisplayName": "Operational site",
+            "type": "#microsoft.graph.ipNamedLocation",
+            "isTrusted": true,
+            "ipRanges": [
+                {
+                    "@odata.type": "#microsoft.graph.iPv4CidrRange",
+                    "cidrAddress": "102.133.177.48/32"
+                }
+            ]
+        },
+        {
+            "id": "L110A",
+            "DisplayName": "Partner Network Untrusted",
+            "type": "#microsoft.graph.ipNamedLocation",
+            "isTrusted": false,
+            "ipRanges": [
+                {
+                    "@odata.type": "#microsoft.graph.iPv4CidrRange",
+                    "cidrAddress": "102.133.177.48/32"
+                },
+                {
+                    "@odata.type": "#microsoft.graph.iPv6CidrRange",
+                    "cidrAddress": "2a01:110:3000::/42"
+                }
+            ]
         }
     ]
 }

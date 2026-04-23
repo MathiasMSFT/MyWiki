@@ -1,0 +1,37 @@
+[
+  {
+    "ObjectGuid": null,
+    "Id": "L001T",
+    "DisplayName": "Trusted Corp Level 1"
+  },
+  {
+    "ObjectGuid": "1062b82e-61af-48eb-a623-8aa3d271247c",
+    "Id": "L002T",
+    "DisplayName": "Trusted Corp Level 2"
+  },
+  {
+    "ObjectGuid": "11315d3a-4195-4c2f-8909-2622d3f57436",
+    "Id": "L010B",
+    "DisplayName": "Blocked Countries (Gov Canada)"
+  },
+  {
+    "ObjectGuid": null,
+    "Id": "L020A",
+    "DisplayName": "Allowed Countries Level 1"
+  },
+  {
+    "ObjectGuid": null,
+    "Id": "L021A",
+    "DisplayName": "Allowed Countries Level 2"
+  },
+  {
+    "ObjectGuid": null,
+    "Id": "L100A",
+    "DisplayName": "Operational site"
+  },
+  {
+    "ObjectGuid": "0a5494f4-1f9c-4c53-815d-7062f6145062",
+    "Id": "L110A",
+    "DisplayName": "Partner Network Untrusted"
+  }
+]

@@ -78,7 +78,16 @@ Your second level:
 
 # Deployment
 
+## Restricted Administrative Unit
+```
+.\Deploy-Solution.ps1 -TenantId 68c000e5-9b6e-44c0-9820-f1bb07ce0cdb -RAUs
+```
+Use the script named **Deploy-Solution.ps1** with switch **RAUs**
+
 ## Groups
+```
+.\Deploy-Solution.ps1 -TenantId 68c000e5-9b6e-44c0-9820-f1bb07ce0cdb -Groups
+```
 Use the script named **Deploy-Solution.ps1** with switch **Groups**. The script will get the list of groups from **Groups.json**.
 Then, a new file named **GroupDetail.json** will appear under the directory. The script will use it to update all Conditional Access json file.
 
@@ -103,10 +112,16 @@ Here is an example
 - RestrictedAU: define if the group will be under the Restricted Administrative Unit (RAU)
 - RestrictedAUName: name of your Restricted Administrative Unit
 
-## UpdateCAPs
-Use the script named **Deploy-Solution.ps1** with switch **UpdateCAPs**. The script will get the list of groups from **GroupsDetails.json**.
+⚠️Groups under Restricted Administrative Unit can NOT be managed by ID Governance
+🚩Be sure your breakglass account are member to the Persona. Don't say *I will do it later* !!
+
+## GenerateCAs
+```
+.\Deploy-Solution.ps1 -TenantId 68c000e5-9b6e-44c0-9820-f1bb07ce0cdb -GenerateCAs
+```
+Use the script named **Deploy-Solution.ps1** with switch **GenerateCAs**. The script will get the list of groups from **GroupsDetails.json**.
 Then, based on the id, the script will replace the id of group in Conditional Access json file by the objectid of the group from **GroupsDetails.json**.
 
 
-## CAPs
-Use the script named **Deploy-Solution.ps1** with switch **CAPs**. The script will create all Conditional Access policies.
+## DeployCAs
+Use the script named **Deploy-Solution.ps1** with switch **DeployCAs**. The script will create all Conditional Access policies.

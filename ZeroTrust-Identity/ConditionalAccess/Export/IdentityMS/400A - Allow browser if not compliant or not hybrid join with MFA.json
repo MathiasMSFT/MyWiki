@@ -1,0 +1,156 @@
+{
+  "Conditions": {
+    "AgentIdRiskLevels": null,
+    "Applications": {
+      "ApplicationFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeApplications": [],
+      "GlobalSecureAccess": {},
+      "IncludeApplications": [
+        "All"
+      ],
+      "IncludeAuthenticationContextClassReferences": [],
+      "IncludeUserActions": [],
+      "NetworkAccess": {}
+    },
+    "AuthenticationFlows": {
+      "TransferMethods": null
+    },
+    "ClientAppTypes": [
+      "browser"
+    ],
+    "ClientApplications": {
+      "AgentIdServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      },
+      "ExcludeAgentIdServicePrincipals": null,
+      "ExcludeServicePrincipals": null,
+      "IncludeAgentIdServicePrincipals": null,
+      "IncludeServicePrincipals": null,
+      "ServicePrincipalFilter": {
+        "Mode": null,
+        "Rule": null
+      }
+    },
+    "DeviceStates": {
+      "ExcludeStates": null,
+      "IncludeStates": null
+    },
+    "Devices": {
+      "DeviceFilter": {
+        "Mode": "exclude",
+        "Rule": "device.trustType -eq \"ServerAD\" -and device.trustType -eq \"AzureAD\""
+      },
+      "ExcludeDeviceStates": [],
+      "ExcludeDevices": [],
+      "IncludeDeviceStates": [],
+      "IncludeDevices": []
+    },
+    "InsiderRiskLevels": null,
+    "Locations": {
+      "ExcludeLocations": null,
+      "IncludeLocations": null
+    },
+    "Platforms": {
+      "ExcludePlatforms": null,
+      "IncludePlatforms": null
+    },
+    "ServicePrincipalRiskLevels": null,
+    "SignInRiskLevels": [],
+    "UserRiskLevels": [],
+    "Users": {
+      "ExcludeGroups": [],
+      "ExcludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "ExcludeRoles": [],
+      "ExcludeUsers": [
+        "08601fbc-80c7-4f07-8d5a-3e899b0fd0b4",
+        "e636e7b5-8d6e-41f3-b1d7-b5e12dddfef5",
+        "ac62159a-48cd-42fa-a6d7-520d47ee1973",
+        "f0510ca6-fc21-4ce6-acdb-e4e776cf43dc",
+        "fb7a78f1-022e-46bf-8e6e-e4fc82ce609a",
+        "999b9827-8c7d-4543-8e78-cbddc9cd0991",
+        "dfe64ebc-08e7-4604-9bb1-0f9ab3481b41",
+        "425a6e5c-feda-4a0a-8b44-2452ceeea898",
+        "33aa21b6-6d76-4eea-b937-847ac9f01765",
+        "f1bfc67d-5644-4ceb-b001-3a1bb1aa4a33"
+      ],
+      "IncludeGroups": [],
+      "IncludeGuestsOrExternalUsers": {
+        "ExternalTenants": {
+          "MembershipKind": null
+        },
+        "GuestOrExternalUserTypes": null
+      },
+      "IncludeRoles": [],
+      "IncludeUsers": [
+        "All"
+      ]
+    }
+  },
+  "CreatedDateTime": "2021-07-09T20:52:10.6219902Z",
+  "DeletedDateTime": null,
+  "Description": null,
+  "DisplayName": "400A - Allow browser if not compliant or not hybrid join with MFA",
+  "GrantControls": {
+    "AuthenticationStrength": {
+      "AllowedCombinations": null,
+      "CombinationConfigurations": null,
+      "CreatedDateTime": null,
+      "Description": null,
+      "DisplayName": null,
+      "Id": null,
+      "ModifiedDateTime": null,
+      "PolicyType": null,
+      "RequirementsSatisfied": null
+    },
+    "BuiltInControls": [
+      "mfa"
+    ],
+    "CustomAuthenticationFactors": [],
+    "Operator": "OR",
+    "TermsOfUse": []
+  },
+  "Id": "a4020c2f-bb0d-4fce-807d-99af74a68786",
+  "ModifiedDateTime": "2025-12-03T18:34:17.4755838Z",
+  "SessionControls": {
+    "ApplicationEnforcedRestrictions": {
+      "IsEnabled": null
+    },
+    "CloudAppSecurity": {
+      "CloudAppSecurityType": null,
+      "IsEnabled": null
+    },
+    "ContinuousAccessEvaluation": {
+      "Mode": null
+    },
+    "DisableResilienceDefaults": null,
+    "GlobalSecureAccessFilteringProfile": {
+      "IsEnabled": null,
+      "ProfileId": null
+    },
+    "PersistentBrowser": {
+      "IsEnabled": true,
+      "Mode": "never"
+    },
+    "SecureSignInSession": {
+      "IsEnabled": null
+    },
+    "SignInFrequency": {
+      "AuthenticationType": "primaryAndSecondaryAuthentication",
+      "FrequencyInterval": "timeBased",
+      "IsEnabled": true,
+      "Type": "days",
+      "Value": 1
+    }
+  },
+  "State": "enabled",
+  "AdditionalProperties": {}
+}

@@ -2,8 +2,13 @@
     "RestrictedAU": [
         {
             "id": "RAU01",
-            "displayName": "CAP-Exceptions",
+            "displayName": "CA-Exceptions",
             "description": "Restricted Administrative Unit to store groups of CAP"
+        },
+        {
+            "id": "RAU02",
+            "displayName": "Protected-Personas",
+            "description": "Restricted Administrative Unit to store groups of protected Personas"
         }
     ]
 }

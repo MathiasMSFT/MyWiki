@@ -1,0 +1,118 @@
+{
+  "conditions": {
+    "applications": {
+      "applicationFilter": {
+        "mode": null,
+        "rule": null
+      },
+      "excludeApplications": [
+        "2793995e-0a7d-40d7-bd35-6968ba142197",
+        "Office365"
+      ],
+      "includeApplications": [
+        "All"
+      ],
+      "includeAuthenticationContextClassReferences": [],
+      "includeUserActions": []
+    },
+    "clientAppTypes": [
+      "all"
+    ],
+    "clientApplications": {
+      "excludeServicePrincipals": null,
+      "includeServicePrincipals": null,
+      "servicePrincipalFilter": {
+        "mode": null,
+        "rule": null
+      }
+    },
+    "devices": {
+      "deviceFilter": {
+        "mode": null,
+        "rule": null
+      }
+    },
+    "locations": {
+      "excludeLocations": null,
+      "includeLocations": null
+    },
+    "platforms": {
+      "excludePlatforms": null,
+      "includePlatforms": null
+    },
+    "servicePrincipalRiskLevels": [],
+    "signInRiskLevels": [],
+    "userRiskLevels": [],
+    "users": {
+      "excludeGroups": [
+        "P000",
+        "E310"
+      ],
+      "excludeGuestsOrExternalUsers": {
+        "externalTenants": {
+          "membershipKind": null
+        },
+        "guestOrExternalUserTypes": null
+      },
+      "excludeRoles": [],
+      "excludeUsers": [],
+      "includeGroups": [],
+      "includeGuestsOrExternalUsers": {
+        "externalTenants": {
+          "membershipKind": "all"
+        },
+        "guestOrExternalUserTypes": "internalGuest,b2bCollaborationGuest,b2bCollaborationMember,b2bDirectConnectUser,otherExternalUser,serviceProvider"
+      },
+      "includeRoles": [],
+      "includeUsers": []
+    }
+  },
+  "createdDateTime": "2024-06-18T01:21:57.8035821Z",
+  "description": null,
+  "displayName": "310B-Guests-AttackSurfaceReduction-AllResources-AnyPlatform-BlockNonGuestAppAccess",
+  "grantControls": {
+    "authenticationStrength": {
+      "allowedCombinations": null,
+      "combinationConfigurations": null,
+      "createdDateTime": null,
+      "description": null,
+      "displayName": null,
+      "id": null,
+      "modifiedDateTime": null,
+      "policyType": null,
+      "requirementsSatisfied": null
+    },
+    "builtInControls": [
+      "block"
+    ],
+    "customAuthenticationFactors": [],
+    "operator": "OR",
+    "termsOfUse": []
+  },
+  "id": "094f5b5d-dd65-46de-afe9-0645fbd289e5",
+  "modifiedDateTime": "2024-06-18T01:22:08.6569405Z",
+  "sessionControls": {
+    "applicationEnforcedRestrictions": {
+      "isEnabled": null
+    },
+    "cloudAppSecurity": {
+      "cloudAppSecurityType": null,
+      "isEnabled": null
+    },
+    "disableResilienceDefaults": null,
+    "persistentBrowser": {
+      "isEnabled": null,
+      "mode": null
+    },
+    "signInFrequency": {
+      "authenticationType": null,
+      "frequencyInterval": null,
+      "isEnabled": null,
+      "type": null,
+      "value": null
+    }
+  },
+  "state": "enabledForReportingButNotEnforced",
+  "templateId": null,
+  "additionalProperties": {}
+}
