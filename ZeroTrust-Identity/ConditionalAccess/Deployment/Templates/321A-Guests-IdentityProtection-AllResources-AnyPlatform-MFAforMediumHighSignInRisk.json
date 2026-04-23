@@ -69,7 +69,7 @@
   },
   "createdDateTime": "2024-06-18T01:18:51.6439789Z",
   "description": null,
-  "displayName": "321A-Guests-IdentityProtection-AllResources-AnyPlatform-MFAforMediumHighSignInRisk.json",
+  "displayName": "321A-Guests-IdentityProtection-AllResources-AnyPlatform-MFAforMediumHighSignInRisk",
   "grantControls": {
     "authenticationStrength": {
       "allowedCombinations": null,
