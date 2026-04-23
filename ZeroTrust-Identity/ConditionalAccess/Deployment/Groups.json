@@ -2,7 +2,7 @@
     "Personas": [
         {
             "id": "P000",
-            "Name": "P-Breakglass",
+            "Name": "SEC-Breakglass",
             "Type": "manual",
             "Rule": "",
             "Description": "Contains 2 Breakglass accounts",
@@ -78,7 +78,7 @@
     ],
     "Exclusions": [
         {
-            "id": "E001",
+            "id": "E000",
             "Name": "CA-Global-BaseProtection-NonPersonas-Exclusions",
             "Type": "manual",
             "Rule": "",
@@ -189,7 +189,17 @@
         },
         {
             "id": "E032",
-            "Name": "CA-Global-AppProtection-SpecificApps-Exclusions",
+            "Name": "CA-Global-SpecificApps-BlockOutsideCorporate-Exclusions",
+            "Type": "manual",
+            "Rule": "",
+            "Description": "To exclude accounts to CA",
+            "IsAssignableToRole": false,
+            "RestrictedAU": true,
+            "RestrictedAUName": "CA-Exceptions"
+        },
+        {
+            "id": "E033",
+            "Name": "CA-Global-SpecificApps-BlockOutsideCanada-Exclusions",
             "Type": "manual",
             "Rule": "",
             "Description": "To exclude accounts to CA",
@@ -209,7 +219,7 @@
         },
         {
             "id": "E101",
-            "Name": "CA-Admins-BaseProtection-MFA-Exclusions",
+            "Name": "CA-Admins-BaseProtection-SignInSessionPolicy-Exclusions",
             "Type": "manual",
             "Rule": "",
             "Description": "To exclude accounts to CA",
@@ -298,6 +308,16 @@
             "RestrictedAUName": "CA-Exceptions"
         },
         {
+            "id": "E231",
+            "Name": "CA-Internals-DataandAppProtection-SpecificApps-MFA-Exclusions",
+            "Type": "manual",
+            "Rule": "",
+            "Description": "To exclude accounts to CA",
+            "IsAssignableToRole": false,
+            "RestrictedAU": false,
+            "RestrictedAUName": "CA-Exceptions"
+        },
+        {
             "id": "E300",
             "Name": "CA-Guests-BaseProtection-MFA-Exclusions",
             "Type": "manual",
@@ -340,6 +360,16 @@
         {
             "id": "E321",
             "Name": "CA-Guests-IdentityProtection-MFAforMediumHighSignInRisk-Exclusions",
+            "Type": "manual",
+            "Rule": "",
+            "Description": "To exclude accounts to CA",
+            "IsAssignableToRole": false,
+            "RestrictedAU": false,
+            "RestrictedAUName": "CA-Exceptions"
+        },
+        {
+            "id": "E330",
+            "Name": "CA-Guests-DataandAppProtection-SignInSessionPolicy-Exclusions",
             "Type": "manual",
             "Rule": "",
             "Description": "To exclude accounts to CA",

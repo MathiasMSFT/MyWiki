@@ -1,5 +1,6 @@
 # App Inventory — Export app permissions & consents (PowerShell)
 
+## Script
 Purpose
 - Export service principals (Enterprise Apps), their application permissions (app role assignments) and delegated consents (oauth2PermissionGrants), flatten the results (one row per permission/consent), and optionally export a CSV for Power BI.
 
@@ -26,12 +27,13 @@ Script parameters
 - `-IncludeBuiltin` : Include built‑in / integrated apps (default `false` in the script). Use this to include all Enterprise Apps.
 - `-ExportCsv` : Export results to CSV.
 - `-ExportCsvPath` : Output path for CSV (example: `Results\GraphAppInventory.csv`).
+- `-TenantId` : tenantid or tenantname
 
 Usage examples
 - Include built-ins and export CSV:
-  - `pwsh .\AppInventory.ps1 -IncludeBuiltin -ExportCsv -ExportCsvPath .\Results\GraphAppInventory.csv`
+  - `pwsh .\AppInventory.ps1 -IncludeBuiltin -ExportCsv -ExportCsvPath .\Results\GraphAppInventory.csv -TenantId contoso.onmicrosoft.com`
 - Export without built-ins:
-  - `pwsh .\AppInventory.ps1 -ExportCsv -ExportCsvPath C:\Temp\appinventory.csv`
+  - `pwsh .\AppInventory.ps1 -ExportCsv -ExportCsvPath C:\Temp\appinventory.csv -TenantId contoso.onmicrosoft.com`
 
 CSV columns (flattened — one row per permission/consent)
 - **ApplicationId**: application (appId) GUID.
@@ -67,3 +69,22 @@ Troubleshooting
     - `Invoke-RestMethod -Headers $authHeader -Uri "https://graph.microsoft.com/v1.0/oauth2PermissionGrants?`$filter=clientId eq '$spId'" | Select-Object -ExpandProperty value`
     - `Invoke-RestMethod -Headers $authHeader -Uri "https://graph.microsoft.com/v1.0/oauth2PermissionGrants?`$filter=resourceId eq '$spId'" | Select-Object -ExpandProperty value`
 - No results: check `-IncludeBuiltin`, token permissions, and that SP exists in this tenant.
+
+
+## Power BI
+
+Prerequisites
+- download Power BI desktop
+
+How it works
+- Open the pbix file and update the source path of the csv file
+- Read the description
+- Play with the filter
+
+
+# Credit
+
+Mathias Dumont
+
+GitHub Copilot and Claude Opus 4.5
+

@@ -23,12 +23,14 @@ Param (
     [Parameter(Mandatory=$false)]
     [switch]$GenerateCAs,
     [Parameter(Mandatory=$false)]
-    [switch]$Locations
+    [switch]$Locations,
+    [Parameter(Mandatory=$false)]
+    [switch]$FR
 )
 
 
 # Get Terms Of use
-Function SearchTOU {
+Function SearchInTune {
     Write-Host "    [-] Search Terms Of Use" -ForegroundColor Yellow
     $ExportTOU = $true
     ## Get InTune app
@@ -57,33 +59,89 @@ Function SearchTOU {
     Return $ExportTOU
 }
 Function SearchTOU {
-    Write-Host "    [-] Search Terms Of Use" -ForegroundColor Yellow
+    param(
+        [Parameter(Mandatory=$false)]
+        [string]$PolicyName = ""
+    )
+    
+    if ($PolicyName -ne "") {
+        Write-Host "    [-] Select Terms Of Use for policy: $PolicyName" -ForegroundColor Yellow
+    } else {
+        Write-Host "    [-] Search Terms Of Use" -ForegroundColor Yellow
+    }
+    
     $ExportTOU = $true
-    ## Get TOU
-    $TOUs = Get-MgBetaAgreement -Property Id,DisplayName -ErrorAction SilentlyContinue
-    If ($TOUs.DisplayName -contains "TOU-External-People") {
-        # Write-Host "[✅] Terms Of Use found"
-        $IdTOU = $(Get-MgBetaAgreement -Filter 'DisplayName eq "TOU-External-People"' -ErrorAction SilentlyContinue).Id
-    } elseif ($TOUs) {
-        # Write-Host "[⚠️] Terms Of Use not found, but you've TOU. Modify "
-        $SelectedTOU = $TOUs # | Out-GridView -Title "Select the Terms of Use" -PassThru
-        if ($SelectedTOU) {
-            $SelectedTOU | ForEach-Object {
-                $IdTOU = $_.Id
-            }
-            # Write-Host "[✅] $($_.DisplayName) selected ($IdTOU)"
+    
+    # Try to get TOU with diagnostic information
+    try {
+        Write-Host "      [ℹ️] Attempting to retrieve Terms of Use from tenant..." -ForegroundColor Gray
+        $TOUs = Get-MgBetaAgreement -Property Id,DisplayName -ErrorAction SilentlyContinue
+        
+        # If Beta doesn't work, try v1.0
+        if (!$TOUs) {
+            Write-Host "      [ℹ️] Beta endpoint empty, trying v1.0..." -ForegroundColor Gray
+            $TOUs = Get-MgAgreement -Property Id,DisplayName -ErrorAction SilentlyContinue
+        }
+        
+        # Additional diagnostic
+        if (!$TOUs) {
+            Write-Host "      [ℹ️] Checking Graph permissions..." -ForegroundColor Gray
+            $context = Get-MgContext
+            Write-Host "      [ℹ️] Current scopes: $($context.Scopes -join ', ')" -ForegroundColor Gray
+        }
+    }
+    catch {
+        Write-Host "      [❌] Error retrieving Terms of Use: $($_.Exception.Message)" -ForegroundColor Red
+        $ExportTOU = $false
+        return $ExportTOU
+    }
+    
+    if ($TOUs) {
+        Write-Host "      [ℹ️] Found $($TOUs.Count) Terms Of Use in tenant:" -ForegroundColor Cyan
+        
+        # Display available Terms of Use
+        for ($i = 0; $i -lt $TOUs.Count; $i++) {
+            Write-Host "        [$($i+1)] $($TOUs[$i].DisplayName)" -ForegroundColor White
+        }
+        Write-Host "        [0] Skip Terms of Use (policy will be excluded)" -ForegroundColor Gray
+        
+        # Ask user to select  
+        if ($PolicyName -ne "") {
+            $prompt = "      Select Terms of Use for '$PolicyName' (0-$($TOUs.Count))"
         } else {
-            # Write-Host "[ℹ️] No TOU selected."
+            $prompt = "      Please select a Terms of Use for external users (0-$($TOUs.Count))"
+        }
+        
+        do {
+            $choice = Read-Host $prompt
+            if ($choice -match '^\d+$') {
+                $choice = [int]$choice
+            } else {
+                $choice = -1
+            }
+        } while ($choice -lt 0 -or $choice -gt $TOUs.Count)
+        
+        if ($choice -eq 0) {
+            Write-Host "      [ℹ️] No Terms of Use selected - Policy will be skipped" -ForegroundColor Yellow
             $ExportTOU = $false
+        } else {
+            $SelectedTOU = $TOUs[$choice - 1]
+            $global:IdTOU = $SelectedTOU.Id
+            Write-Host "      [✅] Selected TOU: $($SelectedTOU.DisplayName)" -ForegroundColor Green
         }
     } else {
+        Write-Host "      [⚠️] No Terms Of Use found in tenant" -ForegroundColor Yellow
+        Write-Host "      [ℹ️] Possible reasons:" -ForegroundColor Gray
+        Write-Host "        • No Terms of Use are configured in Entra ID" -ForegroundColor Gray
+        Write-Host "        • Missing Agreement.Read.All permission" -ForegroundColor Gray
+        Write-Host "        • Terms of Use feature not enabled" -ForegroundColor Gray
         $ExportTOU = $false
     }
     Return $ExportTOU
 }
 Function Connect-To-MicrosoftGraph {
     try {
-        Connect-MgGraph -Scopes 'Policy.Read.All','Policy.ReadWrite.ConditionalAccess', 'Application.Read.All' -TenantId $TenantId -NoWelcome -ErrorAction Stop
+        Connect-MgGraph -Scopes 'Policy.Read.All','Policy.ReadWrite.ConditionalAccess', 'Application.Read.All', 'Agreement.Read.All' -TenantId $TenantId -NoWelcome -ErrorAction Stop
         Write-Host "Connected to Microsoft Graph successfully." -ForegroundColor Green
     } catch {
         if ($_.Exception.Message -like '*User canceled authentication*' -or $_.Exception.Message -like '*cancel*') {
@@ -95,8 +153,6 @@ Function Connect-To-MicrosoftGraph {
     }
 }
 
-
-$global:IdTOU
 
 Import-Module Microsoft.Graph.Beta.Groups
 
@@ -120,9 +176,12 @@ If ($RAUs) {
             $RAUBodyParam = $RAUObject | ConvertTo-Json -Depth 10
 
             # Create the RAU using Microsoft Graph
-            #V1.0 - $null = New-MgDirectoryAdministrativeUnit -Body $RAUBodyParam
-            $null = New-MgBetaDirectoryAdministrativeUnit -Body $RAUBodyParam
-            Write-Host "    RAU created successfully: $($RAU.displayName) " -ForegroundColor Green
+            If (!(Get-MgBetaAdministrativeUnit -Filter "displayName eq '$($RAU.displayName)'")) {
+                $null = New-MgBetaDirectoryAdministrativeUnit -Body $RAUBodyParam
+                Write-Host "    RAU created successfully: $($RAU.displayName) " -ForegroundColor Green
+            } Else {
+                Write-Host "    RAU named $($RAU.displayName) already exist" -ForegroundColor Magenta
+            }
         }
         catch {
             Write-Host "    Error while creating the RAU: $_" -ForegroundColor Red
@@ -175,7 +234,7 @@ If ($Groups) {
             If ($persona.RestrictedAU -eq $true) {
                 # Validate if the RAU exist
                 #V1.0 - $RestrictedAUObj = Get-MgDirectoryAdministrativeUnit -Filter "DisplayName eq '$($persona.RestrictedAUName)'"
-                $RestrictedAUObj = Get-MgBetaDirectoryAdministrativeUnit -Filter "DisplayName eq '$($persona.RestrictedAUName)'"
+                $RestrictedAUObj = Get-MgBetaAdministrativeUnit -Filter "DisplayName eq '$($persona.RestrictedAUName)'"
                 If ($RestrictedAUObj) {
                     # Create the group using Microsoft Graph to the RAU
                     Write-Host "    Creating group named $($persona.Name)" -ForegroundColor Yellow
@@ -191,12 +250,27 @@ If ($Groups) {
                     } Else {
                         #V1.0 - $GroupId = (Get-MgGRoup -Filter "displayName eq '$($persona.Name)'").Id
                         $GroupId = (Get-MgBetaGRoup -Filter "displayName eq '$($persona.Name)'").Id
+                        
+                        # Check if group is already in the RAU
+                        $GroupInRAU = Get-MgBetaDirectoryAdministrativeUnitMember -AdministrativeUnitId $($RestrictedAUObj.Id) -Filter "id eq '$GroupId'" -ErrorAction SilentlyContinue
+                        
+                        If (!$GroupInRAU) {
+                            # Group exists but is not in RAU, add it
+                            Write-Host "    [⚠️] Group $($persona.Name) exists but not in RAU. Adding to RAU..." -ForegroundColor Yellow
+                            $GroupRef = @{
+                                "@odata.id" = "https://graph.microsoft.com/beta/directoryObjects/$GroupId"
+                            }
+                            New-MgBetaDirectoryAdministrativeUnitMemberByRef -AdministrativeUnitId $($RestrictedAUObj.Id) -BodyParameter $GroupRef
+                            Write-Host "    [✅] Group $($persona.Name) added to RAU successfully" -ForegroundColor Green
+                        } Else {
+                            Write-Host "    [✅] Group $($persona.Name) already exists and is in RAU" -ForegroundColor Green
+                        }
+                        
                         $GroupDetails += @{
                             Id = $persona.Id
                             DisplayName = $persona.Name
                             ObjectGuid = $GroupId
                         }
-                        Write-Host "    [✅] Group named $($persona.Name) already exist" -ForegroundColor Magenta
                     }
                 } Else {
                     # Create the group using Microsoft Graph to the RAU
@@ -218,7 +292,7 @@ If ($Groups) {
                             DisplayName = $persona.Name
                             ObjectGuid = $GroupId
                         }
-                        Write-Host "    [✅] Group named $($persona.Name) already exist" -ForegroundColor Magenta
+                        Write-Host "    [✅] Group named $($persona.Name) already exist (but RAU doesn't exist)" -ForegroundColor Magenta
                     }
                 }
             } Else {
@@ -285,24 +359,87 @@ If ($Groups) {
             }
             Write-Host "Exclusions : $($exclusiongrp.Name)" -ForegroundColor Cyan
             $exclusionsBodyParam = $exclusiongrpObject | ConvertTo-Json -Depth 10
-            # Create the group using Microsoft Graph
-            Write-Host "    Creating group named $($exclusiongrp.Name)" -ForegroundColor Yellow
-            If (!(Get-MgBetaGroup -Filter "displayName eq '$($exclusiongrp.Name)'")){
-                $CreateGroup = New-MgBetaGroup -BodyParameter $exclusionsBodyParam
-                $GroupDetails += @{
-                    Id = $exclusiongrp.Id
-                    DisplayName = $exclusiongrp.Name
-                    ObjectGuid = $CreateGroup.Id
+            
+            # Get RestrictedAdministrativeUnit for exclusion groups
+            If ($exclusiongrp.RestrictedAU -eq $true) {
+                # Validate if the RAU exist
+                $RestrictedAUObj = Get-MgBetaAdministrativeUnit -Filter "DisplayName eq '$($exclusiongrp.RestrictedAUName)'"
+                If ($RestrictedAUObj) {
+                    # Create the group using Microsoft Graph to the RAU
+                    Write-Host "    Creating exclusion group named $($exclusiongrp.Name)" -ForegroundColor Yellow
+                    If (!(Get-MgBetaGroup -Filter "displayName eq '$($exclusiongrp.Name)'")){
+                        $CreateGroup = New-MgBetaDirectoryAdministrativeUnitMember -AdministrativeUnitId $($RestrictedAUObj.Id) -BodyParameter $exclusionsBodyParam
+                        $GroupDetails += @{
+                            Id = $exclusiongrp.Id
+                            DisplayName = $exclusiongrp.Name
+                            ObjectGuid = $CreateGroup.Id
+                        }
+                        Write-Host "    [✅] Exclusion group created successfully: $($exclusiongrp.Name) - Type: $($exclusiongrp.Type) " -ForegroundColor Green
+                    } Else {
+                        $GroupId = (Get-MgBetaGRoup -Filter "displayName eq '$($exclusiongrp.Name)'").Id
+                        
+                        # Check if group is already in the RAU
+                        $GroupInRAU = Get-MgBetaDirectoryAdministrativeUnitMember -AdministrativeUnitId $($RestrictedAUObj.Id) -Filter "id eq '$GroupId'" -ErrorAction SilentlyContinue
+                        
+                        If (!$GroupInRAU) {
+                            # Group exists but is not in RAU, add it
+                            Write-Host "    [⚠️] Exclusion group $($exclusiongrp.Name) exists but not in RAU. Adding to RAU..." -ForegroundColor Yellow
+                            $GroupRef = @{
+                                "@odata.id" = "https://graph.microsoft.com/beta/directoryObjects/$GroupId"
+                            }
+                            New-MgBetaDirectoryAdministrativeUnitMemberByRef -AdministrativeUnitId $($RestrictedAUObj.Id) -BodyParameter $GroupRef
+                            Write-Host "    [✅] Exclusion group $($exclusiongrp.Name) added to RAU successfully" -ForegroundColor Green
+                        } Else {
+                            Write-Host "    [✅] Exclusion group $($exclusiongrp.Name) already exists and is in RAU" -ForegroundColor Green
+                        }
+                        
+                        $GroupDetails += @{
+                            Id = $exclusiongrp.Id
+                            DisplayName = $exclusiongrp.Name
+                            ObjectGuid = $GroupId
+                        }
+                    }
+                } Else {
+                    # Create the group using Microsoft Graph (RAU doesn't exist)
+                    Write-Host "    Creating exclusion group named $($exclusiongrp.Name)" -ForegroundColor Yellow
+                    If (!(Get-MgBetaGroup -Filter "displayName eq '$($exclusiongrp.Name)'")){
+                        $CreateGroup = New-MgBetaGroup -BodyParameter $exclusionsBodyParam
+                        $GroupDetails += @{
+                            Id = $exclusiongrp.Id
+                            DisplayName = $exclusiongrp.Name
+                            ObjectGuid = $CreateGroup.Id
+                        }
+                        Write-Host "    [✅] Exclusion group created successfully: $($exclusiongrp.Name) - Type: $($exclusiongrp.Type) " -ForegroundColor Green
+                    } Else {
+                        $GroupId = (Get-MgBetaGroup -Filter "displayName eq '$($exclusiongrp.Name)'").Id
+                        $GroupDetails += @{
+                            Id = $exclusiongrp.Id
+                            DisplayName = $exclusiongrp.Name
+                            ObjectGuid = $GroupId
+                        }
+                        Write-Host "    [✅] Exclusion group named $($exclusiongrp.Name) already exist (but RAU doesn't exist)" -ForegroundColor Magenta
+                    }
                 }
-                Write-Host "    [✅] Group created successfully: $($exclusiongrp.Name) - Type: $($exclusiongrp.Type) " -ForegroundColor Green
             } Else {
-                $GroupId = (Get-MgBetaGroup -Filter "displayName eq '$($exclusiongrp.Name)'").Id
-                $GroupDetails += @{
-                    Id = $exclusiongrp.Id
-                    DisplayName = $exclusiongrp.Name
-                    ObjectGuid = $GroupId
+                # Create the group using Microsoft Graph (no RAU required)
+                Write-Host "    Creating exclusion group named $($exclusiongrp.Name)" -ForegroundColor Yellow
+                If (!(Get-MgBetaGroup -Filter "displayName eq '$($exclusiongrp.Name)'")){
+                    $CreateGroup = New-MgBetaGroup -BodyParameter $exclusionsBodyParam
+                    $GroupDetails += @{
+                        Id = $exclusiongrp.Id
+                        DisplayName = $exclusiongrp.Name
+                        ObjectGuid = $CreateGroup.Id
+                    }
+                    Write-Host "    [✅] Exclusion group created successfully: $($exclusiongrp.Name) - Type: $($exclusiongrp.Type) " -ForegroundColor Green
+                } Else {
+                    $GroupId = (Get-MgBetaGroup -Filter "displayName eq '$($exclusiongrp.Name)'").Id
+                    $GroupDetails += @{
+                        Id = $exclusiongrp.Id
+                        DisplayName = $exclusiongrp.Name
+                        ObjectGuid = $GroupId
+                    }
+                    Write-Host "    [✅] Exclusion group named $($exclusiongrp.Name) already exist" -ForegroundColor Magenta
                 }
-                Write-Host "    [✅] Group named $($exclusiongrp.Name) already exist" -ForegroundColor Magenta
             }
         }
         catch {
@@ -395,6 +532,15 @@ If ($Locations) {
 }
 
 If ($GenerateCAs) {
+    # Check if Terms of Use are available first
+    Write-Host "[ℹ️] Checking for Terms of Use availability..." -ForegroundColor Cyan
+    $TOUAvailable = SearchTOU
+    if ($TOUAvailable) {
+        Write-Host "  [✅] Terms of Use found - CA340 template will be included if available" -ForegroundColor Green
+    } else {
+        Write-Host "  [⚠️] No Terms of Use found - CA340 template will be skipped" -ForegroundColor Yellow
+    }
+    
     # Get all groups details
     $GroupDetails = Get-Content -Path "$DeploymentDirectory\GroupDetails.json" -Raw | ConvertFrom-Json  -Depth 10
     # Define $NewGroupIds based on $GroupDetails values
@@ -412,11 +558,34 @@ If ($GenerateCAs) {
     }
 
     # Get all json files in the directory
-    $AllCAPs = Get-ChildItem -Path "$DeploymentDirectory\Templates\" -Filter *.json
+    If ($FR) {
+        $AllCAPs = Get-ChildItem -Path "$DeploymentDirectory\Templates\FR\" -Filter *.json
+    } Else {
+        $AllCAPs = Get-ChildItem -Path "$DeploymentDirectory\Templates\EN\" -Filter *.json
+    }
+    
+    # Filter out 340A if Terms of Use are not available
+    $ExcludedTemplateCount = 0
+    if (!$TOUAvailable) {
+        $OriginalCount = $AllCAPs.Count
+        $AllCAPs = $AllCAPs | Where-Object { $_.Name -notlike "*340A*" }
+        if ($AllCAPs -eq $null) { $AllCAPs = @() }
+        $ExcludedTemplateCount = $OriginalCount - $AllCAPs.Count
+        if ($ExcludedTemplateCount -gt 0) {
+            Write-Host "  [ℹ️] $ExcludedTemplateCount template(s) excluded from processing (no Terms of Use)" -ForegroundColor Yellow
+        }
+    }
+    
+    # Count templates and generated policies (after filtering)
+    $TemplateCount = $AllCAPs.Count
+    $GeneratedCount = 0
+    $FailedPolicies = @()
+    
     ## Check if there are no json files
     If ($AllCAPs.Count -eq 0) {
         Write-Host "[⚠️] Json files not found in the directory" -ForegroundColor Yellow
     } Else {
+        Write-Host "[ℹ️] Found $TemplateCount template(s) to process..." -ForegroundColor Cyan
         ForEach ($Policy in $AllCAPs) {
             try {
                 $Export = $true
@@ -506,15 +675,15 @@ If ($GenerateCAs) {
 
                 # Terms Of Use
                 If ($ContentPolicy.GrantControls.TermsOfUse) {
-                    Write-Host "    [ℹ️] Terms Of Use found in policy"
-                    If (!(SearchTOU)) {
+                    Write-Host "    [ℹ️] Terms Of Use required for policy: $($ContentPolicy.DisplayName)" -ForegroundColor Magenta
+                    If (!(SearchTOU -PolicyName $ContentPolicy.DisplayName)) {
                         Write-Host "      [ℹ️] Terms Of Use policy will be excluded"
                         $Export = $false
                     } Else {
-                        Write-Host "      [✅] Terms Of Use policy found"
+                        Write-Host "      [✅] Terms Of Use selected for this policy"
                         $UpdatedTOUs = @()
                         ForEach ($TOU in $ContentPolicy.GrantControls.TermsOfUse) {
-                            $UpdatedTOUs += $IdTOU
+                            $UpdatedTOUs += $global:IdTOU
                         }
                         $ContentPolicy.GrantControls.TermsOfUse = $UpdatedTOUs
                     }
@@ -527,12 +696,65 @@ If ($GenerateCAs) {
                     $Path = "$DeploymentDirectory\MyCAs\$($Policy.Name)"
                     Set-Content -Path $Path -Value $UpdatedJson -Encoding UTF8
                     Write-Host "  [✅] Group IDs updated successfully"
+                    $GeneratedCount++
+                } Else {
+                    # Policy was not generated, add to failed list
+                    $FailedPolicies += $ContentPolicy.DisplayName
                 }
             }
             catch {
                 Write-Host "  [❌] Error while update the policy file: $_"
+                # Add to failed list in case of error
+                try {
+                    $ContentPolicy = Get-Content -Path $Policy.FullName | ConvertFrom-Json
+                    $FailedPolicies += $ContentPolicy.DisplayName
+                } catch {
+                    $FailedPolicies += $Policy.Name
+                }
             }
         }
+        
+        # Display comparison summary
+        Write-Host "`n" -NoNewline
+        Write-Host "========================================" -ForegroundColor Green
+        Write-Host "         GENERATION SUMMARY" -ForegroundColor Green  
+        Write-Host "========================================" -ForegroundColor Green
+        Write-Host "Templates found:       $TemplateCount" -ForegroundColor Cyan
+        Write-Host "Policies generated:    $GeneratedCount" -ForegroundColor Cyan
+        if ($ExcludedTemplateCount -gt 0) {
+            Write-Host "Templates excluded:    $ExcludedTemplateCount (missing Terms of Use)" -ForegroundColor Yellow
+        }
+        
+        if ($GeneratedCount -eq $TemplateCount) {
+            if ($ExcludedTemplateCount -gt 0) {
+                Write-Host "Status:                ✅ All available templates processed successfully ($ExcludedTemplateCount excluded)" -ForegroundColor Green
+            } else {
+                Write-Host "Status:                ✅ All templates processed successfully" -ForegroundColor Green
+            }
+        } elseif ($GeneratedCount -gt 0) {
+            $MissingCount = $TemplateCount - $GeneratedCount
+            Write-Host "Status:                ⚠️ $MissingCount template(s) not generated (see errors above)" -ForegroundColor Yellow
+        } else {
+            Write-Host "Status:                ❌ No policies generated" -ForegroundColor Red
+        }
+        
+        # Show failed policies in markdown format
+        if ($FailedPolicies.Count -gt 0) {
+            Write-Host "`nFailed Policies:" -ForegroundColor Yellow
+            Write-Host "## ⚠️ Policies Not Generated" -ForegroundColor Yellow
+            Write-Host "" -ForegroundColor Gray
+            foreach ($PolicyName in $FailedPolicies) {
+                Write-Host "- ❌ **$PolicyName**" -ForegroundColor Yellow
+            }
+            Write-Host "" -ForegroundColor Gray
+            Write-Host "**Possible reasons:**" -ForegroundColor Gray
+            Write-Host "- Missing Terms of Use configuration" -ForegroundColor Gray
+            Write-Host "- Microsoft Intune Enrollment not found" -ForegroundColor Gray
+            Write-Host "- Invalid group or location references" -ForegroundColor Gray
+            Write-Host "- JSON parsing errors" -ForegroundColor Gray
+        }
+        
+        Write-Host "========================================" -ForegroundColor Green
     }
 }
 
