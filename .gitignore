@@ -1,1 +1,13 @@
-Entra ID/API Permissions/*.csv
+# Ignore all CSV files
+*.csv
+
+# Ignore results in the Entra ID/API Permissions folder
+Entra ID/API Permissions/Results/
+
+# Variables sensitive information
+*.env
+*.secret
+*.key
+
+# Ignore log files
+*.log
